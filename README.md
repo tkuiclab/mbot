@@ -2,7 +2,7 @@
 TKU Mobile Manipulator Robot (M-Bot)
 
 
-#---------ur_Gazebo Setting---------#
+#ur_Gazebo Setting
 
 roslaunch ur_gazebo ur5.launch limited:=true
 
@@ -10,29 +10,29 @@ roslaunch ur5_moveit_config ur5_moveit_planning_execution.launch sim:=true limit
 
 roslaunch ur5_moveit_config moveit_rviz.launch config:=true
 
-#----teach mode--------#
+# teach mode
 rosrun strategy teach_mode_server.py
-rosrun strategy 
+rosrun strategy teach_mode_client.py  (test)
 
-#---------roslaunch---------#
+# roslaunch
 roslaunch rosbridge_server rosbridge_websocket.launch
-rosrun strategy teach_mode_client.py
 
 
 
-#---------mini-httped Setting---------#
+
+# mini-httped Setting
 1. Start 
-#sudo service mini-httpd start
+$ sudo service mini-httpd start
 
 2. Edit(if need)
-# sudo vim /etc/mini-httpd.conf
+$ sudo vim /etc/mini-httpd.conf
 2.1. Edit path
 data_dir=/home/iclab/mbot_ws/src/web
 2.2. bind host(ip address)
 host=[your ip] 
 
 3. Auto Start
-#sudo update-rc.d mini-httpd enable
-#sudo vim /etc/default/mini-httpd
+$ sudo update-rc.d mini-httpd enable
+$ sudo vim /etc/default/mini-httpd
 START=1
 
