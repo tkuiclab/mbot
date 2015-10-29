@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://blog.themearmada.com/demos/off-canvas-menu/ -->
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>Off Canvas Menu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/starter-template.css">
+   
+   <!-- jQuery UI-->
+ <link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css">
+
+
+</head>
+
+<body class="">
+	
+	
+	<!-- Button trigger modal -->
+
+    <nav>
+        <ul class="list-unstyled main-menu">
+          
+          <!--Include your navigation here-->
+          <li class="text-left"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#" id="nav-close">x</a></li>
+          <li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Menu One <span class="icon"></span></a></li>
+          <li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Menu Two <span class="icon"></span></a></li>
+          <li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Menu Three <span class="icon"></span></a></li>
+          <li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Dropdown<span class="caret"></span></a>
+            <ul class="list-unstyled" data-index="0" style="display: none;">
+                <li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu One <span class="icon"></span></a></li>
+                <li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu Two <span class="icon"></span></a></li>
+                <li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu Three <span class="icon"></span></a></li>
+                <li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu Four <span class="icon"></span></a></li>
+                <li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu Five <span class="icon"></span></a></li>
+            </ul>
+          </li>
+          <li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Menu Four <span class="icon"></span></a></li>
+          <li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Menu Five <span class="icon"></span></a></li>
+        </ul>
+    </nav>
+    <div id="fixedTop">
+		<ul>
+			<!--
+			<li>
+			<a id="nav-expander" class="nav-expander fixed">
+				   <i class="fa fa-bars fa-lg white"></i>
+				  </a>
+			</li>
+			-->
+			<li class="left">
+				<a id="nav-expander" class="nav-expander fixed">
+				   <i class="fa fa-bars fa-lg white"></i>
+				  </a>
+			</li>
+			<li class="center">
+				Mobile Manipulator
+			</li>
+			<li  class="right">				
+			</li>
+		</ul>
+	</div>
+
+	
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			</div>
+			<div class="modal-body">
+				...fdfgdfd
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>	
+	
+	
+	
+<div class="container">
+	<!-- Example row of columns -->
+	<div class="starter-template">
+		<h1>Welcom to TKU Mobile Manipulator</h1>
+		<p class="lead">Free to control the Robot</p>
+		<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+			Launch demo modal
+		</button>
+	</div> <!-- /container -->
+  
+  
+	<!--Infomation panel-->
+	<div id="infoPanel" class="ui-widget-content">
+		<div id="panelTop">
+			Information
+		</div>
+		<div id="infoContent" class="panelContent">			
+		</div>
+	</div>
+  
+	<!--control panel-->
+	<div id="controlPanel" class="ui-widget-content">
+		<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+			  <td width="33%">&nbsp;</td>
+			  <!--UP Button--->
+			  <td width="34%">
+
+				<a id="control_up" class="control"><i class="fa fa-caret-square-o-up  fa-3x"></i></a>
+
+			  <td width="33%">&nbsp;</td>
+		  </tr>
+			<tr>
+			    <!--Left Button--->
+			   <td width="33%">
+					<a id="control_left" class="control"><i class="fa fa-caret-square-o-left fa-3x"></i>
+				</td>
+			  <td width="34%">&nbsp;</td>
+			   <!--Right Button--->
+			  <td width="33%">
+				<a id="control_right" class="control"><i class="fa fa-caret-square-o-right fa-3x"></i>
+			  </td>
+		  </tr>
+			<tr>
+			  <td width="33%">&nbsp;</td>
+			   <!--Down Button--->
+			  <td width="34%">
+				<a id="control_down" class="control"><i class="fa fa-caret-square-o-down fa-3x"></i></a>
+			  </td>
+			  <td width="33%">&nbsp;</td>
+		  </tr>
+		</table>
+	</div>
+</div>
+    
+    <!-- Javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.navgoco.js"></script>
+    <script src="js/main.js"></script>
+    
+	<script src="jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+    <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
+	
+	
+    <script>
+	function saveBtn(){
+		console.log("save Btn click");
+	}
+	
+    $(document).ready(function(){												
+       
+       //Navigation Menu Slider
+        $('#nav-expander').on('click',function(e){
+      		e.preventDefault();
+      		$('body').toggleClass('nav-expanded');
+      	});
+      	$('#nav-close').on('click',function(e){
+      		e.preventDefault();
+      		$('body').removeClass('nav-expanded');
+      	});
+		
+      	$("#controlPanel").draggable();
+		$("#infoPanel").draggable();
+		
+		
+		$('#control_up').on('click',function(e){
+			var oriText = $("#infoContent").html();
+      		//$("#infoContent").html(oriText + "<BR>" + "control_up click");
+			$("#infoContent").html(oriText + "<BR>" +$(this).attr("id") +" click");
+      		
+      	});
+		
+		$('#control_right').on('click',function(e){
+			var oriText = $("#infoContent").html();
+			$("#infoContent").html(oriText + "<BR>" +$(this).attr("id") +" click");
+      	});
+		
+		$('#control_down').on('click',function(e){
+			console.log("control_down click click");
+			var oriText = $("#infoContent").html();
+			$("#infoContent").html(oriText + "<BR>" +$(this).attr("id") +" click");
+      	});
+		
+		$('#control_left').on('click',function(e){
+			var oriText = $("#infoContent").html();
+			$("#infoContent").html(oriText + "<BR>" +$(this).attr("id") +" click");
+      	});
+      	
+      	
+  
+        	
+      });
+	  
+	  
+	
+	  
+      </script>
+
+
+	
+</body>
+</html>
