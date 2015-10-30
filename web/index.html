@@ -43,58 +43,77 @@
 			<td width="20%"><a id="direction_back" class="control"><i class="fa fa-arrow-down fa-4x"></i></a></td>
 			<td width="20%">&nbsp;</td>
 		</tr>
-		<tr height="60%">
+		<tr height="10%">
+			<td width="20%"><a id="direction_Rup" class="control"><i class="fa fa fa-angle-double-left  fa-5x"></i></a></td>
 			<td width="20%">&nbsp;</td>
+			<td width="20%"><a id="direction_Rdown" class="control"><i class="fa fa fa-angle-double-right fa-5x"></i></a></td>
+		</tr>
+		<tr height="10%">
 			<td width="20%">&nbsp;</td>
+			<td width="20%"><a id="direction_Rup" class="control"><i class="fa fa-arrow-up  fa-4x"></i></a></td>
+			<td width="20%">&nbsp;</td>
+		</tr>
+		<tr height="10%">
+			<td width="20%"><a id="direction_Rleft" class="control"><i class="fa fa-arrow-left fa-4x"></i></a></td>
+			<td width="20%">&nbsp;</td>
+			<td width="20%"><a id="direction_Rright" class="control"><i class="fa fa-arrow-right fa-4x"></i></a></td>
+		</tr>
+		<tr height="20%">
+			<td width="20%">&nbsp;</td>
+			<td width="20%"><a id="direction_Rback" class="control"><i class="fa fa-arrow-down fa-4x"></i></a></td>
 			<td width="20%">&nbsp;</td>
 		</tr>
 		</table>
 	</div>
 	<div class="col-md-6" border="2px">
-		<img src="ur5_img.png" style="border:6px #c0fff4 double" width="500px" height="500px"></img>
+		<img src="img/ur5_img.png" style="border:6px #c0fff4 double" width="500px" height="500px"></img>
 	</div>
 	<!--ROS_Output-->
 	<div class="col-md-1">
-		<table id="ros_Output" width="100%" height="100%">
+	<table id="ros_Output" width="100%" height="100%">
 			<thead>
 			<th colspan="4" style="border:1px black solid">ROS_Info</th>
 			</thead>
 			<tbody>
-			<tr height="15%" style="border:1px black solid">
+			<tr style="border:1px black solid">
 				<td style="border:1px black solid" width="20%">Base</td>
 				<td style="border:1px black solid" width="30%"><h4 id="output_j1" style="color:red"></td>
 				<td style="border:1px black solid" width="20%">X</td>
 				<td style="border:1px black solid" width="30%"><h4 id="output_lx" style="color:red"></td>
 			</tr>
-			<tr height="15%" style="border:1px black solid">
+			<tr style="border:1px black solid">
 				<td style="border:1px black solid">Shoulder</td>
 				<td style="border:1px black solid color:red"><h4 id="output_j2" style="color:red"></td>
 				<td style="border:1px black solid">Y</td>
 				<td style="border:1px black solid color:red"><h4 id="output_ly" style="color:red"></td>
 			</tr>
-			<tr height="15%" style="border:1px black solid">
+			<tr style="border:1px black solid">
 				<td style="border:1px black solid">Elbow</td>
 				<td style="border:1px black solid color:red"><h4 id="output_j3" style="color:red"></td>
 				<td style="border:1px black solid">Z</td>
 				<td style="border:1px black solid color:red"><h4 id="output_lz" style="color:red"></td>
 			</tr>
-			<tr height="15%" style="border:1px black solid">
+			<tr style="border:1px black solid">
 				<td style="border:1px black solid">Wrist1</td>
 				<td style="border:1px black solid color:red"><h4 id="output_j4" style="color:red"></td>
 				<td style="border:1px black solid">RX</td>
 				<td style="border:1px black solid color:red"><h4 id="output_ax" style="color:red"></td>
 			</tr>
-			<tr height="15%" style="border:1px black solid">
+			<tr style="border:1px black solid">
 				<td style="border:1px black solid">Wrist2</td>
 				<td style="border:1px black solid color:red"><h4 id="output_j5" style="color:red"></td>
 				<td style="border:1px black solid">RY</td>
 				<td style="border:1px black solid color:red"><h4 id="output_ay" style="color:red"></td>
 			</tr>
-			<tr height="15%" style="border:1px black solid">
+			<tr style="border:1px black solid">
 				<td style="border:1px black solid">Wrist3</td>
 				<td style="border:1px black solid color:red"><h4 id="output_j6" style="color:red"></td>
 				<td style="border:1px black solid">RZ</td>
 				<td style="border:1px black solid color:red"><h4 id="output_az" style="color:red"></td>
+			</tr>
+			<tr></tr><tr></tr><tr></tr><tr></tr>
+			<tr><!--HOME-->
+				<td colspan="4"><button id="control_send_home" type="button" class="btn btn-info" style="width:200px"><i class="fa fa-home fa-2x"></i></button></td>
 			</tr>
 			</tbody>
 		</table>
@@ -157,8 +176,68 @@
 		</tbody>
 		</table>
 	</div>
-	<div class="col-md-2"></div>
-	<div class="col-md-5">
+	<div class="col-md-1"></div>
+	<div class="col-md-7">
+		<table width="600px" height="180px">
+		<tbody>
+		<tr height="15%">
+			<td width="20%" style="text-align:center"><strong>Base</strong></td>
+			<td width="10%"><a class="control"><i class="fa fa-caret-left fa-4x"></i></a></td>
+			<td width="60%" class="progress">
+				<div id="progress-bar_j1" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
+				<h4 id="output_j1p"></h4></div>
+			</td>
+			<td width="10%" align="right"><a class="control"><i class="fa fa-caret-right fa-4x"></i></a></td>
+		</tr>
+		<tr height="15%">
+			<td style="text-align:center"><strong>Shoulder</strong></td>
+			<td><a class="control"><i class="fa fa-caret-left fa-4x"></i></a></td>
+			<td class="progress">
+				<div id="progress-bar_j2" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
+				<h4 id="output_j2p"></h4></div>
+			</td>
+			<td align="right"><a class="control"><i class="fa fa-caret-right fa-4x"></i></a></td>
+		</tr>
+		<tr height="15%">
+			<td style="text-align:center"><strong>Elbow</strong></td>
+			<td><a class="control"><i class="fa fa-caret-left fa-4x"></i></a></td>
+			<td class="progress">
+				<div id="progress-bar_j3" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
+				<h4 id="output_j3p"></h4></div>
+			</td>
+			<td align="right"><a class="control"><i class="fa fa-caret-right fa-4x"></i></a></td>
+		</tr>
+		<tr height="15%">
+			<td style="text-align:center"><strong>Wrist1</strong></td>
+			<td><a class="control"><i class="fa fa-caret-left fa-4x"></i></a></td>
+			<td class="progress">
+				<div id="progress-bar_j4" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
+				<h4 id="output_j4p"></h4></div>
+			</td>
+			<td align="right"><a class="control"><i class="fa fa-caret-right fa-4x"></i></a></td>
+		</tr>
+		<tr height="15%">
+			<td style="text-align:center"><strong>Wrist2</strong></td>
+			<td><a class="control"><i class="fa fa-caret-left fa-4x"></i></a></td>
+			<td class="progress">
+				<div id="progress-bar_j5" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
+				<h4 id="output_j5p"></h4></div>
+			</td>
+			<td align="right"><a class="control"><i class="fa fa-caret-right fa-4x"></i></a></td>
+		</tr>
+		<tr height="15%">
+			<td style="text-align:center"><strong>Wrist3</strong></td>
+			<td><a class="control"><i class="fa fa-caret-left fa-4x"></i></a></td>
+			<td class="progress">
+				<div id="progress-bar_j6" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
+				<h4 id="output_j6p"></h4></div>
+			</td>
+			<td align="right"><a class="control"><i class="fa fa-caret-right fa-4x"></i></a></td>
+		</tr>
+		</tbody>
+		</table>
+	</div>
+<!--	<div class="col-md-5">
 		<strong>Move Joints</strong>
 		<div class="progress">
 			<div id="progress-bar_j1" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
@@ -190,18 +269,6 @@
 			<p id="output_j6p"></p>
 			</div>
 		</div>
-	</div>
-	<div class="col-md-1">
-		<table width="50px" height="250px">
-		<tbody>
-		<tr style="border:1px black solid"><td>Base</td></tr>
-		<tr style="border:1px black solid"><td>Base</td></tr>
-		<tr style="border:1px black solid"><td>Base</td></tr>
-		<tr style="border:1px black solid"><td>Base</td></tr>
-		<tr style="border:1px black solid"><td>Base</td></tr>
-		<tr style="border:1px black solid"><td>Base</td></tr>
-		</tbody>
-		</table>
 	</div>
 	<!-- /container -->
 	<!--Infomation panel-->
@@ -302,7 +369,6 @@ $(document).ready(function(){
 		float64[5] = $('#input_j6').val();
 		var send_joint = new ROSLIB.Message({
 			cmd : 'JointPosition',
-			vaccum : io_default ,
 			joint_position : [float64[0],float64[1],float64[2],
 					  float64[3],float64[4],float64[5]]
 		});
@@ -324,7 +390,6 @@ $(document).ready(function(){
 		// Send the goal to the action server.
 		$("#infoContent").html('Goal was send cmdlist'
 					+'<BR>Cmd : ' + send_joint.cmd
-					+'<BR>Vaccum : '+ send_joint.vaccum
 					+"<BR>Joint Position : [ "+ send_joint.joint_position+" ]"
 		);
 		goal.send();
@@ -352,25 +417,21 @@ $(document).ready(function(){
 		});
 		var send_eef = new ROSLIB.Message({
 			cmd : 'EEFPosition',
-			vaccum : io_default ,
 			pose : twist
 		});
 		mlist.push(send_eef);
-		// Create a goal.
 		var goal = new ROSLIB.Goal({
 			actionClient : teachModeClient,
 			goalMessage : {
 				cmd_list : mlist
 			}
 		});
-		// Print out their output into the terminal.
 		goal.on('feedback', function(feedback) {
 			console.log('Feedback: ' + feedback.status);
 		});
 		goal.on('result', function(result) {
 			console.log('Final Result: ' + result.notify);
 		});
-		// Send the goal to the action server.
 		$("#infoContent").html('Goal was send cmdlist'
 					+'<BR>Cmd : ' + send_eef.cmd
 					+'<BR>Vaccum : '+ send_eef.vaccum
@@ -403,6 +464,39 @@ $(document).ready(function(){
 			});
 			mlist.push(send_io);
 		}
+		var goal = new ROSLIB.Goal({
+			actionClient : teachModeClient,
+			goalMessage : {
+				cmd_list : mlist
+			}
+		});
+		goal.on('feedback', function(feedback) {
+			console.log('Feedback: ' + feedback.status);
+		});
+		goal.on('result', function(result) {
+			console.log('Final Result: ' + result.notify);
+		});
+		$("#infoContent").html('Goal was send cmdlist'
+					+'<BR>Cmd : ' + send_io.cmd
+					+'<BR>Vaccum : '+ send_io.vaccum
+		);
+		goal.send();
+		mlist = [];
+	});
+	$('#control_send_home').on('click',function(e){
+		var float64 = new Float64Array(6);
+		float64[0] = 0;
+		float64[1] = -1.5708;
+		float64[2] = 0;
+		float64[3] = -1.5708;
+		float64[4] = 0;
+		float64[5] = 0;
+		var send_joint = new ROSLIB.Message({
+			cmd : 'JointPosition',
+			joint_position : [float64[0],float64[1],float64[2],
+					  float64[3],float64[4],float64[5]]
+		});
+		mlist.push(send_joint);
 		// Create a goal.
 		var goal = new ROSLIB.Goal({
 			actionClient : teachModeClient,
@@ -419,12 +513,13 @@ $(document).ready(function(){
 		});
 		// Send the goal to the action server.
 		$("#infoContent").html('Goal was send cmdlist'
-					+'<BR>Cmd : ' + send_io.cmd
-					+'<BR>Vaccum : '+ send_io.vaccum
+					+'<BR>Cmd : ' + send_joint.cmd
+					+"<BR>Joint Position : [ "+ send_joint.joint_position+" ]"
 		);
 		goal.send();
 		mlist = [];
 	});
+	//Topic_Subscribe
 	joint_Sub.subscribe(function(message){
 		$("#output_j1").html(((message.position[0]/Math.PI)*180).toFixed(2));
 		$("#output_j2").html(((message.position[1]/Math.PI)*180).toFixed(2));
