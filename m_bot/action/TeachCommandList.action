@@ -1,8 +1,0 @@
-#goal definition
-TeachCommand[] cmd_list
----
-#result definition
-string notify
----
-#feedback
-string status
