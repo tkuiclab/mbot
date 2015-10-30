@@ -7,21 +7,21 @@ import rospy, sys
 
 import actionlib
 
-import strategy.msg
+from mbot_control.msg import *
+#import strategy.msg
 
-#import moveit_commander
 from arm import ARM
 
 
 class TeachModeServer(object):
     # create messages that are used to publish feedback/result
-    _feedback = strategy.msg.TeachCommandListFeedback()
-    _result = strategy.msg.TeachCommandListResult()
+    _feedback = TeachCommandListFeedback()
+    _result = TeachCommandListResult()
 
     def __init__(self, name):
         print 'Action Name=' + name
         self._action_name = name
-        self._as = actionlib.SimpleActionServer(self._action_name, strategy.msg.TeachCommandListAction,
+        self._as = actionlib.SimpleActionServer(self._action_name, TeachCommandListAction,
                                                 execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
 

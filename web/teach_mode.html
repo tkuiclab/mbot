@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Teach Mode</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		
+    	
+		<style>
+			nav {
+				background-color: #b0c4de;
+				height: 55px;
+				margin-top: 20px;
+				margin-left: 30px;
+				margin-bottom: 10px;
+				margin-right: 30px;
+			}
+			
+			.add{
+				margin-top: 10px;
+				margin-left: 10px;
+				margin-bottom: 10px;
+				margin-right: 10px;
+				top : 100%;
+				font-size: 20px;
+			}
+			
+			.options{
+				font-size: 22px;
+				height: 80%;
+			}
+			
+			#block input{
+				font-size: 22px;
+				height: 80%;
+				size:5;
+			}
+			
+			#base{
+				border-style: solid;
+				border-width: medium;
+				margin-left: 30px;
+				margin-right: 30px;
+				height: 200px;
+				overflow:auto;
+			}
+			
+			.default{
+				display:block;
+			}
+			
+			.edit{
+				display:none;
+			}
+			
+			table {
+				width : 99%;
+				margin : auto;
+				
+			}
+			
+			thead {
+				border-collapse: collapse;
+				border-bottom: solid #ff0000;
+				font-size : 20px;
+			}
+			
+			.edit_mod{
+			
+			}
+			
+			.img_show{
+				height: 32px;
+				width: 32px;
+				display: none;
+			}
+			
+		</style>
+		
+</head>
+<body>
+	<nav>
+		<button type="button" id="addbtn" class="add" ><span class="glyphicon glyphicon-plus"></span></button>
+		<select class="options" id="cmd_select">
+			<option value="Choose">Choose</option>
+			<option value="Joint">Joint</option>
+			<option value="PTP">PTP</option>
+			<option value="Line">Line</option>
+      <option value="Vaccum">Vaccum</option>
+		</select>
+		
+		<div id="block" style= "display:none;">
+			<input value="0" id="block_1" style="width: 10%" type="number"/>
+			<input value="0" id="block_2" style="width: 10%" type="number"/>
+			<input value="0" id="block_3" style="width: 10%" type="number"/>
+			<input value="0" id="block_4" style="width: 10%" type="number"/>
+			<input value="0" id="block_5" style="width: 10%" type="number"/>
+			<input value="0" id="block_6" style="width: 10%" type="number"/>
+		</div>
+		
+		<div id="vaccum_block" style= "display:none;">
+			<select class="options" id="vaccum_select"/>
+				<option value="On">On</option>
+				<option value="Off">Off</option>
+			</select>
+		</div>
+	</nav>
+	<div style="overflow:auto; margin:auto; height:300px; width:98%; border-style: solid;
+				border-width: medium;">
+		<table>
+			<thead>
+				<tr>
+				<th style="width:20%">Command</th>
+				<th style="width:60%">SubCommand</th>
+				<th style="width:15%">Edit</th>
+				<th style="width:5%">Delete</th>
+				</tr>
+			</thead>
+			<tbody id="teach_table">
+			</tbody>
+		</table>
+	</div>
+	<script src="js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+	
+	<script src="js/eventemitter2.min.js"></script>
+	<script src="js/roslib.js"></script>
+	<script src="js/teach_mode.js"></script>
+		
+  </body>
+</html>
