@@ -21,102 +21,93 @@
 <body class="">
 <div class="container">
 	<!--Direction_Panel-->
-	<div id="directionPanel" class="col-md-5"  style="border:3px black double">
+	<div id="directionPanel" class="col-md-4"  style="border:3px #4fd7f4 double">
 		<table width="100%" height="100%" cellpadding="0" cellspacing="0">
 		<tr height="10%">
-			<td width="20%"><a id="direction_up" class="control"><i class="fa fa fa-angle-double-up  fa-5x"></i></a></td>
+			<td width="20%"><a id="direction_up" class="control"><i class="fa fa fa-angle-double-up  fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_down" class="control"><i class="fa fa fa-angle-double-down fa-5x"></i></a></td>
+			<td width="20%"><a id="direction_down" class="control"><i class="fa fa fa-angle-double-down fa-3x"></i></a></td>
 		</tr>
 		<tr height="10%">
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_front" class="control"><i class="fa fa-arrow-up  fa-4x"></i></a></td>
+			<td width="20%"><a id="direction_front" class="control"><i class="fa fa-arrow-up  fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
 		</tr>
 		<tr height="10%">
-			<td width="20%"><a id="direction_left" class="control"><i class="fa fa-arrow-left fa-4x"></i></a></td>
+			<td width="20%"><a id="direction_left" class="control"><i class="fa fa-arrow-left fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_right" class="control"><i class="fa fa-arrow-right fa-4x"></i></a></td>
+			<td width="20%"><a id="direction_right" class="control"><i class="fa fa-arrow-right fa-3x"></i></a></td>
 		</tr>
 		<tr height="10%">
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_back" class="control"><i class="fa fa-arrow-down fa-4x"></i></a></td>
+			<td width="20%"><a id="direction_back" class="control"><i class="fa fa-arrow-down fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
 		</tr>
 		<tr height="10%">
-			<td width="20%"><a id="direction_Rup" class="control"><i class="fa fa fa-angle-double-left  fa-5x"></i></a></td>
+			<td width="20%"><a id="direction_Rup" class="control"><i class="fa fa fa-angle-double-left  fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_Rdown" class="control"><i class="fa fa fa-angle-double-right fa-5x"></i></a></td>
+			<td width="20%"><a id="direction_Rdown" class="control"><i class="fa fa fa-angle-double-right fa-3x"></i></a></td>
 		</tr>
 		<tr height="10%">
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_Rup" class="control"><i class="fa fa-arrow-up  fa-4x"></i></a></td>
+			<td width="20%"><a id="direction_Rup" class="control"><i class="fa fa-arrow-up  fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
 		</tr>
 		<tr height="10%">
-			<td width="20%"><a id="direction_Rleft" class="control"><i class="fa fa-arrow-left fa-4x"></i></a></td>
+			<td width="20%"><a id="direction_Rleft" class="control"><i class="fa fa-arrow-left fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_Rright" class="control"><i class="fa fa-arrow-right fa-4x"></i></a></td>
+			<td width="20%"><a id="direction_Rright" class="control"><i class="fa fa-arrow-right fa-3x"></i></a></td>
 		</tr>
 		<tr height="20%">
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_Rback" class="control"><i class="fa fa-arrow-down fa-4x"></i></a></td>
+			<td width="20%"><a id="direction_Rback" class="control"><i class="fa fa-arrow-down fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
 		</tr>
 		</table>
 	</div>
-	<div class="col-md-6" border="2px">
-		<img src="img/ur5_img.png" style="border:6px #c0fff4 double" width="500px" height="500px"></img>
+	<div class="col-md-1"></div>
+	<div class="col-md-5" border="2px">
+		<img src="img/ur5_img.png" style="border:6px #c0fff4 double" width="400px" height="400px"></img>
 	</div>
 	<!--ROS_Output-->
-	<div class="col-md-1">
-	<table id="ros_Output" width="100%" height="100%">
-			<thead>
-			<th colspan="4" style="border:1px black solid">ROS_Info</th>
-			</thead>
+	<div class="col-md-3">
+	<div class="panel panel-info" style="height:400px">
+		<!-- Default panel contents -->
+		<div class="panel-heading">
+			<a class="control"><i class="fa fa-pencil-square-o fa-2x"></i></a><strong style="font-size:16px">&nbsp;&nbsp;EEF_Info</strong>
+		</div>
+		<!-- Table -->
+		<table class="table" width="100%" height="70%">
 			<tbody>
-			<tr style="border:1px black solid">
-				<td style="border:1px black solid" width="20%">Base</td>
-				<td style="border:1px black solid" width="30%"><h4 id="output_j1" style="color:red"></td>
-				<td style="border:1px black solid" width="20%">X</td>
-				<td style="border:1px black solid" width="30%"><h4 id="output_lx" style="color:red"></td>
+			<tr>
+				<td width="50%">X</td>
+				<td width="50%"><h4 id="output_lx" style="color:red"></td>
 			</tr>
-			<tr style="border:1px black solid">
-				<td style="border:1px black solid">Shoulder</td>
-				<td style="border:1px black solid color:red"><h4 id="output_j2" style="color:red"></td>
-				<td style="border:1px black solid">Y</td>
-				<td style="border:1px black solid color:red"><h4 id="output_ly" style="color:red"></td>
+			<tr>
+				<td>Y</td>
+				<td><h4 id="output_ly" style="color:red"></td>
 			</tr>
-			<tr style="border:1px black solid">
-				<td style="border:1px black solid">Elbow</td>
-				<td style="border:1px black solid color:red"><h4 id="output_j3" style="color:red"></td>
-				<td style="border:1px black solid">Z</td>
-				<td style="border:1px black solid color:red"><h4 id="output_lz" style="color:red"></td>
+			<tr>
+				<td>Z</td>
+				<td><h4 id="output_lz" style="color:red"></td>
 			</tr>
-			<tr style="border:1px black solid">
-				<td style="border:1px black solid">Wrist1</td>
-				<td style="border:1px black solid color:red"><h4 id="output_j4" style="color:red"></td>
-				<td style="border:1px black solid">RX</td>
-				<td style="border:1px black solid color:red"><h4 id="output_ax" style="color:red"></td>
+			<tr>
+				<td>RX</td>
+				<td><h4 id="output_ax" style="color:red"></td>
 			</tr>
-			<tr style="border:1px black solid">
-				<td style="border:1px black solid">Wrist2</td>
-				<td style="border:1px black solid color:red"><h4 id="output_j5" style="color:red"></td>
-				<td style="border:1px black solid">RY</td>
-				<td style="border:1px black solid color:red"><h4 id="output_ay" style="color:red"></td>
+			<tr>
+				<td>RY</td>
+				<td><h4 id="output_ay" style="color:red"></td>
 			</tr>
-			<tr style="border:1px black solid">
-				<td style="border:1px black solid">Wrist3</td>
-				<td style="border:1px black solid color:red"><h4 id="output_j6" style="color:red"></td>
-				<td style="border:1px black solid">RZ</td>
-				<td style="border:1px black solid color:red"><h4 id="output_az" style="color:red"></td>
-			</tr>
-			<tr></tr><tr></tr><tr></tr><tr></tr>
-			<tr><!--HOME-->
-				<td colspan="4"><button id="control_send_home" type="button" class="btn btn-info" style="width:200px"><i class="fa fa-home fa-2x"></i></button></td>
+			<tr>
+				<td>RZ</td>
+				<td><h4 id="output_az" style="color:red"></td>
 			</tr>
 			</tbody>
 		</table>
+		<div class="panel-footer" height="10%">
+		<button id="control_send_home" type="button" class="btn btn-info" style="width:200px"><i class="fa fa-home fa-2x"></i></button></td>		</div>
+	</div>
 	</div>
 	<div class="row"></div>
 	<HR color="#00FF00" size="20px">
@@ -176,99 +167,70 @@
 		</tbody>
 		</table>
 	</div>
-	<div class="col-md-1"></div>
-	<div class="col-md-7">
-		<table width="600px" height="180px">
-		<tbody>
-		<tr height="15%">
-			<td width="20%" style="text-align:center"><strong>Base</strong></td>
-			<td width="10%"><a class="control"><i class="fa fa-caret-left fa-4x"></i></a></td>
-			<td width="60%" class="progress">
-				<div id="progress-bar_j1" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-				<h4 id="output_j1p"></h4></div>
-			</td>
-			<td width="10%" align="right"><a class="control"><i class="fa fa-caret-right fa-4x"></i></a></td>
-		</tr>
-		<tr height="15%">
-			<td style="text-align:center"><strong>Shoulder</strong></td>
-			<td><a class="control"><i class="fa fa-caret-left fa-4x"></i></a></td>
-			<td class="progress">
-				<div id="progress-bar_j2" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-				<h4 id="output_j2p"></h4></div>
-			</td>
-			<td align="right"><a class="control"><i class="fa fa-caret-right fa-4x"></i></a></td>
-		</tr>
-		<tr height="15%">
-			<td style="text-align:center"><strong>Elbow</strong></td>
-			<td><a class="control"><i class="fa fa-caret-left fa-4x"></i></a></td>
-			<td class="progress">
-				<div id="progress-bar_j3" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-				<h4 id="output_j3p"></h4></div>
-			</td>
-			<td align="right"><a class="control"><i class="fa fa-caret-right fa-4x"></i></a></td>
-		</tr>
-		<tr height="15%">
-			<td style="text-align:center"><strong>Wrist1</strong></td>
-			<td><a class="control"><i class="fa fa-caret-left fa-4x"></i></a></td>
-			<td class="progress">
-				<div id="progress-bar_j4" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-				<h4 id="output_j4p"></h4></div>
-			</td>
-			<td align="right"><a class="control"><i class="fa fa-caret-right fa-4x"></i></a></td>
-		</tr>
-		<tr height="15%">
-			<td style="text-align:center"><strong>Wrist2</strong></td>
-			<td><a class="control"><i class="fa fa-caret-left fa-4x"></i></a></td>
-			<td class="progress">
-				<div id="progress-bar_j5" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-				<h4 id="output_j5p"></h4></div>
-			</td>
-			<td align="right"><a class="control"><i class="fa fa-caret-right fa-4x"></i></a></td>
-		</tr>
-		<tr height="15%">
-			<td style="text-align:center"><strong>Wrist3</strong></td>
-			<td><a class="control"><i class="fa fa-caret-left fa-4x"></i></a></td>
-			<td class="progress">
-				<div id="progress-bar_j6" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-				<h4 id="output_j6p"></h4></div>
-			</td>
-			<td align="right"><a class="control"><i class="fa fa-caret-right fa-4x"></i></a></td>
-		</tr>
-		</tbody>
+	<div class="col-md-2"></div>
+	<div class="col-md-6">
+	<div class="panel panel-info" style="width:600px height:180px">
+		<div class="panel-heading" height="30%">
+			<a class="control"><i class="fa fa-pencil-square-o fa-2x"></i></a><strong style="font-size:20px">&nbsp;&nbsp;Joint_Info</strong>
+		</div>
+		<table class="table" width="100%" height="70%">
+			<tbody>
+			<tr height="15%">
+				<td width="20%" style="text-align:center"><strong>Base</strong></td>
+				<td width="10%"><a class="control"><i class="fa fa-caret-left fa-3x"></i></a></td>
+				<td width="60%" class="progress">
+					<div id="progress-bar_j1" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
+					<h4 id="output_j1p"></h4></div>
+				</td>
+				<td width="10%" align="right"><a class="control"><i class="fa fa-caret-right fa-3x"></i></a></td>
+			</tr>
+			<tr height="15%">
+				<td style="text-align:center"><strong>Shoulder</strong></td>
+				<td><a class="control"><i class="fa fa-caret-left fa-3x"></i></a></td>
+				<td class="progress">
+					<div id="progress-bar_j2" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
+					<h4 id="output_j2p"></h4></div>
+				</td>
+				<td align="right"><a class="control"><i class="fa fa-caret-right fa-3x"></i></a></td>
+			</tr>
+			<tr height="15%">
+				<td style="text-align:center"><strong>Elbow</strong></td>
+				<td><a class="control"><i class="fa fa-caret-left fa-3x"></i></a></td>
+				<td class="progress">
+					<div id="progress-bar_j3" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
+					<h4 id="output_j3p"></h4></div>
+				</td>
+				<td align="right"><a class="control"><i class="fa fa-caret-right fa-3x"></i></a></td>
+			</tr>
+			<tr height="15%">
+				<td style="text-align:center"><strong>Wrist1</strong></td>
+				<td><a class="control"><i class="fa fa-caret-left fa-3x"></i></a></td>
+				<td class="progress">
+					<div id="progress-bar_j4" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
+					<h4 id="output_j4p"></h4></div>
+				</td>
+				<td align="right"><a class="control"><i class="fa fa-caret-right fa-3x"></i></a></td>
+			</tr>
+			<tr height="15%">
+				<td style="text-align:center"><strong>Wrist2</strong></td>
+				<td><a class="control"><i class="fa fa-caret-left fa-3x"></i></a></td>
+				<td class="progress">
+					<div id="progress-bar_j5" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
+					<h4 id="output_j5p"></h4></div>
+				</td>
+				<td align="right"><a class="control"><i class="fa fa-caret-right fa-3x"></i></a></td>
+			</tr>
+			<tr height="15%">
+				<td style="text-align:center"><strong>Wrist3</strong></td>
+				<td><a class="control"><i class="fa fa-caret-left fa-3x"></i></a></td>
+				<td class="progress">
+					<div id="progress-bar_j6" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
+					<h4 id="output_j6p"></h4></div>
+				</td>
+				<td align="right"><a class="control"><i class="fa fa-caret-right fa-3x"></i></a></td>
+			</tr>
+			</tbody>
 		</table>
-	</div>
-<!--	<div class="col-md-5">
-		<strong>Move Joints</strong>
-		<div class="progress">
-			<div id="progress-bar_j1" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-			<p id="output_j1p"></p>
-			</div>
-		</div>
-		<div class="progress">
-			<div id="progress-bar_j2" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-			<p id="output_j2p"></p>
-			</div>
-		</div>
-		<div class="progress">
-			<div id="progress-bar_j3" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-			<p id="output_j3p"></p>
-			</div>
-		</div>
-		<div class="progress">
-			<div id="progress-bar_j4" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-			<p id="output_j4p"></p>
-			</div>
-		</div>
-		<div class="progress">
-			<div id="progress-bar_j5" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-			<p id="output_j5p"></p>
-			</div>
-		</div>
-		<div class="progress">
-			<div id="progress-bar_j6" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-			<p id="output_j6p"></p>
-			</div>
-		</div>
 	</div>
 	<!-- /container -->
 	<!--Infomation panel-->
