@@ -2,12 +2,12 @@
 
 import roslib;
 
-roslib.load_manifest('m_bot')
+roslib.load_manifest('mbot_control')
 import rospy, sys
 
 import actionlib
 
-import strategy.msg
+import mbot_control.msg
 
 #import moveit_commander
 from arm import ARM
