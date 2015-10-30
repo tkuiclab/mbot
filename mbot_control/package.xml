@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>strategy</name>
+  <name>mbot_control</name>
   <version>0.0.0</version>
   <description>The strategy package</description>
 

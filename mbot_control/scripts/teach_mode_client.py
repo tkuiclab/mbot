@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import roslib; roslib.load_manifest('strategy')
+import roslib; roslib.load_manifest('mbot_control')
 import rospy
 
 import actionlib

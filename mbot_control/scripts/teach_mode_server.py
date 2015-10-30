@@ -2,7 +2,7 @@
 
 import roslib;
 
-roslib.load_manifest('strategy')
+roslib.load_manifest('mbot_control')
 import rospy, sys
 
 import actionlib
