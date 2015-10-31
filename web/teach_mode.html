@@ -62,8 +62,13 @@
 			
 			thead {
 				border-collapse: collapse;
-				border-bottom: solid #ff0000;
+				border-bottom: solid #0000ff;
 				font-size : 20px;
+			}
+			
+			.teach_btn{
+				height: 100%
+				
 			}
 			
 			.edit_mod{
@@ -106,20 +111,28 @@
 			</select>
 		</div>
 	</nav>
-	<div style="overflow:auto; margin:auto; height:300px; width:98%; border-style: solid;
-				border-width: medium;">
+		<div style="overflow:auto; margin:auto; height:300px; width:98%; border-style: solid;
+				border-width: medium; border-color:  #ffffff">
+
 		<table>
 			<thead>
-				<tr>
-				<th style="width:20%">Command</th>
-				<th style="width:60%">SubCommand</th>
-				<th style="width:15%">Edit</th>
-				<th style="width:5%">Delete</th>
+				<tr style="font-size: 120%">
+					<th style="width:10%">Order</th>
+					<th style="width:10%">Command</th>
+					<th style="width:50%">SubCommand</th>
+					<th style="width:15%">Edit</th>
+					<th style="width:10%">Delete</th>
+					<th style="width:10%">Teach</th>
 				</tr>
 			</thead>
-			<tbody id="teach_table">
+			<tbody id="teach_table" style="font-size: 200%">
+				
 			</tbody>
 		</table>
+		</div>
+	<BR>
+	<div align="center">
+		<button id="run_btn" type="button" class="btn btn-success btn-lg active">Run Teach Command</button>
 	</div>
 	<script src="js/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>

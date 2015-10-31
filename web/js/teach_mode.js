@@ -8,7 +8,13 @@ var CmdType = {
 var addbtn = document.getElementById("addbtn");
 var edit_img = '<img id="edit_btn" src="img/edit.png" onclick="edit_Cmd(this)"/>';
 var cmd_id = 0;
-		
+
+
+//deg.pad(4) // "0045"
+Number.prototype.pad = function(n) {
+    return new Array(n).join('0').slice((n || 2) * -1) + this;
+}
+	
 function hide_all(){
 	$("#block").hide();
 	$("#vaccum_block").hide();
@@ -16,7 +22,7 @@ function hide_all(){
 
 function get_cmd_id(){
 	cmd_id++;
-	return "cmd_"+cmd_id;
+	return cmd_id;
 }
 
 $("#cmd_select").change(function() {
@@ -35,27 +41,35 @@ $("#cmd_select").change(function() {
 	}
 });
 
+
+
 function get_block_tr(option){
 	var sub_cmd = '';
 	var cmd_id = get_cmd_id();
+	var cmd_id_str = 'cmd_' + cmd_id;
 	for(var i=1;i<=6;i++){
 		var t_id = '#block_'+i;
 		sub_cmd += '<input style="width: 15%; border-style:none;" type="number" value="'+$(t_id).val()+'"readonly>';
 	}
 	
-	var edit_img_new = $(edit_img).attr('target_cmd_id', cmd_id).prop('outerHTML');
+	var edit_img_new = $(edit_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
 	var true_img = '<img id="true_btn" src="img/true.png" class="img_show" onclick="save_Cmd(this)"/>';
-	true_img = $(true_img).attr('target_cmd_id', cmd_id).prop('outerHTML');
+	true_img = $(true_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 
 	var false_img = '<img id="false_btn" src="img/false.png" class="img_show" onclick="break_Cmd(this)"/>';
-	false_img = $(false_img).attr('target_cmd_id', cmd_id).prop('outerHTML');
+	false_img = $(false_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
 	var delete_img = '<img id="delete_opt" src="img/delete.png" style="width:20%; height:auto;" onclick="delete_Cmd(this)"/>';			
-	delete_img = $(delete_img).attr('target_cmd_id', cmd_id).prop('outerHTML');
+	delete_img = $(delete_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
+	
+	var teach_a = '<a href="#" class="btn btn-info btn-md teach_btn"><span class="glyphicon glyphicon-pushpin"></span> Teach</a>';
+	teach_a = $(teach_a).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
+	
 	
 	var add_tr = 
-	'<tr id='+cmd_id+'>' +
+	'<tr id='+cmd_id_str+'>' +
+		'<td>'+cmd_id.pad(3)+'</td>'+
 		'<td id="cmd_mod">'+CmdType[option]+'</td>'+
 		'<td class="SubCmd">'+sub_cmd+'</td>'+
 		'<td>'+edit_img_new+
@@ -63,6 +77,7 @@ function get_block_tr(option){
 		false_img +
 		'</td>'+
 		'<td>'+delete_img+'</td>'+
+		'<td>'+teach_a +'</td>'+
 	'</tr>';
 	
 	return add_tr;
@@ -71,6 +86,7 @@ function get_block_tr(option){
 function get_vaccum_tr(){
 	
 	var cmd_id = get_cmd_id();
+	var cmd_id_str = 'cmd_' + cmd_id;
 	var sub_cmd = $('#vaccum_select').val();
 	
 	if(sub_cmd == "On"){
@@ -87,19 +103,23 @@ function get_vaccum_tr(){
 		'</select>';
 	}
 	
-	var edit_img_new = $(edit_img).attr('target_cmd_id', cmd_id).prop('outerHTML');
+	var edit_img_new = $(edit_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
 	var true_img = '<img id="true_btn" src="img/true.png" class="img_show" onclick="save_Cmd(this)"/>';
-	true_img = $(true_img).attr('target_cmd_id', cmd_id).prop('outerHTML');
+	true_img = $(true_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
 	var false_img = '<img id="false_btn" src="img/false.png" class="img_show" onclick="break_Cmd(this)"/>';
-	false_img = $(false_img).attr('target_cmd_id', cmd_id).prop('outerHTML');
+	false_img = $(false_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
 	var delete_img = '<img id="delete_opt" src="img/delete.png" style="width:20%; height:auto;" onclick="delete_Cmd(this)"/>';
-	delete_img = $(delete_img).attr('target_cmd_id', cmd_id).prop('outerHTML');
+	delete_img = $(delete_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
+	
+	//var teach_a = '<a href="#" class="btn btn-info btn-md"><span class="glyphicon glyphicon-search"></span> Teach</a>';
+	//teach_a = $(teach_a).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
 	var add_tr = 
-	'<tr id="'+cmd_id+'">' +
+	'<tr id="cmd_'+cmd_id_str+'">' +
+		'<td>'+cmd_id.pad(3)+'</td>'+
 		'<td id="cmd_mod">'+CmdType.Vaccum+'</td>'+
 		'<td id="edit">'+sub_cmd_edit+'</td>'+
 		'<td>'+edit_img_new+
@@ -107,6 +127,7 @@ function get_vaccum_tr(){
 		false_img +
 		'</td>'+
 		'<td>'+delete_img+'</td>'+
+		'<td>'+'' +'</td>'+
 	'</tr>';
 	
 	return add_tr;
@@ -139,7 +160,7 @@ function edit_Cmd(edit){
 	$('#'+m_cmd_id).find('#true_btn').show();
 	$('#'+m_cmd_id).find('#false_btn').show();
 	
-	var mod = $('#'+m_cmd_id).children("td:first").html();
+	var mod = $('#'+m_cmd_id).children("#cmd_mod").text();
 	var i = 0;
 	if(mod==CmdType.Joint || mod==CmdType.PTP || mod==CmdType.Line){
 		$('#'+m_cmd_id).children("td.SubCmd").children("input").each(function(){
@@ -165,7 +186,7 @@ function save_Cmd(edit){
 	$('#'+m_cmd_id).find('#true_btn').hide();
 	$('#'+m_cmd_id).find('#false_btn').hide();
 	
-	var mod = $('#'+m_cmd_id).children("td:first").html();
+	var mod = $('#'+m_cmd_id).children("#cmd_mod").html();
 	
 	if(mod==CmdType.Joint || mod==CmdType.PTP || mod==CmdType.Line){
 		$('#'+m_cmd_id).children("td.SubCmd").children("input").each(function(){
@@ -188,7 +209,7 @@ function break_Cmd(edit){
 	$('#'+m_cmd_id).find('#true_btn').hide();
 	$('#'+m_cmd_id).find('#false_btn').hide();
 	
-	var mod = $('#'+m_cmd_id).children("td:first").html();
+	var mod = $('#'+m_cmd_id).children("#cmd_mod").html();
 	var i = 0;
 	if(mod==CmdType.Joint || mod==CmdType.PTP || mod==CmdType.Line){
 		$('#'+m_cmd_id).children("td.SubCmd").children("input").each(function(){
@@ -211,6 +232,68 @@ function delete_Cmd(edit){
 	
 	$('#'+m_cmd_id).remove();
 }
+
+
+
+$("#run_btn").click(function() {
+	console.log("in run_btn");
+	$(this).removeClass('active');
+	$(this).addClass('disabled');
+	
+	var mlist = [];
+	
+	
+	//get each command
+	$('#teach_table tr').each(function() {
+		//var cmd_msg;
+		var cmd_mod = $('#cmd_mod', this).text();
+		console.log(cmd_mod);
+		//-------------CmdType.Joint-------------//
+		if(cmd_mod==CmdType.Joint){
+			var float_ary = [];
+			 $('input', this).each(function()
+		    {
+		    	var t_float = parseFloat( $(this).val() );
+		    	//console.log('$(this).val()='+t_float);
+		        float_ary.push( t_float );
+		    });
+			
+			
+			var cmd_msg = new ROSLIB.Message({
+				cmd : CmdType.Joint,
+				joint_position : float_ary
+			});
+			mlist.push(cmd_msg);
+		//-------------CmdType.Vaccum-------------//
+		}else if(cmd_mod==CmdType.Vaccum){
+			var vaccum_yn = $('#vaccum_select', this).val()=='On' ? true:false;
+			
+			
+			var cmd_msg = new ROSLIB.Message({
+				cmd : CmdType.Vaccum,
+				vaccum : vaccum_yn
+			});
+			
+			mlist.push(cmd_msg);
+		}else{
+			
+		}
+		
+		
+	});
+
+	console.log('teachModeClient='+teachModeClient);
+	
+	var goal = new ROSLIB.Goal({
+		actionClient : teachModeClient,
+		goalMessage : {
+			cmd_list : mlist
+		}
+	});
+	goal.on('feedback', teach_feedback);
+	goal.on('result', teach_result);
+	goal.send();
+});
 
 //----------------------------------------ROS----------------------------------------//
 // Connecting to ROS
@@ -236,41 +319,22 @@ ros.on('close', function() {
 var teachModeClient = new ROSLIB.ActionClient({
 	ros : ros,
 	serverName : '/teach_mode_server',
-	actionName : 'strategy/TeachCommandListAction'
+	actionName : 'mbot_control/TeachCommandListAction'
 });
 
+function teach_feedback(feedback){
+	
+	console.log('Feedback: ' + feedback.status);
+}
 
-//----------goal--------------//
-var cmd_1 = new ROSLIB.Message({
-	cmd : 'Vaccum',
-	vaccum : true
-});
+function teach_result(result){
+	
+	console.log('Final Result: ' + result.notify);
+	$("#run_btn").removeClass('disabled');
+	$("#run_btn").addClass('active');
+}
 
-var cmd_2 = new ROSLIB.Message({
-	cmd : 'Vaccum',
-	vaccum : false
-});
-var mlist = [];
-mlist.push(cmd_1);
-mlist.push(cmd_2);
-  
-console.log('mlist length = ' + mlist.length);
-// Create a goal.
-var goal = new ROSLIB.Goal({
-	actionClient : teachModeClient,
-	goalMessage : {
-		cmd_list : mlist
-	}
-});
 
-// Print out their output into the terminal.
-goal.on('feedback', function(feedback) {
-    console.log('Feedback: ' + feedback.status);
-});
-goal.on('result', function(result) {
-    console.log('Final Result: ' + result.notify);
-});
 
-// Send the goal to the action server.
-goal.send();
-console.log('goal is send cmd_list');
+
+
