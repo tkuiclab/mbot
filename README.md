@@ -11,7 +11,7 @@ roslaunch ur5_moveit_config ur5_moveit_planning_execution.launch sim:=true limit
 roslaunch ur5_moveit_config moveit_rviz.launch config:=true
 
 # teach mode
-rosrun mbot_contorl teach_mode_server.py
+rosrun mbot_control teach_mode_server.py
 
 rosrun mbot_contorl teach_mode_client.py  (test)
 
