@@ -118,7 +118,7 @@ function get_vaccum_tr(){
 	//teach_a = $(teach_a).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
 	var add_tr = 
-	'<tr id="cmd_'+cmd_id_str+'">' +
+	'<tr id="'+cmd_id_str+'">' +
 		'<td>'+cmd_id.pad(3)+'</td>'+
 		'<td id="cmd_mod">'+CmdType.Vaccum+'</td>'+
 		'<td id="edit">'+sub_cmd_edit+'</td>'+
@@ -161,6 +161,8 @@ function edit_Cmd(edit){
 	$('#'+m_cmd_id).find('#false_btn').show();
 	
 	var mod = $('#'+m_cmd_id).children("#cmd_mod").text();
+	//console.log("mod="+mod);
+	
 	var i = 0;
 	if(mod==CmdType.Joint || mod==CmdType.PTP || mod==CmdType.Line){
 		$('#'+m_cmd_id).children("td.SubCmd").children("input").each(function(){

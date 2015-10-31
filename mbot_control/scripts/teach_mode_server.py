@@ -51,7 +51,7 @@ class TeachModeServer(object):
             if cmd.cmd == 'Vaccum':
                 show_str += str(cmd.vaccum)
 
-            elif cmd.cmd == 'JointPosition':
+            elif cmd.cmd == 'Joint':
                 #target joints shoulder_pan shoulder_lift elbow wrist1 wrist2 wrist3
                 target_joints = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
                 for j in range(len(cmd.joint_position)):
@@ -59,7 +59,7 @@ class TeachModeServer(object):
 
                 #target_joints = cmd.joint_position;
                 g_arm.set_joints(target_joints)
-                #show_str += str(cmd.joint_position[1])
+                show_str += str(cmd.joint_position[1])
 
             elif cmd.cmd == 'EEFPosition':
                 # target pose x y z r p y
@@ -91,7 +91,7 @@ class TeachModeServer(object):
 
 
 
-            #rospy.loginfo(show_str)
+            rospy.loginfo(show_str)
             # publish the feedback
             self._as.publish_feedback(self._feedback)
             # this step is not necessary, the sequence is computed at 1 Hz for demonstration purposes
