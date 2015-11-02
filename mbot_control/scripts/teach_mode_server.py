@@ -51,7 +51,7 @@ class TeachModeServer(object):
             if cmd.cmd == 'Vaccum':
                 show_str += str(cmd.vaccum)
 
-            elif cmd.cmd == 'JointPosition':
+            elif cmd.cmd == 'Joint':
                 #target joints shoulder_pan shoulder_lift elbow wrist1 wrist2 wrist3
                 target_joints = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
                 for j in range(len(cmd.joint_position)):
@@ -61,7 +61,7 @@ class TeachModeServer(object):
                 g_arm.set_joints(target_joints)
                 #show_str += str(cmd.joint_position[1])
 
-            elif cmd.cmd == 'EEFPosition':
+            elif cmd.cmd == 'PTP':
                 # target pose x y z r p y
                 target_position = [0.0, 0.0, 0.0]
                 target_pose = [0.0, 0.0, 0.0]
