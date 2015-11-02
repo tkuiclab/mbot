@@ -29,31 +29,51 @@ def teach_mode_client():
     cmd_1.vaccum = False
     m_cmd_list.append(cmd_1)
 
+    #cmd_3 = mbot_control.msg.TeachCommand()
+    #cmd_3.cmd = "EEFPosition"
+    #cmd_3.pose.linear.x = 0.0
+    #cmd_3.pose.linear.y = 0.4
+    #cmd_3.pose.linear.z = 0.6
+
+    #cmd_3.pose.angular.x = 0
+    #cmd_3.pose.angular.y = 1.57
+    #cmd_3.pose.angular.z = 0
+    #m_cmd_list.append(cmd_3)
+
+    cmd_0 = mbot_control.msg.TeachCommand()
+    cmd_0.cmd = "JointPosition"
+    cmd_0.joint_position = [0.0, -1.57, 0.0, -1.57, 0.0, 0.0]
+    m_cmd_list.append(cmd_0)
+
     cmd_2 = mbot_control.msg.TeachCommand()
     cmd_2.cmd = "JointPosition"
-    cmd_2.joint_position = [0.0, -1.57, 0.0, -1.57, 0.0, 0.0]
+    cmd_2.joint_position = [1.29, -1.719, 1.26, -1.12, -1.57, 1.29]
     m_cmd_list.append(cmd_2)
 
-    cmd_3 = mbot_control.msg.TeachCommand()
-    cmd_3.cmd = "EEFPosition"
-    cmd_3.pose.linear.x = 0.0
-    cmd_3.pose.linear.y = 0.4
-    cmd_3.pose.linear.z = 1.6
-
-    cmd_3.pose.angular.x = 0
-    cmd_3.pose.angular.y = 1.57
-    cmd_3.pose.angular.z = 0
-    m_cmd_list.append(cmd_3)
-
     cmd_4 = mbot_control.msg.TeachCommand()
-    cmd_4.cmd = "ShiftY"
-    cmd_4.pose.linear.y = 0.1
+    cmd_4.cmd = "ShiftZ"
+    cmd_4.pose.linear.z = -0.3
     m_cmd_list.append(cmd_4)
 
     cmd_5 = mbot_control.msg.TeachCommand()
     cmd_5.cmd = "ShiftZ"
-    cmd_5.pose.linear.z = -0.1
+    cmd_5.pose.linear.z = 0.3
     m_cmd_list.append(cmd_5)
+
+    cmd_6 = mbot_control.msg.TeachCommand()
+    cmd_6.cmd = "ShiftX"
+    cmd_6.pose.linear.x = 0.4
+    m_cmd_list.append(cmd_6)
+
+    cmd_7 = mbot_control.msg.TeachCommand()
+    cmd_7.cmd = "ShiftZ"
+    cmd_7.pose.linear.z = -0.3
+    m_cmd_list.append(cmd_7)
+
+    cmd_8 = mbot_control.msg.TeachCommand()
+    cmd_8.cmd = "ShiftZ"
+    cmd_8.pose.linear.z = 0.3
+    m_cmd_list.append(cmd_8)
 
     goal = mbot_control.msg.TeachCommandListGoal(cmd_list=m_cmd_list)
 
