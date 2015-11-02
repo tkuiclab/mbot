@@ -2,6 +2,9 @@ var CmdType = {
 	Joint: "Joint",
 	PTP: "PTP",
 	Line: "Line",
+	Shift_X: "Shift_X",
+	Shift_Y: "Shift_Y",
+	Shift_Z: "Shift_Z",
 	Vaccum: "Vaccum"
 };
 
@@ -18,6 +21,7 @@ Number.prototype.pad = function(n) {
 function hide_all(){
 	$("#block").hide();
 	$("#vaccum_block").hide();
+	$("#shift_block").hide();
 }
 
 function get_cmd_id(){
@@ -28,16 +32,20 @@ function get_cmd_id(){
 $("#cmd_select").change(function() {
 	console.log($(this).val());
 	cmd = $(this).val();
+	
+	hide_all();
 	if(cmd==CmdType.Joint || cmd==CmdType.PTP || cmd==CmdType.Line){
-		hide_all();
+		//hide_all();
 		$("#block").show();
 		$("#block").css("display","inline");
 	}else if(cmd==CmdType.Vaccum){
-		hide_all();
+		//hide_all();
 		$("#vaccum_block").show();
 		$("#vaccum_block").css("display","inline");
-	}else{
-		hide_all();
+	}else if(cmd==CmdType.Shift_X || cmd==CmdType.Shift_Y ||cmd==CmdType.Shift_Z){
+		//hide_all();
+		$("#shift_block").show();
+		$("#shift_block").css("display","inline");
 	}
 });
 
@@ -63,7 +71,7 @@ function get_block_tr(option){
 	var delete_img = '<img id="delete_opt" src="img/delete.png" style="width:20%; height:auto;" onclick="delete_Cmd(this)"/>';			
 	delete_img = $(delete_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
-	var teach_a = '<a href="#" class="btn btn-info btn-md teach_btn"><span class="glyphicon glyphicon-pushpin"></span> Teach</a>';
+	var teach_a = '<a id="teach_btn" href="#" class="btn btn-info btn-block" onclick="teach_click(this)"><span class="glyphicon glyphicon-pushpin"></span> Teach</a>';
 	teach_a = $(teach_a).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
 	
@@ -114,8 +122,6 @@ function get_vaccum_tr(){
 	var delete_img = '<img id="delete_opt" src="img/delete.png" style="width:20%; height:auto;" onclick="delete_Cmd(this)"/>';
 	delete_img = $(delete_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
-	//var teach_a = '<a href="#" class="btn btn-info btn-md"><span class="glyphicon glyphicon-search"></span> Teach</a>';
-	//teach_a = $(teach_a).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
 	var add_tr = 
 	'<tr id="'+cmd_id_str+'">' +
@@ -133,18 +139,63 @@ function get_vaccum_tr(){
 	return add_tr;
 }
 
+
+function get_shift_tr(option){
+	var sub_cmd = '';
+	var cmd_id = get_cmd_id();
+	var cmd_id_str = 'cmd_' + cmd_id;
+	// for(var i=1;i<=6;i++){
+		// var t_id = '#block_'+i;
+		// sub_cmd += '<input style="width: 15%; border-style:none;" type="number" value="'+$(t_id).val()+'"readonly>';
+	// }
+	sub_cmd += '<input style="width: 15%; border-style:none;" type="number" value="'+$('#shift_val').val()+'"readonly>';
+	console.log('option='+option);
+	
+	var edit_img_new = $(edit_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
+	
+	var true_img = '<img id="true_btn" src="img/true.png" class="img_show" onclick="save_Cmd(this)"/>';
+	true_img = $(true_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
+
+	var false_img = '<img id="false_btn" src="img/false.png" class="img_show" onclick="break_Cmd(this)"/>';
+	false_img = $(false_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
+	
+	var delete_img = '<img id="delete_opt" src="img/delete.png" style="width:20%; height:auto;" onclick="delete_Cmd(this)"/>';			
+	delete_img = $(delete_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
+	
+	var teach_a = '<a id="teach_btn" href="#" class="btn btn-info btn-block" onclick="teach_click(this)"><span class="glyphicon glyphicon-pushpin"></span> Teach</a>';
+	teach_a = $(teach_a).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
+	
+	
+	var add_tr = 
+	'<tr id='+cmd_id_str+'>' +
+		'<td>'+cmd_id.pad(3)+'</td>'+
+		'<td id="cmd_mod">'+CmdType[option]+'</td>'+
+		'<td class="SubCmd">'+sub_cmd+'</td>'+
+		'<td>'+edit_img_new+
+		true_img +
+		false_img +
+		'</td>'+
+		'<td>'+delete_img+'</td>'+
+		'<td>'+teach_a +'</td>'+
+	'</tr>';
+	
+	return add_tr;
+}
+
 addbtn.onclick = function(){
-	console.log("in addBtn");
+	//console.log("in addBtn");
 	var cmd = $("#cmd_select").val();
 	var tr_html = '';
 	
 	if(cmd==CmdType.Joint || cmd==CmdType.PTP || cmd==CmdType.Line){
 		tr_html = get_block_tr(cmd);
 	}else if(cmd==CmdType.Vaccum){
-		tr_html = get_vaccum_tr();
+		tr_html = get_vaccum_tr(cmd);
+	}else if(cmd==CmdType.Shift_X || cmd==CmdType.Shift_Y || cmd==CmdType.Shift_Z){
+		tr_html = get_shift_tr(cmd);
 	}
 
-	console.log("tr_html="+tr_html);
+	//console.log("tr_html="+tr_html);
 	$('#teach_table').append(tr_html);
 	
 }
@@ -238,7 +289,7 @@ function delete_Cmd(edit){
 
 
 $("#run_btn").click(function() {
-	console.log("in run_btn");
+	//console.log("in run_btn");
 	$(this).removeClass('active');
 	$(this).addClass('disabled');
 	
@@ -249,7 +300,7 @@ $("#run_btn").click(function() {
 	$('#teach_table tr').each(function() {
 		//var cmd_msg;
 		var cmd_mod = $('#cmd_mod', this).text();
-		console.log(cmd_mod);
+		//console.log(cmd_mod);
 		//-------------CmdType.Joint-------------//
 		if(cmd_mod==CmdType.Joint){
 			var float_ary = [];
@@ -294,8 +345,137 @@ $("#run_btn").click(function() {
 	});
 	goal.on('feedback', teach_feedback);
 	goal.on('result', teach_result);
+	
+	
+	teach_result_trigger = false;
+	now_exe_id = 0;
+	
 	goal.send();
 });
+
+
+function teach_click(t){
+	//console.log('in teach btn');
+	
+	var m_cmd_id = $(t).attr('target_cmd_id');
+	console.log("m_cmd_id="+m_cmd_id);
+	
+	var mod = $('#'+m_cmd_id).children("#cmd_mod").text();
+	//console.log("mod="+mod);
+	
+	var i = 0;
+	if(mod==CmdType.Joint){
+		var i = 0;
+		$('#'+m_cmd_id).children("td.SubCmd").children("input").each(function(){
+			$(this).val(joint_ary[i++].toFixed(5));			//ex:  0.123456789  ->  0.1234
+		});
+	}else if(mod==CmdType.PTP || mod==CmdType.Line){
+		var request = new ROSLIB.ServiceRequest({
+		    cmd : "Teach:EEF_Pose",
+		});
+		
+		ui_client.callService(request, function(res) {
+			var l = res.pose.linear;
+			var a = res.pose.angular;
+			
+			console.log( 'Result : '   + res.result);
+			console.log( 'Pose : '   + l.x + "," + l.y + "," + l.z + "," + a.x + "," + a.y + "," + a.z );
+		  	
+		  	
+		  	var refer = $('#'+m_cmd_id).children("td.SubCmd");
+		  	refer.children("input:nth-child(1)").val(l.x.toFixed(2));
+		  	refer.children("input:nth-child(2)").val(l.y.toFixed(2));
+		  	refer.children("input:nth-child(3)").val(l.z.toFixed(2));
+		  	refer.children("input:nth-child(4)").val(a.x.toFixed(2));
+		  	refer.children("input:nth-child(5)").val(a.y.toFixed(2));
+		  	refer.children("input:nth-child(6)").val(a.z.toFixed(2));
+		  	
+		  	
+		});
+	
+	}else if(mod==CmdType.Shift_X || mod==CmdType.Shift_Y || mod==CmdType.Shift_Z){
+		
+		var find = false;
+		
+		var now_cmd_id = m_cmd_id;
+		var request;
+		do{
+			
+			
+			//get my tag name
+			//var now_tag_name = $('#'+now_cmd_id).prop('tagName').toLowerCase();
+			//get previous tr's id
+			var pre_id = $('#'+now_cmd_id).prev("tr").prop("id");
+			
+			if(pre_id==undefined)	{
+				console.error('Teach Click -> Cannot find previous position');
+				return;
+			}
+			
+			//get previous tr's command
+			var pre_mod = $('#'+pre_id).children("#cmd_mod").text();
+			
+			
+			//console.log('pre_id='+pre_id+',pre_mod='+pre_mod);
+			
+			if(pre_mod==CmdType.Joint){
+				var float_ary = [];
+				 $('#'+pre_id).children("td.SubCmd").children("input").each(function()
+			    {
+			    	var t_float = parseFloat( $(this).val() );
+			        float_ary.push( t_float );
+			    });
+			 	request = new ROSLIB.ServiceRequest({
+				    cmd : "Teach:" + mod,
+				    float_ary : float_ary
+				});
+				
+				find = true;
+				
+			}else if(pre_mod==CmdType.PTP || pre_mod==CmdType.Line){
+				var refer = $('#'+pre_id).children("td.SubCmd");
+				var twist = new ROSLIB.Message({
+				    linear : {
+				      x : parseFloat(refer.children("input:nth-child(1)").val()),
+				      y : parseFloat(refer.children("input:nth-child(2)").val()),
+				      z : parseFloat(refer.children("input:nth-child(3)").val()),
+				    },
+				    angular : {
+				      x : parseFloat(refer.children("input:nth-child(4)").val()),
+				      y : parseFloat(refer.children("input:nth-child(5)").val()),
+				      z : parseFloat(refer.children("input:nth-child(6)").val()),
+				    }
+				});
+				console.log('twist.linear.x ='+ twist.linear.x  +',y=' + twist.linear.y + ',z=' + twist.linear.z);
+				
+				request = new ROSLIB.ServiceRequest({
+				    cmd : "Teach:" + mod,
+				    pose : twist
+				});
+				
+				find = true;
+			}else if(pre_mod==CmdType.Shift_X || pre_mod==CmdType.Shift_Y || pre_mod==CmdType.Shift_Z){
+				
+			}
+			
+			now_cmd_id = pre_id;
+			
+		}while(!find);
+		
+	
+		if(!find)	return;
+		
+		//client call service
+		ui_client.callService(request, function(res) {
+			
+	  		var shift = res.f;
+	  		$('#'+m_cmd_id).children("td.SubCmd").children("input").val(shift.toFixed(2));;
+
+		});
+	} 
+	
+	
+}
 
 //----------------------------------------ROS----------------------------------------//
 // Connecting to ROS
@@ -324,9 +504,33 @@ var teachModeClient = new ROSLIB.ActionClient({
 	actionName : 'mbot_control/TeachCommandListAction'
 });
 
+
+var now_exe_id = 0;
+var teach_result_trigger = false;
+
 function teach_feedback(feedback){
-	
+	if(teach_result_trigger)	return;
 	console.log('Feedback: ' + feedback.status);
+	
+	var arrow_img = '<img src="img/right_arrow.png" align="center" style="width: 35%;"/>';
+	
+	//get cmd_id
+	var fb_str = feedback.status;
+	var str_index = fb_str.indexOf('->');
+	var exe_id = fb_str.substring(str_index+2,fb_str.length);
+	var m_cmd_id = 'cmd_'+exe_id;
+	console.log('m_cmd_id=' + m_cmd_id);
+	//change to arrow_img
+	$('#'+m_cmd_id).children("td:first").html(arrow_img);
+	
+	
+	if(now_exe_id!=0){
+		m_cmd_id = 'cmd_'+now_exe_id;
+		//change to number
+		$('#'+m_cmd_id).children("td:first").html(now_exe_id.pad(3));	
+	}
+	
+	now_exe_id = parseInt(exe_id);
 }
 
 function teach_result(result){
@@ -334,9 +538,56 @@ function teach_result(result){
 	console.log('Final Result: ' + result.notify);
 	$("#run_btn").removeClass('disabled');
 	$("#run_btn").addClass('active');
+	
+	
+	/*
+	$('#teach_table tr').each(function() {
+		$(this).children("td:first").html(now_exe_id.pad(3));	
+	});*/
+	
+	
+	teach_result_trigger = true;
+	
+	
+	if(now_exe_id!=0){
+		m_cmd_id = 'cmd_'+now_exe_id;
+		//change to number
+		$('#'+m_cmd_id).children("td:first").html(now_exe_id.pad(3));	
+	}
+	
+	
 }
 
 
+// ------------------------------------//
+// Subscribing to a "joint_states" Topic
+// -----------------------------------//
+
+var joint_ary = new Float32Array(6);;
+
+var joint_sub = new ROSLIB.Topic({
+	ros:ros,
+	name: '/joint_states',
+	messageType : 'sensor_msgs/JointState'
+});
 
 
+joint_sub.subscribe(function(msg){
+	for(var i =0 ;i < 6;i++){
+		joint_ary[i] = msg.position[i];
+	}
+});	
+
+
+
+// ------------------------------------//
+// Client for a "ui_server" Service
+// -----------------------------------//
+
+
+var ui_client = new ROSLIB.Service({
+    ros : ros,
+    name : '/ui_server',
+    serviceType : 'mbot_control/UI_Server'
+  });
 

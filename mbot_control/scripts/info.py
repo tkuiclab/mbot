@@ -1,29 +1,15 @@
 #!/usr/bin/env python
 
 """
-    moveit_ik_demo.py - Version 0.1 2014-01-14
-    
-    Use inverse kinemtatics to move the end effector to a specified pose
-    
-    Created for the Pi Robot Project: http://www.pirobot.org
-    Copyright (c) 2014 Patrick Goebel.  All rights reserved.
+    info.py - Version 0.1 2014-01-14
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.5
-    
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details at:
-    
-    http://www.gnu.org/licenses/gpl.html
 """
-
+from mbot_control.srv import *
 import rospy, sys
 import moveit_commander
-from moveit_msgs.msg import RobotTrajectory
+from std_msgs.msg import Header
+from moveit_msgs.msg import RobotTrajectory, RobotState
+from moveit_msgs.srv import GetPositionFK
 from trajectory_msgs.msg import JointTrajectoryPoint
 
 import time
@@ -31,6 +17,7 @@ from ur_driver.io_interface import *
 from copy import deepcopy
 from geometry_msgs.msg import PoseStamped, Pose
 from geometry_msgs.msg import Twist
+
 
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 
@@ -55,6 +42,82 @@ class info_class:
 
         # Allow replanning to increase the odds of a solution
         self.ur_arm.allow_replanning(True)
+
+        s = rospy.Service('ui_server', UI_Server, self.handle_ui_server)
+
+
+        rospy.wait_for_service('compute_fk')
+        try:
+            self.moveit_fk = rospy.ServiceProxy('compute_fk', GetPositionFK)
+        except rospy.ServiceException, e:
+            rospy.logerror("Service call failed: %s"%e)
+
+    def get_tool_position(self,joint_positions):
+        header = Header(0,rospy.Time.now(),"/world")
+        fkln = ['tool0']
+        rs = RobotState()
+        rs.joint_state.name = self.ur_arm.get_active_joints()
+        rs.joint_state.position = joint_positions
+
+        res = self.moveit_fk(header, fkln, rs)
+        return res.pose_stamped[0].pose.position
+
+
+    def teach_get_pre_linear(self,req):
+        if  req.float_ary != None and len(req.float_ary)==6:
+            f_ary = req.float_ary
+            #print 'f_ary[0] = '+ str(f_ary[0]) + 'f_ary[1] = '+str(f_ary[1])
+            p = self.get_tool_position(f_ary)
+            return p
+
+        elif req.pose !=None:
+            print "pre_pose_z = "+ str(req.pose.linear.z)
+            return req.pose.linear
+
+    def handle_ui_server(self,req):
+        cmd = req.cmd
+        rospy.loginfo('Request cmd('+cmd+')')
+
+        now_pose = self.get_eef_pos()
+        res = UI_ServerResponse()
+
+        if  cmd=="Teach:EEF_Pose":
+            res.pose = now_pose
+        elif cmd=="Teach:Shift_X":
+            res.f = now_pose.linear.x - self.teach_get_pre_linear(req).x
+
+        elif cmd=="Teach:Shift_Y":
+            res.f = now_pose.linear.y - self.teach_get_pre_linear(req).y
+
+        elif cmd=="Teach:Shift_Z":
+            res.f = now_pose.linear.z - self.teach_get_pre_linear(req).z
+
+
+        res.result = "UI_Server Success (Process " + cmd + ")"
+        return res
+
+
+    def get_eef_pos(self):
+        now_pose = self.ur_arm.get_current_pose(self.end_effector_link).pose
+        show_str = "TCP_pose = (" + str(now_pose.position.x) + "," + str(now_pose.position.y) + "," + str(
+        now_pose.position.z) + ")"
+        #rospy.loginfo(show_str)
+        twist = Twist()
+        twist.linear.x = now_pose.position.x
+        twist.linear.y = now_pose.position.y
+        twist.linear.z = now_pose.position.z
+        quaternion = (
+            now_pose.orientation.x,
+            now_pose.orientation.y,
+            now_pose.orientation.z,
+            now_pose.orientation.w)
+        euler = euler_from_quaternion(quaternion)
+        twist.angular.x = euler[0]
+        twist.angular.y = euler[1]
+        twist.angular.z = euler[2]
+
+        return twist
+
 
     def pub_eef_pos(self):
         # Show pose
@@ -93,7 +156,11 @@ class info_class:
 
 if __name__ == "__main__":
     info = info_class()
+    print "--------Info Server Ready--------"
     info.pub_eef_pos()
+
+    rospy.spin()
+
     info.end()
 
 

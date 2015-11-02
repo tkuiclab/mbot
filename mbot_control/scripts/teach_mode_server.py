@@ -43,7 +43,9 @@ class TeachModeServer(object):
                 self._as.set_preempted()
                 success = False
                 break
-            self._feedback.status = 'Execute Command ' + str(i)
+            self._feedback.status = 'Execute Command->' + str(i+1)
+            self._as.publish_feedback(self._feedback)
+
 
             cmd = goal.cmd_list[i]
             show_str = "(%2d) Execute %s -> " % (i, cmd.cmd)
@@ -52,7 +54,7 @@ class TeachModeServer(object):
                 show_str += str(cmd.vaccum)
 
             elif cmd.cmd == 'Joint':
-                #target joints shoulder_pan shoulder_lift elbow wrist1 wrist2 wrist3
+                #target joints [shoulder_pan shoulder_lift elbow wrist1 wrist2 wrist3]
                 target_joints = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
                 for j in range(len(cmd.joint_position)):
                     target_joints[j] = cmd.joint_position[j]
@@ -61,7 +63,7 @@ class TeachModeServer(object):
                 g_arm.set_joints(target_joints)
                 show_str += str(cmd.joint_position[1])
 
-            elif cmd.cmd == 'EEFPosition':
+            elif cmd.cmd == 'PTP':
                 # target pose x y z r p y
                 target_position = [0.0, 0.0, 0.0]
                 target_pose = [0.0, 0.0, 0.0]
@@ -93,7 +95,7 @@ class TeachModeServer(object):
 
             rospy.loginfo(show_str)
             # publish the feedback
-            self._as.publish_feedback(self._feedback)
+
             # this step is not necessary, the sequence is computed at 1 Hz for demonstration purposes
             # r.sleep()
 

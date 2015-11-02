@@ -892,7 +892,7 @@ def main():
     rospy.init_node('ur_driver', disable_signals=True)
     if rospy.get_param("use_sim_time", False):
         rospy.logwarn("use_sim_time is set!!!")
-    
+
     global prevent_programming
     reconfigure_srv = Server(URDriverConfig, reconfigure_callback)
     
