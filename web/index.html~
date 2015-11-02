@@ -74,104 +74,76 @@
 	<div class="panel panel-info" style="height:400px">
 		<!-- Default panel contents -->
 		<div class="panel-heading">
-			<a class="control"><i class="fa fa-pencil-square-o fa-2x"></i></a><strong style="font-size:16px">&nbsp;&nbsp;EEF_Info</strong>
+			<a class="control"><i class="fa fa-pencil-square-o fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a>
+			<strong style="font-size:16px">&nbsp;&nbsp;EEF_Info</strong>
 		</div>
 		<!-- Table -->
 		<table class="table" width="100%" height="70%">
 			<tbody>
 			<tr>
-				<td width="50%">X</td>
-				<td width="50%"><h4 id="output_lx" style="color:red"></td>
+				<td width="40%">X</td>
+				<td width="40%"><h4 id="output_lx" style="color:red"></td>
+				<td width="10%"><a class="control"><i class="fa fa-plus-circle fa-2x"></i></a></td>
+				<td width="10%"><a class="control"><i class="fa fa-minus-circle fa-2x"></i></a></td>
 			</tr>
 			<tr>
 				<td>Y</td>
 				<td><h4 id="output_ly" style="color:red"></td>
+				<td><a class="control"><i class="fa fa-plus-circle fa-2x"></i></a></td>
+				<td><a class="control"><i class="fa fa-minus-circle fa-2x"></i></a></td>
 			</tr>
 			<tr>
 				<td>Z</td>
 				<td><h4 id="output_lz" style="color:red"></td>
+				<td><a class="control"><i class="fa fa-plus-circle fa-2x"></i></a></td>
+				<td><a class="control"><i class="fa fa-minus-circle fa-2x"></i></a></td>
 			</tr>
 			<tr>
 				<td>RX</td>
 				<td><h4 id="output_ax" style="color:red"></td>
+				<td><a class="control"><i class="fa fa-plus-circle fa-2x"></i></a></td>
+				<td><a class="control"><i class="fa fa-minus-circle fa-2x"></i></a></td>
 			</tr>
 			<tr>
 				<td>RY</td>
 				<td><h4 id="output_ay" style="color:red"></td>
+				<td><a class="control"><i class="fa fa-plus-circle fa-2x"></i></a></td>
+				<td><a class="control"><i class="fa fa-minus-circle fa-2x"></i></a></td>
 			</tr>
 			<tr>
 				<td>RZ</td>
 				<td><h4 id="output_az" style="color:red"></td>
+				<td><a class="control"><i class="fa fa-plus-circle fa-2x"></i></a></td>
+				<td><a class="control"><i class="fa fa-minus-circle fa-2x"></i></a></td>
 			</tr>
 			</tbody>
 		</table>
-		<div class="panel-footer" height="15%">
+		<div class="panel-footer" height="10%">
 		<button id="control_send_home" type="button" class="btn btn-info" style="width:200px"><i class="fa fa-home fa-2x"></i></button></td>		</div>
 	</div>
 	</div>
 	<div class="row"></div>
 	<HR color="#00FF00" size="20px">
-	<!--ROS_Input-->
-	<div class="col-md-4" padding-right="10px">
-		<table id="ros_Input" width="100%" height="100%" border="1px">
+	<!--IO_Input-->
+	<div class="col-md-2" padding-right="10px">
+		<table width="100%" height="100%" border="1px">
 		<thead>
-		<th colspan="2" width="30%">Joint_Input</th>
-		<th colspan="2" width="30%">EEF_Input</th>
 		<th colspan="2" width="40%">IO_Input</th>
 		</thead>
 		<tbody>
-		<tr height="15%">
-			<td>Base</td>
-			<td><input type="text" class="form-control" id="input_j1"data-fv-field="number"></td>
-			<td>X</td>
-			<td><input type="text" class="form-control" id="input_lx"data-fv-field="number"></td>
+		<tr>
 			<td width="20%" rowspan="2"><a id="control_io" class="control"><i class="fa fa-magnet fa-2x"></i></a></td>
 			<td width="20%" rowspan="2" style="color:red" id="output_io">Off</td>
-		</tr>
-		<tr height="15%">
-			<td>Shoulder</td>
-			<td><input class="form-control input-sm" id="input_j2" type="text"></td>
-			<td>Y</td>
-			<td><input class="form-control input-sm" id="input_ly" type="text"></td>
-		</tr>
-		<tr height="15%">
-			<td>Elbow</td>
-			<td><input class="form-control input-sm" id="input_j3" type="text"></td>
-			<td>Z</td>
-			<td><input class="form-control input-sm" id="input_lz" type="text"></td>
-		</tr>
-		<tr height="15%">
-			<td>Wrist1</td>
-			<td><input class="form-control input-sm" id="input_j4" type="text"></td>
-			<td>RX</td>
-			<td><input class="form-control input-sm" id="input_ax" type="text"></td>
-		</tr>
-		<tr height="15%">
-			<td>Wrist2</td>
-			<td><input class="form-control input-sm" id="input_j5" type="text"></td>
-			<td>RY</td>
-			<td><input class="form-control input-sm" id="input_ay" type="text"></td>
-		</tr>
-		<tr height="15%">
-			<td>Wrist3</td>
-			<td><input class="form-control input-sm" id="input_j6" type="text"></td>
-			<td>RZ</td>
-			<td><input class="form-control input-sm" id="input_az" type="text"></td>
-		</tr>
-		<tr height="10%">
-			<td>Send</td>
-			<td><a id="control_send_joint" class="control"><i class="fa fa-paper-plane  fa-2x"></i></a></td>
-			<td>Send</td>
-			<td><a id="control_send_eef" class="control"><i class="fa fa-paper-plane  fa-2x"></i></a></td>
 		</tr>
 		</tbody>
 		</table>
 	</div>
-	<div class="col-md-2"></div>
+	<div class="col-md-4"></div>
 	<div class="col-md-6">
 	<div class="panel panel-info" style="width:600px height:180px">
 		<div class="panel-heading" height="30%">
-			<a class="control"><i class="fa fa-pencil-square-o fa-2x"></i></a><strong style="font-size:20px">&nbsp;&nbsp;Joint_Info</strong>
+			<a class="control"><i class="fa fa-pencil-square-o fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a>
+			<strong style="font-size:20px">&nbsp;&nbsp;Joint_Info</strong>
 		</div>
 		<table class="table" width="100%" height="70%">
 			<tbody>
@@ -232,13 +204,75 @@
 			</tbody>
 		</table>
 	</div>
-	<!-- /container -->
 	<!--Infomation panel-->
 	<div class="row"></div>
 	<div id="infoPanel" class="ui-widget-content">
 		<div id="panelTop">Information</div>
 		<div id="infoContent" class="panelContent"></div>
 	</div>
+	<!-- Dialog -->
+	<div class="modal fade" id="setting_Dialog" role="dialog">
+		<div class="modal-dialog">
+		<!--content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>Dialog Setting</h4>
+			</div>
+			<div class="modal-body">
+				<table id="table_test">
+				<tbody>
+				<tr height="15%">
+					<td>Base</td>
+					<td><input type="text" class="form-control" id="input_j1_d"data-fv-field="number"></td>
+					<td>X</td>
+					<td><input type="text" class="form-control" id="input_lx_d"data-fv-field="number"></td>
+				</tr>
+				<tr height="15%">
+					<td>Shoulder</td>
+					<td><input class="form-control input-sm" id="input_j2_d" type="text"></td>
+					<td>Y</td>
+					<td><input class="form-control input-sm" id="input_ly_d" type="text"></td>
+				</tr>
+				<tr height="15%">
+					<td>Elbow</td>
+					<td><input class="form-control input-sm" id="input_j3_d" type="text"></td>
+					<td>Z</td>
+					<td><input class="form-control input-sm" id="input_lz_d" type="text"></td>
+				</tr>
+				<tr height="15%">
+					<td>Wrist1</td>
+					<td><input class="form-control input-sm" id="input_j4_d" type="text"></td>
+					<td>RX</td>
+					<td><input class="form-control input-sm" id="input_ax_d" type="text"></td>
+				</tr>
+				<tr height="15%">
+					<td>Wrist2</td>
+					<td><input class="form-control input-sm" id="input_j5_d" type="text"></td>
+					<td>RY</td>
+					<td><input class="form-control input-sm" id="input_ay_d" type="text"></td>
+				</tr>
+				<tr height="15%">
+					<td>Wrist3</td>
+					<td><input class="form-control input-sm" id="input_j6_d" type="text"></td>
+					<td>RZ</td>
+					<td><input class="form-control input-sm" id="input_az_d" type="text"></td>
+				</tr>
+				<tr height="10%">
+					<td>Send</td>
+					<td><a id="control_send_joint_d" class="control"><i class="fa fa-paper-plane  fa-2x"></i></a></td>
+					<td>Send</td>
+					<td><a id="control_send_eef_d" class="control"><i class="fa fa-paper-plane  fa-2x"></i></a></td>
+				</tr>
+				</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+	<!-- /container -->
 </div>
 <!-- Javascript
 ================================================== -->
@@ -323,12 +357,49 @@ $(document).ready(function(){
 	//ROS_Bridge
 	$('#control_send_joint').on('click',function(e){
 		var float64 = new Float64Array(6);
-		float64[0] = $('#input_j1').val();
-		float64[1] = $('#input_j2').val();
-		float64[2] = $('#input_j3').val();
-		float64[3] = $('#input_j4').val();
-		float64[4] = $('#input_j5').val();
-		float64[5] = $('#input_j6').val();
+		float64[0] = $('#input_j1').val()*(Math.PI/180);
+		float64[1] = $('#input_j2').val()*(Math.PI/180);
+		float64[2] = $('#input_j3').val()*(Math.PI/180);
+		float64[3] = $('#input_j4').val()*(Math.PI/180);
+		float64[4] = $('#input_j5').val()*(Math.PI/180);
+		float64[5] = $('#input_j6').val()*(Math.PI/180);
+		var send_joint = new ROSLIB.Message({
+			cmd : 'JointPosition',
+			joint_position : [float64[0],float64[1],float64[2],
+					  float64[3],float64[4],float64[5]]
+		});
+		mlist.push(send_joint);
+		// Create a goal.
+		var goal = new ROSLIB.Goal({
+			actionClient : teachModeClient,
+			goalMessage : {
+				cmd_list : mlist
+			}
+		});
+		// Print out their output into the terminal.
+		goal.on('feedback', function(feedback) {
+			console.log('Feedback: ' + feedback.status);
+		});
+		goal.on('result', function(result) {
+			console.log('Final Result: ' + result.notify);
+		});
+		// Send the goal to the action server.
+		$("#infoContent").html('Goal was send cmdlist'
+					+'<BR>Cmd : ' + send_joint.cmd
+					+"<BR>Joint Position : [ "+ send_joint.joint_position+" ]"
+		);
+		goal.send();
+		mlist = [];
+	});
+	//Dialog
+	$('#control_send_joint_d').on('click',function(e){
+		var float64 = new Float64Array(6);
+		float64[0] = $('#input_j1_d').val()*(Math.PI/180);
+		float64[1] = $('#input_j2_d').val()*(Math.PI/180);
+		float64[2] = $('#input_j3_d').val()*(Math.PI/180);
+		float64[3] = $('#input_j4_d').val()*(Math.PI/180);
+		float64[4] = $('#input_j5_d').val()*(Math.PI/180);
+		float64[5] = $('#input_j6_d').val()*(Math.PI/180);
 		var send_joint = new ROSLIB.Message({
 			cmd : 'JointPosition',
 			joint_position : [float64[0],float64[1],float64[2],
@@ -365,6 +436,59 @@ $(document).ready(function(){
 		float64[3] = $('#input_ax').val();
 		float64[4] = $('#input_ay').val();
 		float64[5] = $('#input_az').val();
+		var twist = new ROSLIB.Message({
+			linear : {
+			x : float64[0],
+			y : float64[1],
+			z : float64[2]
+			},
+			angular : {
+			x : float64[3],
+			y : float64[4],
+			z : float64[5]
+			}
+		});
+		var send_eef = new ROSLIB.Message({
+			cmd : 'EEFPosition',
+			pose : twist
+		});
+		mlist.push(send_eef);
+		var goal = new ROSLIB.Goal({
+			actionClient : teachModeClient,
+			goalMessage : {
+				cmd_list : mlist
+			}
+		});
+		goal.on('feedback', function(feedback) {
+			console.log('Feedback: ' + feedback.status);
+		});
+		goal.on('result', function(result) {
+			console.log('Final Result: ' + result.notify);
+		});
+		$("#infoContent").html('Goal was send cmdlist'
+					+'<BR>Cmd : ' + send_eef.cmd
+					+'<BR>Vaccum : '+ send_eef.vaccum
+					+"<BR>Pose : "
+					+"<BR>linear:<BR>"+ send_eef.pose.linear.x
+					+"<BR>"+ send_eef.pose.linear.y
+					+"<BR>"+ send_eef.pose.linear.z
+					+"<BR>angular<BR>"+ send_eef.pose.angular.x
+					+"<BR>"+ send_eef.pose.angular.y
+					+"<BR>"+ send_eef.pose.angular.z
+		);
+		goal.send();
+		mlist = [];
+	});
+	//Dialog
+	$('#control_send_eef_d').on('click',function(e){
+		console.log(('#table_test').children("tr:nth-child(1)").children("td:nth-child(1)").html('X'));
+		var float64 = new Float64Array(6);
+		float64[0] = $('#input_lx_d').val();
+		float64[1] = $('#input_ly_d').val();
+		float64[2] = $('#input_lz_d').val();
+		float64[3] = $('#input_ax_d').val();
+		float64[4] = $('#input_ay_d').val();
+		float64[5] = $('#input_az_d').val();
 		var twist = new ROSLIB.Message({
 			linear : {
 			x : float64[0],
@@ -513,7 +637,6 @@ $(document).ready(function(){
 		$("#output_az").html(message.angular.z);
 	});
 });
-
 	</script>
 </body>
 </html>
