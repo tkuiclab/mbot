@@ -7,21 +7,21 @@ import rospy, sys
 
 import actionlib
 
-from mbot_control.msg import *
-#import strategy.msg
+import mbot_control.msg
 
+#import moveit_commander
 from arm import ARM
 
 
 class TeachModeServer(object):
     # create messages that are used to publish feedback/result
-    _feedback = TeachCommandListFeedback()
-    _result = TeachCommandListResult()
+    _feedback = mbot_control.msg.TeachCommandListFeedback()
+    _result = mbot_control.msg.TeachCommandListResult()
 
     def __init__(self, name):
         print 'Action Name=' + name
         self._action_name = name
-        self._as = actionlib.SimpleActionServer(self._action_name, TeachCommandListAction,
+        self._as = actionlib.SimpleActionServer(self._action_name, mbot_control.msg.TeachCommandListAction,
                                                 execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
 
@@ -43,9 +43,7 @@ class TeachModeServer(object):
                 self._as.set_preempted()
                 success = False
                 break
-            self._feedback.status = 'Execute Command->' + str(i+1)
-            self._as.publish_feedback(self._feedback)
-
+            self._feedback.status = 'Execute Command ' + str(i)
 
             cmd = goal.cmd_list[i]
             show_str = "(%2d) Execute %s -> " % (i, cmd.cmd)
@@ -54,14 +52,14 @@ class TeachModeServer(object):
                 show_str += str(cmd.vaccum)
 
             elif cmd.cmd == 'Joint':
-                #target joints [shoulder_pan shoulder_lift elbow wrist1 wrist2 wrist3]
+                #target joints shoulder_pan shoulder_lift elbow wrist1 wrist2 wrist3
                 target_joints = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
                 for j in range(len(cmd.joint_position)):
                     target_joints[j] = cmd.joint_position[j]
 
                 #target_joints = cmd.joint_position;
                 g_arm.set_joints(target_joints)
-                show_str += str(cmd.joint_position[1])
+                #show_str += str(cmd.joint_position[1])
 
             elif cmd.cmd == 'PTP':
                 # target pose x y z r p y
@@ -93,9 +91,9 @@ class TeachModeServer(object):
 
 
 
-            rospy.loginfo(show_str)
+            #rospy.loginfo(show_str)
             # publish the feedback
-
+            self._as.publish_feedback(self._feedback)
             # this step is not necessary, the sequence is computed at 1 Hz for demonstration purposes
             # r.sleep()
 

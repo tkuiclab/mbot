@@ -320,7 +320,7 @@ $("#run_btn").click(function() {
 		//-------------CmdType.PTP-------------//
 		}else if(cmd_mod==CmdType.PTP){
 		    
-			var refer = $(this).children("td.SubCmd");
+			var refer = $('#'+pre_id).children("td.SubCmd");
 			var twist = new ROSLIB.Message({
 				linear : {
 					x : parseFloat(refer.children("input:nth-child(1)").val()),

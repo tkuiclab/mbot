@@ -10,7 +10,7 @@ roslaunch ur5_moveit_config ur5_moveit_planning_execution.launch sim:=true limit
 roslaunch ur5_moveit_config moveit_rviz.launch config:=true
 
 #ur5
-roslaunch ur_bringup ur5_bringup.launch limited:=true robot_ip:=192.168.5.5
+roslaunch ur_bringup ur5_bringup.launch limited:=true robot_ip:=192.168.137.5
 
 roslaunch ur5_moveit_config ur5_moveit_planning_execution.launch limited:=true
 
