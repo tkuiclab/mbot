@@ -51,7 +51,7 @@ class ARM:
 		self.speed = 0.5
 
 
-	def cartesian_path(self):
+	def cartesian_path(self,axis,position):
 		#self.back2home()
 		waypoints = []
 
@@ -68,23 +68,35 @@ class ARM:
 		#set wpose
 		wpose = deepcopy(start_pose)
 
-		#set all points
-		wpose.position.z -= 0.4
-		waypoints.append(deepcopy(wpose))
+		tmp = abs(position)
 
-		wpose.position.z += 0.4
-		waypoints.append(deepcopy(wpose))
-
-		wpose.position.x += 0.5
-		waypoints.append(deepcopy(wpose))
-
-
-		wpose.position.z -= 0.4
-		waypoints.append(deepcopy(wpose))
-
-		wpose.position.z += 0.4
-		waypoints.append(deepcopy(wpose))
-
+		if axis == 'x':
+			if position>0:
+				print '------shift +X------'
+				wpose.position.x += tmp
+				waypoints.append(deepcopy(wpose))
+			else:
+				print '------shift -X------'
+				wpose.position.x -= tmp
+				waypoints.append(deepcopy(wpose))
+		if axis == 'y':
+			if position>0:
+				print '------shift +Y------'
+				wpose.position.y += tmp
+				waypoints.append(deepcopy(wpose))
+			else:
+				print '------shift -Y------'
+				wpose.position.y -= tmp
+				waypoints.append(deepcopy(wpose))
+		if axis == 'z':
+			if position>0:
+				print '------shift +Z------'
+				wpose.position.z += tmp
+				waypoints.append(deepcopy(wpose))
+			else:
+				print '------shift -Z------'
+				wpose.position.z -= tmp
+				waypoints.append(deepcopy(wpose))
 
 		#-----cartesian_path-----#
 		fraction = 0.0
@@ -351,26 +363,29 @@ class ARM:
 
 	def show_joints(self):
 		joints = self.arm.get_current_joint_values()
-		show_str = "arm_pose = (" + str(joints[0])+ ","+ str(joints[1]) + "," + str(joints[2]) + "," + str(joints[3]) + ","+ str(joints[4])+ str(joints[5]) +")"
+		show_str = "arm_pose = (" + str(joints[0])+ ","+ str(joints[1]) + "," + str(joints[2]) + "," + str(joints[3]) + ","+ str(joints[4])+ "," +str(joints[5]) +")"
 		rospy.loginfo(show_str)
 
 
 	def shift_x(self, i_x):
-		self.arm.set_start_state_to_current_state()
-		self.arm.shift_pose_target(0, i_x, self.end_effector_link)
-		self.run()
+		self.cartesian_path('x',i_x)
+		#self.arm.set_start_state_to_current_state()
+		#self.arm.shift_pose_target(0, i_x, self.end_effector_link)
+		#self.run()
 		rospy.sleep(1)
 
 	def shift_y(self, i_y):
-		self.arm.set_start_state_to_current_state()
-		self.arm.shift_pose_target(1, i_y, self.end_effector_link)
-		self.run()
+		self.cartesian_path('y',i_y)
+		#self.arm.set_start_state_to_current_state()
+		#self.arm.shift_pose_target(1, i_y, self.end_effector_link)
+		#self.run()
 		rospy.sleep(1)
 
 	def shift_z(self, i_z):
-		self.arm.set_start_state_to_current_state()
-		self.arm.shift_pose_target(2, i_z, self.end_effector_link)
-		self.run()
+		self.cartesian_path('z',i_z)
+		#self.arm.set_start_state_to_current_state()
+		#self.arm.shift_pose_target(2, i_z, self.end_effector_link)
+		#self.run()
 		rospy.sleep(1)
 
 	
@@ -403,19 +418,22 @@ if __name__ == "__main__":
 	#5: yaw
 	#6: roll
 	#======set_joints_test======#
-	target_joints = [0.0,0.0, 0.0,-1.57, 0.0, 0.0]
-	#mbot.set_joints(target_joints)
+	print '------Set Joint------'
+	target_joints = [1.29, -1.719, 1.26, -1.12, -1.57, 1.29]
+	mbot.set_joints(target_joints)
 
 	#======set_position_test======#
 	#w_position = [0.0,0.4,0.6]
 	#mbot.set_position(w_position)
 
 	#======set_pose_tes======#
-	print '------set_pose()------'
-	w_position = [0.0, 0.4, 1.6]
-	w_euler = [0.0, 1.57, 0.0]
-	mbot.set_pose(w_position,w_euler)
-	mbot.show_pose()
+	#print '------set_pose()------'
+	#w_position = [0.0, 0.4, 0.6]
+	#w_euler = [0.0, 1.57, 0.0]
+	#mbot.set_pose(w_position,w_euler)
+	#mbot.show_pose()
+	#mbot.show_joints()
+
 	#rospy.sleep(1)
 
 
@@ -424,25 +442,32 @@ if __name__ == "__main__":
 	#mbot.set_orientation(w_euler)
 
 
-
+	#======cartesian test======#
+	print '------cartesian test()------'
+	#mbot.cartesian_path()
+	mbot.shift_z(-0.3)
+	mbot.shift_z(0.3)
+	mbot.shift_x(0.4)
+	mbot.shift_z(-0.3)
+	mbot.shift_z(0.3)
 
 	#======shift_y test======#
-	print '------shift_y()------'
-	mbot.shift_y(0.1)
-	mbot.show_pose()
+	#print '------shift_y()------'
+	#mbot.shift_y(0.1)
+	#mbot.show_pose()
 	#rospy.sleep(1)
 
 
 	#======shift_z test======#
-	print '------shift_z()------'
+	#print '------shift_z()------'
 	#mbot.shift_z(-0.1)
 	#mbot.show_pose()
 	#rospy.sleep(1)
 
 
 
-	mbot.show_pose()
-	mbot.show_joints()
+	#mbot.show_pose()
+	#mbot.show_joints()
 
 
 	mbot.end()
