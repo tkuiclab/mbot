@@ -129,8 +129,10 @@ class ARM:
 			rospy.sleep(5)
 
 			rospy.loginfo("Path execution complete.")
+			return True
 		else:
 			rospy.loginfo("Path planning failed with only " + str(fraction) + " success after " + str(maxtries) + " attempts.")
+			return False
 
 
 
