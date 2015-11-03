@@ -62,7 +62,10 @@ class TeachModeServer(object):
 
             if cmd.cmd == 'Vaccum':
                 show_str += str(cmd.vaccum)
-                self.set_digital_out(1,True)
+                if cmd.vaccum:
+                    self.set_digital_out(1,True)
+                else:
+                    self.set_digital_out(1,False)
 
             elif cmd.cmd == 'Joint':
                 #target joints shoulder_pan shoulder_lift elbow wrist1 wrist2 wrist3
