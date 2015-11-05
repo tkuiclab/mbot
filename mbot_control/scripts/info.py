@@ -52,14 +52,23 @@ class info_class:
         except rospy.ServiceException, e:
             rospy.logerror("Service call failed: %s"%e)
 
+
     def get_tool_position(self,joint_positions):
+        robot = moveit_commander.RobotCommander()
+        #l_names = robot.get_link_names()
+        #rospy.loginfo(["l_names:", l_names])
+
         header = Header(0,rospy.Time.now(),"/world")
+        #fkln = l_names
         fkln = ['tool0']
         rs = RobotState()
         rs.joint_state.name = self.ur_arm.get_active_joints()
         rs.joint_state.position = joint_positions
 
         res = self.moveit_fk(header, fkln, rs)
+        #rospy.loginfo(["FK LOOKUP:", self.moveit_fk(header, fkln, rs)])
+        #rospy.loginfo(["fk pose= ", +res.pose_stamped[0].pose.position])
+
         return res.pose_stamped[0].pose.position
 
 
@@ -68,6 +77,8 @@ class info_class:
             f_ary = req.float_ary
             #print 'f_ary[0] = '+ str(f_ary[0]) + 'f_ary[1] = '+str(f_ary[1])
             p = self.get_tool_position(f_ary)
+            print 'pre x='+ str(p.x)+', y='+str(p.y)+', z='+str(p.z)
+
             return p
 
         elif req.pose !=None:

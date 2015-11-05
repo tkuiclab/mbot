@@ -92,22 +92,22 @@ class TeachModeServer(object):
                 target_pose[2] = cmd.pose.angular.z
                 g_arm.set_pose(target_position,target_pose)
 
-            elif cmd.cmd == 'ShiftX':
+            elif cmd.cmd == 'Shift_X':
                 int_X = cmd.pose.linear.x
                 g_arm.shift_x(int_X);
 
-            elif cmd.cmd == 'ShiftY':
+            elif cmd.cmd == 'Shift_Y':
                 int_Y = cmd.pose.linear.y
                 g_arm.shift_y(int_Y)
 
-            elif cmd.cmd == 'ShiftZ':
+            elif cmd.cmd == 'Shift_Z':
                 int_Z = cmd.pose.linear.z
                 g_arm.shift_z(int_Z)
 
 
 
 
-            #rospy.loginfo(show_str)
+            rospy.loginfo(show_str)
             # publish the feedback
             self._as.publish_feedback(self._feedback)
             # this step is not necessary, the sequence is computed at 1 Hz for demonstration purposes

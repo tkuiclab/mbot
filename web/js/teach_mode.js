@@ -222,6 +222,14 @@ function edit_Cmd(edit){
 			$(this).css("border-style","inset");
 			cmd_edit[i++] = $(this).val();
 		});
+	}else if(mod==CmdType.Shift_X || mod==CmdType.Shift_Y || mod==CmdType.Shift_Z){
+		var t_input = $('#'+m_cmd_id).children("td.SubCmd").children("input");
+		
+		//console.log($(this).val());
+		t_input.removeAttr("readonly");
+		t_input.css("border-style","inset");
+		cmd_edit[i++] = $(this).val();
+	
 	}else if(mod==CmdType.Vaccum){
 		$('#'+m_cmd_id).find('#vaccum_select').removeAttr("disabled");
 		$('#'+m_cmd_id).find('#vaccum_select').css("border-style","inset");
@@ -233,7 +241,7 @@ function edit_Cmd(edit){
 
 function save_Cmd(edit){
 	var m_cmd_id = $(edit).attr('target_cmd_id');
-	console.log("m_cmd_id="+m_cmd_id);
+	//console.log("m_cmd_id="+m_cmd_id);
 	
 	$('#'+m_cmd_id).find('#edit_btn').show();
 	$('#'+m_cmd_id).find('#true_btn').hide();
@@ -256,7 +264,7 @@ function save_Cmd(edit){
 
 function break_Cmd(edit){
 	var m_cmd_id = $(edit).attr('target_cmd_id');
-	console.log("m_cmd_id="+m_cmd_id);
+	//console.log("m_cmd_id="+m_cmd_id);
 	
 	$('#'+m_cmd_id).find('#edit_btn').show();
 	$('#'+m_cmd_id).find('#true_btn').hide();
@@ -281,12 +289,28 @@ function break_Cmd(edit){
 
 function delete_Cmd(edit){
 	var m_cmd_id = $(edit).attr('target_cmd_id');
-	console.log("m_cmd_id="+m_cmd_id);
+	//console.log("m_cmd_id="+m_cmd_id);
 	
 	$('#'+m_cmd_id).remove();
 }
 
-
+function get_twist(){
+	var twist = new ROSLIB.Message({
+		linear : {
+			x : 0.0,
+			y : 0.0,
+			z : 0.0,
+		},
+		angular : {
+			x : 0.0,
+			y : 0.0,
+			z : 0.0,
+		}
+		}
+	);
+	
+	return twist;
+}
 
 $("#run_btn").click(function() {
 	//console.log("in run_btn");
@@ -343,6 +367,26 @@ $("#run_btn").click(function() {
 				pose : twist
 			});
 			mlist.push(cmd_msg);
+		//-------------CmdType.Shift_X-------------//
+		}else if(cmd_mod==CmdType.Shift_X || cmd_mod==CmdType.Shift_Y || cmd_mod==CmdType.Shift_Z){
+		    
+			var data = $(this).children("td.SubCmd").children("input:first").val();
+			var twist = get_twist();
+			
+			if(cmd_mod==CmdType.Shift_X){
+				twist.linear.x = parseFloat(data);
+			}else if(cmd_mod==CmdType.Shift_Y){
+				twist.linear.y = parseFloat(data);
+			}else if(cmd_mod==CmdType.Shift_Z){
+				twist.linear.z = parseFloat(data);
+			}
+			//console.log('twist.linear.x ='+ twist.linear.x  +',y=' + twist.linear.y + ',z=' + twist.linear.z);
+			
+			var cmd_msg = new ROSLIB.Message({
+				cmd : cmd_mod,
+				pose : twist
+			});
+			mlist.push(cmd_msg);
 		//-------------CmdType.Vaccum-------------//
 		}else if(cmd_mod==CmdType.Vaccum){
 			var vaccum_yn = $('#vaccum_select', this).val()=='On' ? true:false;
@@ -361,7 +405,7 @@ $("#run_btn").click(function() {
 		
 	});
 
-	console.log('teachModeClient='+teachModeClient);
+	//console.log('teachModeClient='+teachModeClient);
 	
 	var goal = new ROSLIB.Goal({
 		actionClient : teachModeClient,
@@ -393,7 +437,8 @@ function teach_click(t){
 	if(mod==CmdType.Joint){
 		var i = 0;
 		$('#'+m_cmd_id).children("td.SubCmd").children("input").each(function(){
-			$(this).val(joint_ary[i++].toFixed(5));			//ex:  0.123456789  ->  0.1234
+			//$(this).val(joint_ary[i++].toFixed(5));			//toFixed ex:  0.123456789  ->  0.1234
+			$(this).val(joint_ary[i++]);			//ex:  0.123456789  ->  0.1234
 		});
 	}else if(mod==CmdType.PTP || mod==CmdType.Line){
 		var request = new ROSLIB.ServiceRequest({
