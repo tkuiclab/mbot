@@ -370,11 +370,11 @@ class ARM:
 
 
 	def shift_x(self, i_x):
-		self.cartesian_path('x',i_x)
-		#self.arm.set_start_state_to_current_state()
-		#self.arm.shift_pose_target(0, i_x, self.end_effector_link)
-		#self.run()
-		rospy.sleep(1)
+		#self.cartesian_path('x',i_x)
+		self.arm.set_start_state_to_current_state()
+		self.arm.shift_pose_target(0, i_x, self.end_effector_link)
+		self.run()
+		#rospy.sleep(1)
 
 	def shift_y(self, i_y):
 		self.cartesian_path('y',i_y)
