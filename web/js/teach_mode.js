@@ -555,7 +555,28 @@ var ros = new ROSLIB.Ros({
 });
 
 // If there is an error on the backend, an 'error' emit will be emitted.
-ros.on('error', function(error) {
+ros.on('error', function(error) {var request = new ROSLIB.ServiceRequest({
+		    cmd : "Teach:EEF_Pose",
+		});
+		
+		ui_client.callService(request, function(res) {
+			var l = res.pose.linear;
+			var a = res.pose.angular;
+			
+			console.log( 'Result : '   + res.result);
+			console.log( 'Pose : '   + l.x + "," + l.y + "," + l.z + "," + a.x + "," + a.y + "," + a.z );
+		  	
+		  	
+		  	var refer = $('#'+m_cmd_id).children("td.SubCmd");
+		  	refer.children("input:nth-child(1)").val(l.x.toFixed(2));
+		  	refer.children("input:nth-child(2)").val(l.y.toFixed(2));
+		  	refer.children("input:nth-child(3)").val(l.z.toFixed(2));
+		  	refer.children("input:nth-child(4)").val(a.x.toFixed(2));
+		  	refer.children("input:nth-child(5)").val(a.y.toFixed(2));
+		  	refer.children("input:nth-child(6)").val(a.z.toFixed(2));
+		  	
+		  	
+		});
 	console.log(error);
 });
 
@@ -661,4 +682,29 @@ var ui_client = new ROSLIB.Service({
     name : '/ui_server',
     serviceType : 'mbot_control/UI_Server'
   });
+
+
+/*
+var request = new ROSLIB.ServiceRequest({
+    cmd : "Teach:SaveFile",
+    req_s : "hello\niam from web\nhello\n"
+});
+
+ui_client.callService(request, function(res) {
+	console.log( 'Result : '   + res.result);
+  		
+});
+*/
+
+var request = new ROSLIB.ServiceRequest({
+    cmd : "Teach:ReadFile"
+});
+
+ui_client.callService(request, function(res) {
+	console.log( 'res_s : '   + res.res_s);
+  	
+	console.log( 'Result : '   + res.result);
+  		
+});
+
 

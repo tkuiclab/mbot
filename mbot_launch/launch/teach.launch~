@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="sim" default="true" />
+  <arg name="sim" default="false" />
   <arg name="limited" default="true"/>
   <arg name="debug" default="false" />
     
-
-  <!-- Launch ur5_gazebo.launch -->
-  <include file="$(find ur_gazebo)/launch/ur5.launch">
+  <!-- Launch ur5_bringup.launch  -->
+  <include file="$(find ur_bringup)/launch/ur5_bringup.launch">
     <arg name="limited" default="$(arg limited)"/>
+    <arg name="robot_ip" default="192.168.5.5"/> 
+    <arg name="teach_mode" default="true"/>
   </include>
+ 
 
   <!-- Launch rosbridge_websocket.launch -->
   <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
@@ -24,9 +26,9 @@
   <!-- rosrun mbot_control teach_mode_server -->
   <node name="teach_mode_server" pkg="mbot_control" type="teach_mode_server.py" respawn="true" respawn_delay="5" output="screen" />
 
-  <!-- rosrun mbot_control info 
+  <!-- rosrun mbot_control info -->
   <node name="info" pkg="mbot_control" type="info.py" respawn="true" respawn_delay="5" output="screen" />
-  -->
+  
 
   
 </launch>

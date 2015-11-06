@@ -365,10 +365,10 @@ class URConnectionRT(object):
         while self.__keep_running:
             r, _, _ = select.select([self.__sock], [], [], self.TIMEOUT)
             if r:
-                print "in r"
+                #print "in r"
                 more = self.__sock.recv(4096)
                 if more:
-                    print "in more"
+                    #print "in more"
                     self.__buf = self.__buf + more
                     
                     #unpack_from requires a buffer of at least 48 bytes
