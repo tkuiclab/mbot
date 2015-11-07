@@ -11,7 +11,7 @@ import mbot_control.msg
 
 #import moveit_commander
 from arm import ARM
-
+from ur_msgs.srv import *
 
 class TeachModeServer(object):
     # create messages that are used to publish feedback/result
@@ -23,7 +23,19 @@ class TeachModeServer(object):
         self._action_name = name
         self._as = actionlib.SimpleActionServer(self._action_name, mbot_control.msg.TeachCommandListAction,
                                                 execute_cb=self.execute_cb, auto_start=False)
+        self.set_states()
         self._as.start()
+
+    def set_states(self):
+        rospy.wait_for_service('set_io')
+        global set_io
+        set_io = rospy.ServiceProxy('set_io', SetIO)
+
+    def set_digital_out(self,pin, val):
+        try:
+            set_io(1, pin, val)
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e
 
     def execute_cb(self, goal):
         # helper variables
@@ -50,6 +62,10 @@ class TeachModeServer(object):
 
             if cmd.cmd == 'Vaccum':
                 show_str += str(cmd.vaccum)
+                if cmd.vaccum:
+                    self.set_digital_out(1,True)
+                else:
+                    self.set_digital_out(1,False)
 
             elif cmd.cmd == 'Joint':
                 #target joints shoulder_pan shoulder_lift elbow wrist1 wrist2 wrist3
@@ -112,6 +128,7 @@ def init_g_arm():
 if __name__ == '__main__':
     #moveit_commander.roscpp_initialize(sys.argv)
     rospy.init_node('teach_mode_server')
+
     rospy.Rate(100)
 
     init_g_arm()
