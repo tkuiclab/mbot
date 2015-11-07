@@ -23,17 +23,10 @@
 
   <!-- rosrun mbot_control teach_mode_server -->
   <node name="teach_mode_server" pkg="mbot_control" type="teach_mode_server.py" respawn="true" respawn_delay="5" output="screen" />
-<<<<<<< HEAD
-   -->
-  <!-- rosrun mbot_control info-->
-  <node name="info" pkg="mbot_control" type="info.py" respawn="true" respawn_delay="5" output="screen" />
-   
-=======
+
 
   <!-- rosrun mbot_control info 
   <node name="info" pkg="mbot_control" type="info.py" respawn="true" respawn_delay="5" output="screen" />
   -->
->>>>>>> 5eeeed7e09ad7399c69b55def4a3aca7a3e57c7a
-
   
 </launch>

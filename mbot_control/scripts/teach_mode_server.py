@@ -12,6 +12,7 @@ import mbot_control.msg
 #import moveit_commander
 from arm import ARM
 from ur_msgs.srv import *
+import sys
 
 class TeachModeServer(object):
     # create messages that are used to publish feedback/result
@@ -19,15 +20,23 @@ class TeachModeServer(object):
     _result = mbot_control.msg.TeachCommandListResult()
 
     def __init__(self, name):
-        print 'Action Name=' + name
+        #print 'Action Name=' + name
         self._action_name = name
-        self._as = actionlib.SimpleActionServer(self._action_name, mbot_control.msg.TeachCommandListAction,
+        self._as = actionlib.SimpleActionServer(self._action_name,mbot_control.msg.TeachCommandListAction,
                                                 execute_cb=self.execute_cb, auto_start=False)
         self.set_states()
         self._as.start()
 
+
     def set_states(self):
-        rospy.wait_for_service('set_io')
+        try:
+            rospy.wait_for_service('set_io', 3)  #wait 3 seconds for timeout
+        except rospy.ROSException,e:
+            rospy.logwarn("Vaccum command will be nothing happen (service of set_io fail)" )
+            self.exist_set_io = False
+            return
+
+        self.exist_set_io = True
         global set_io
         set_io = rospy.ServiceProxy('set_io', SetIO)
 
@@ -57,15 +66,21 @@ class TeachModeServer(object):
                 break
             self._feedback.status = 'Execute Command ' + str(i)
 
+            #rospy.loginfo('Execute Command ' + str(i))
+
             cmd = goal.cmd_list[i]
-            show_str = "(%2d) Execute %s -> " % (i, cmd.cmd)
+            show_str = "(%2d) Execute %s " % (i, cmd.cmd)
+            rospy.loginfo(show_str)
 
             if cmd.cmd == 'Vaccum':
-                show_str += str(cmd.vaccum)
-                if cmd.vaccum:
-                    self.set_digital_out(1,True)
+                if self.exist_set_io :
+                    if cmd.vaccum:
+                        self.set_digital_out(1,True)
+                    else:
+                        self.set_digital_out(1,False)
                 else:
-                    self.set_digital_out(1,False)
+                    rospy.loginfo('Vaccum Not Exist(No Service of set_io)')
+
 
             elif cmd.cmd == 'Joint':
                 #target joints shoulder_pan shoulder_lift elbow wrist1 wrist2 wrist3
@@ -105,9 +120,6 @@ class TeachModeServer(object):
                 g_arm.shift_z(int_Z)
 
 
-
-
-            rospy.loginfo(show_str)
             # publish the feedback
             self._as.publish_feedback(self._feedback)
             # this step is not necessary, the sequence is computed at 1 Hz for demonstration purposes
@@ -134,5 +146,7 @@ if __name__ == '__main__':
     init_g_arm()
 
     TeachModeServer(rospy.get_name())
-
+    rospy.loginfo('------mbot_control Ready------')
     rospy.spin()
+
+    g_arm.end()
