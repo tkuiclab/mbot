@@ -32,7 +32,7 @@ class TeachModeServer(object):
         try:
             rospy.wait_for_service('set_io', 3)  #wait 3 seconds for timeout
         except rospy.ROSException,e:
-            rospy.logwarn("Vaccum command will be nothing happen (service of set_io fail)" )
+            rospy.logwarn("Vaccum command will nothing happen (service of set_io fail)" )
             self.exist_set_io = False
             return
 
@@ -118,6 +118,17 @@ class TeachModeServer(object):
             elif cmd.cmd == 'Shift_Z':
                 int_Z = cmd.pose.linear.z
                 g_arm.shift_z(int_Z)
+            elif cmd.cmd == 'Shift_RX':
+                ang = cmd.pose.angular.x
+                g_arm.shift_rx(ang);
+
+            elif cmd.cmd == 'Shift_RY':
+                ang = cmd.pose.angular.y
+                g_arm.shift_ry(ang)
+
+            elif cmd.cmd == 'Shift_RZ':
+                ang = cmd.pose.angular.z
+                g_arm.shift_rz(ang)
 
 
             # publish the feedback
