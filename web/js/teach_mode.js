@@ -424,6 +424,66 @@ $("#run_btn").click(function() {
 });
 
 
+/* json example
+{
+  "Joint":{
+    "Val_6": [0,0.3,0.4,0,1.57,0]
+  },
+  "PTP":{
+    "Val_6": [0,0.3,0.4,0,1.57,0]
+  },
+  "Shift_Y":{
+    "Val": 0.2
+  }
+  
+}
+ */
+$("#file_save_btn").click(function() {
+	var save_data = "{\n";
+	$('#teach_table tr').each(function() {
+		//var cmd_msg;
+		var cmd_mod = $('#cmd_mod', this).text();
+		//console.log(cmd_mod);
+		//-------------CmdType.Joint-------------//
+		if(cmd_mod==CmdType.Joint || cmd_mod==CmdType.PTP || cmd_mod==CmdType.Line){
+			save_data += '\t"'+cmd_mod+'":{\n';	// Joint or PTP or Line START
+			save_data += '\t\t"Val_6": ';	  //Val_6 Start
+			var float_ary = [];
+			 $('input', this).each(function()
+		    {
+		    	var t_float = parseFloat( $(this).val() );
+		        float_ary.push( t_float );
+		    });
+			save_data += '[' + float_ary.toString()+"]\n";  //Val_6 End
+			
+			save_data += '\t},\n'; // Joint or PTP or Line  END
+		//-------------CmdType.PTP-------------//
+		}else if(cmd_mod==CmdType.Shift_X || cmd_mod==CmdType.Shift_Y || cmd_mod==CmdType.Shift_Z){
+			save_data += '\t"'+cmd_mod+'":{\n';	// Shift_X or Shift_Y or Shift_Z START
+			save_data += '\t\t"Val": ';	  //Val Start
+			var Vaccum = $(this).children("td.SubCmd").children("input:first").val();
+			save_data += '[' + val +"]\n";  //Val End
+			
+			save_data += '\t},\n'; // Shift_X or Shift_Y or Shift_Z  END
+		}else if(cmd_mod==CmdType.Vaccum){
+			save_data += '\t"'+cmd_mod+'":{\n';	// Vaccum START
+			save_data += '\t\t"Val": ';	  //Val Start
+			var vaccum_yn = $('#vaccum_select', this).val()=='On' ? true:false;
+			save_data += '[' + vaccum_yn +"]\n";  //Val End
+			
+			save_data += '\t},\n'; // Vaccum END
+		}
+	});
+	
+  
+	
+	save_data += "}";
+	
+	$("#test_json_data").val(save_data);
+	
+});	
+
+
 function teach_click(t){
 	//console.log('in teach btn');
 	
