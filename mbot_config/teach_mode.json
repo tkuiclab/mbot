@@ -1,0 +1,29 @@
+{
+	"PTP":{
+		"Val_6": [-0.2,0.3,0.7,0,-1.57,0]
+	},
+	"Shift_Y":{
+		"Val": 0.3
+	},
+	"Shift_Z":{
+		"Val": -0.2
+	},
+	"Vaccum":{
+		"Val": true
+	},
+	"Shift_Z":{
+		"Val": 0.2
+	},
+	"Shift_Y":{
+		"Val": -0.3
+	},
+	"Shift_X":{
+		"Val": 0.5
+	},
+	"Shift_Z":{
+		"Val": -0.3
+	},
+	"Vaccum":{
+		"Val": false
+	},
+}

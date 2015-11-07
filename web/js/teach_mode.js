@@ -97,6 +97,17 @@ function get_vaccum_tr(){
 	var cmd_id_str = 'cmd_' + cmd_id;
 	var sub_cmd = $('#vaccum_select').val();
 	
+	var on_selected =  (sub_cmd == "On") ? "selected" : "";
+	var off_selected = (sub_cmd == "Off") ? "selected" : "";
+	
+	
+	var sub_cmd_edit =
+		'<select class="options" id="vaccum_select" disabled="disabled" style="border-style: none">' +
+			'<option value="On" ' + on_selected +'>On</option>'+
+			'<option value="Off" '+ off_selected +'>Off</option>' +
+		'</select>';
+		
+	/*	
 	if(sub_cmd == "On"){
 		var sub_cmd_edit =
 		'<select class="options" id="vaccum_select" disabled="disabled" style="border-style: none">' +
@@ -109,7 +120,7 @@ function get_vaccum_tr(){
 			'<option value="On">On</option>'+
 			'<option value="Off" selected>Off</option>' +
 		'</select>';
-	}
+	}*/
 	
 	var edit_img_new = $(edit_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
@@ -439,6 +450,9 @@ $("#run_btn").click(function() {
 }
  */
 $("#file_save_btn").click(function() {
+	$(this).removeClass('active');
+	$(this).addClass('disabled');
+	
 	var save_data = "{\n";
 	$('#teach_table tr').each(function() {
 		//var cmd_msg;
@@ -461,26 +475,74 @@ $("#file_save_btn").click(function() {
 		}else if(cmd_mod==CmdType.Shift_X || cmd_mod==CmdType.Shift_Y || cmd_mod==CmdType.Shift_Z){
 			save_data += '\t"'+cmd_mod+'":{\n';	// Shift_X or Shift_Y or Shift_Z START
 			save_data += '\t\t"Val": ';	  //Val Start
-			var Vaccum = $(this).children("td.SubCmd").children("input:first").val();
-			save_data += '[' + val +"]\n";  //Val End
+			var val = $(this).children("td.SubCmd").children("input:first").val();
+			save_data +=  val +"\n";  //Val End
 			
 			save_data += '\t},\n'; // Shift_X or Shift_Y or Shift_Z  END
 		}else if(cmd_mod==CmdType.Vaccum){
 			save_data += '\t"'+cmd_mod+'":{\n';	// Vaccum START
 			save_data += '\t\t"Val": ';	  //Val Start
 			var vaccum_yn = $('#vaccum_select', this).val()=='On' ? true:false;
-			save_data += '[' + vaccum_yn +"]\n";  //Val End
+			save_data +=  vaccum_yn +"\n";  //Val End
 			
 			save_data += '\t},\n'; // Vaccum END
 		}
 	});
+	save_data += "}";
+	var request = new ROSLIB.ServiceRequest({
+	    cmd : "Teach:SaveFile",
+	    req_s : save_data
+	});
+	
+	ui_client.callService(request, function(res) {
+		console.log( 'Result : '   + res.result);
+	  	$("#file_save_btn").removeClass('disabled');
+		$("#file_save_btn").addClass('active');
+	});
 	
   
-	
-	save_data += "}";
-	
 	$("#test_json_data").val(save_data);
 	
+});	
+
+$("#file_read_btn").click(function() {
+	$(this).removeClass('active');
+	$(this).addClass('disabled');
+	
+	
+	var request = new ROSLIB.ServiceRequest({
+	    cmd : "Teach:ReadFile",
+	});
+	
+	ui_client.callService(request, function(res) {
+		console.log( 'Result : '   + res.result);
+		console.log('json : ' + res.res_s);
+		
+		
+		
+		
+		var json = JSON.parse(res.res_s);     
+		for (var key in json) {
+			show_data += key + " : "; 
+			if(key=="PTP"){
+				var ptp_point = json[key].Point;
+				show_data += ptp_point.toString();
+			}else if(key=="Shift_Y"){
+				show_data += json[key].Val;
+			}
+			show_data += "<BR>";
+			
+		}
+		
+		
+		
+		
+		
+		
+	  	$("#file_read_btn").removeClass('disabled');
+		$("#file_read_btn").addClass('active');
+	});
+
 });	
 
 
@@ -615,7 +677,28 @@ var ros = new ROSLIB.Ros({
 });
 
 // If there is an error on the backend, an 'error' emit will be emitted.
-ros.on('error', function(error) {
+ros.on('error', function(error) {var request = new ROSLIB.ServiceRequest({
+		    cmd : "Teach:EEF_Pose",
+		});
+		
+		ui_client.callService(request, function(res) {
+			var l = res.pose.linear;
+			var a = res.pose.angular;
+			
+			console.log( 'Result : '   + res.result);
+			console.log( 'Pose : '   + l.x + "," + l.y + "," + l.z + "," + a.x + "," + a.y + "," + a.z );
+		  	
+		  	
+		  	var refer = $('#'+m_cmd_id).children("td.SubCmd");
+		  	refer.children("input:nth-child(1)").val(l.x.toFixed(2));
+		  	refer.children("input:nth-child(2)").val(l.y.toFixed(2));
+		  	refer.children("input:nth-child(3)").val(l.z.toFixed(2));
+		  	refer.children("input:nth-child(4)").val(a.x.toFixed(2));
+		  	refer.children("input:nth-child(5)").val(a.y.toFixed(2));
+		  	refer.children("input:nth-child(6)").val(a.z.toFixed(2));
+		  	
+		  	
+		});
 	console.log(error);
 });
 
@@ -721,4 +804,30 @@ var ui_client = new ROSLIB.Service({
     name : '/ui_server',
     serviceType : 'mbot_control/UI_Server'
   });
+
+
+/*  Teach:SaveFile test
+var request = new ROSLIB.ServiceRequest({
+    cmd : "Teach:SaveFile",
+    req_s : "hello\niam from web\nhello\n"
+});
+
+ui_client.callService(request, function(res) {
+	console.log( 'Result : '   + res.result);
+  		
+});
+*/
+
+/* Teach:ReadFile test
+var request = new ROSLIB.ServiceRequest({
+    cmd : "Teach:ReadFile"
+});
+
+ui_client.callService(request, function(res) {
+	console.log( 'res_s : '   + res.res_s);
+  	
+	console.log( 'Result : '   + res.result);
+  		
+});
+*/
 
