@@ -1,39 +1,11 @@
 {
-	"PTP":{
+	"001":{
 		"cmd": "PTP",
-		"Val_6": [-0.2,0.3,0.7,0,-1.57,0]
+		"val_6": [-0.2,0.3,0.7,0,-1.57,0]
 	},
-	"Shift_Y":{
-		"Val": -0.3
-	},
-	"Shift_Z":{
-		"Val": -0.3
-	},
-	"Vaccum":{
-		"Val": true
-	},
-
-	"Vaccum":{
-		"Val": true
-	},
-	"Vaccum":{
-		"Val": true
-	},
-	"Vaccum":{
-		"Val": true
-	},
-	"Shift_X":{
-		"Val": 0.5
-	},
-
-	"Vaccum":{
-		"Val": true
-	},
-	"Vaccum":{
-		"Val": true
-	},
-	"Vaccum":{
-		"Val": true
+	"002":{
+		"cmd": "Shift_Y",
+		"val": 0.255,
+		"pose": [-0.2,0.5549999999999999,0.7,0,-1.57,0]	
 	}
-
 }

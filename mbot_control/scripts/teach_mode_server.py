@@ -105,6 +105,10 @@ class TeachModeServer(object):
                 target_pose[0] = cmd.pose.angular.x
                 target_pose[1] = cmd.pose.angular.y
                 target_pose[2] = cmd.pose.angular.z
+
+                #print "x={0}, y={1}, z={2}, rx={3}, ry={4}, rz={5} ...);".\
+                #    format(target_position[0],target_position[1],target_position[2],target_pose[0],target_pose[1],target_pose[2])
+
                 g_arm.set_pose(target_position,target_pose)
 
             elif cmd.cmd == 'Shift_X':
