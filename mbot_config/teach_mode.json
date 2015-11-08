@@ -1,29 +1,38 @@
 {
-	"PTP":{
-		"Val_6": [-0.2,0.3,0.7,0,-1.57,0]
+	"001":{
+		"cmd": "PTP",
+		"val_6": [-0.2,0.3,0.7,0,-1.57,0]
 	},
-	"Shift_Y":{
-		"Val": 0.3
+	"002":{
+		"cmd": "Shift_Y",
+		"val": 0.3
 	},
-	"Shift_Z":{
-		"Val": -0.2
+	"003":{
+		"cmd": "Shift_Z",
+		"val": -0.2
 	},
-	"Vaccum":{
-		"Val": true
+	"004":{
+		"cmd": "Vaccum",
+		"val": false
 	},
-	"Shift_Z":{
-		"Val": 0.2
+	"005":{
+		"cmd": "Shift_Z",
+		"val": 0.2
 	},
-	"Shift_Y":{
-		"Val": -0.3
+	"006":{
+		"cmd": "Shift_Y",
+		"val": -0.3
 	},
-	"Shift_X":{
-		"Val": 0.5
+	"007":{
+		"cmd": "Shift_X",
+		"val": 0.5
 	},
-	"Shift_Z":{
-		"Val": -0.3
+	"008":{
+		"cmd": "Shift_Z",
+		"val": -0.3
 	},
-	"Vaccum":{
-		"Val": false
-	},
+	"009":{
+		"cmd": "Vaccum",
+		"val": false
+	}
 }

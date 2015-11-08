@@ -5,84 +5,8 @@
 
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-		
-    	
-		<style>
-			nav {
-				background-color: #b0c4de;
-				height: 55px;
-				margin-top: 20px;
-				margin-left: 30px;
-				margin-bottom: 10px;
-				margin-right: 30px;
-			}
-			
-			.add{
-				margin-top: 10px;
-				margin-left: 10px;
-				margin-bottom: 10px;
-				margin-right: 10px;
-				top : 100%;
-				font-size: 20px;
-			}
-			
-			.options{
-				font-size: 22px;
-				height: 80%;
-			}
-			
-			#block,#shift_block input{
-				font-size: 22px;
-				height: 80%;
-				size:5;
-			}
-			
-			#base{
-				border-style: solid;
-				border-width: medium;
-				margin-left: 30px;
-				margin-right: 30px;
-				height: 200px;
-				overflow:auto;
-			}
-			
-			.default{
-				display:block;
-			}
-			
-			.edit{
-				display:none;
-			}
-			
-			table {
-				width : 99%;
-				margin : auto;
-				
-			}
-			
-			thead {
-				border-collapse: collapse;
-				border-bottom: solid #0000ff;
-				font-size : 20px;
-			}
-			
-			.teach_btn{
-				height: 100%
-				
-			}
-			
-			.edit_mod{
-			
-			}
-			
-			.img_show{
-				height: 32px;
-				width: 32px;
-				display: none;
-			}
-			
-		</style>
-		
+    <link href="css/teach_mode.css" rel="stylesheet">
+	
 </head>
 <body>
 	<nav>
@@ -121,7 +45,7 @@
 		<div style="overflow:auto; margin:auto; height:700px; width:98%; border-style: solid;
 				border-width: medium; border-color:  #ffffff">
 
-		<table>
+		<table class="table table-condensed">
 			<thead>
 				<tr style="font-size: 120%">
 					<th style="width:10%">Order</th>
@@ -148,9 +72,9 @@
 	<BR>
 	<div align="center">
 		<button id="run_btn" type="button" class="btn btn-success btn-lg active">Run Teach Command</button> <BR><BR>
-		<button id="file_read_btn" type="button" class="btn btn-success btn-lg active">Read</button>
-		<button id="file_save_btn" type="button" class="btn btn-success btn-lg active">Save</button>
 		
+		<button id="file_save_btn" type="button" class="btn btn-success btn-lg active">Save</button>
+		<button id="file_read_btn" type="button" class="btn btn-success btn-lg active">Read</button>
 	</div>
 	
 	<textarea id="test_json_data" cols="40" rows="20">

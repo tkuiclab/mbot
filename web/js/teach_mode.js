@@ -51,13 +51,20 @@ $("#cmd_select").change(function() {
 
 
 
-function get_block_tr(option){
+function get_block_tr(option,val_6){
 	var sub_cmd = '';
 	var cmd_id = get_cmd_id();
 	var cmd_id_str = 'cmd_' + cmd_id;
-	for(var i=1;i<=6;i++){
-		var t_id = '#block_'+i;
-		sub_cmd += '<input style="width: 15%; border-style:none;" type="number" value="'+$(t_id).val()+'"readonly>';
+	if(val_6==undefined){
+		for(var i=1;i<=6;i++){
+			var t_id = '#block_'+i;
+			sub_cmd += '<input style="width: 15%; border-style:none;" type="number" value="'+$(t_id).val()+'"readonly>\n';
+		}
+	}else{
+		for(var i=0;i<6;i++){
+			sub_cmd += '<input style="width: 15%; border-style:none;" type="number" value="'+val_6[i]+'"readonly>\n';
+		}
+		
 	}
 	
 	var edit_img_new = $(edit_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
@@ -91,15 +98,23 @@ function get_block_tr(option){
 	return add_tr;
 }
 
-function get_vaccum_tr(){
+function get_vaccum_tr(val){
 	
 	var cmd_id = get_cmd_id();
 	var cmd_id_str = 'cmd_' + cmd_id;
-	var sub_cmd = $('#vaccum_select').val();
 	
-	var on_selected =  (sub_cmd == "On") ? "selected" : "";
-	var off_selected = (sub_cmd == "Off") ? "selected" : "";
 	
+	var on_selected = '';
+	var off_selected = '';
+	if(val==undefined){
+		var sub_cmd = $('#vaccum_select').val();
+	
+		on_selected =  (sub_cmd == "On") ? "selected" : "";
+		off_selected = (sub_cmd == "Off") ? "selected" : "";
+	}else{
+		on_selected =  (val == true) ? "selected" : "";
+		off_selected = (val == false) ? "selected" : "";
+	}
 	
 	var sub_cmd_edit =
 		'<select class="options" id="vaccum_select" disabled="disabled" style="border-style: none">' +
@@ -107,20 +122,6 @@ function get_vaccum_tr(){
 			'<option value="Off" '+ off_selected +'>Off</option>' +
 		'</select>';
 		
-	/*	
-	if(sub_cmd == "On"){
-		var sub_cmd_edit =
-		'<select class="options" id="vaccum_select" disabled="disabled" style="border-style: none">' +
-			'<option value="On" selected>On</option>'+
-			'<option value="Off">Off</option>' +
-		'</select>';
-	}else if(sub_cmd == "Off"){
-		var sub_cmd_edit =
-		'<select class="options" id="vaccum_select" disabled="disabled" style="border-style: none">' +
-			'<option value="On">On</option>'+
-			'<option value="Off" selected>Off</option>' +
-		'</select>';
-	}*/
 	
 	var edit_img_new = $(edit_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
@@ -151,16 +152,17 @@ function get_vaccum_tr(){
 }
 
 
-function get_shift_tr(option){
+function get_shift_tr(option,val){
 	var sub_cmd = '';
 	var cmd_id = get_cmd_id();
 	var cmd_id_str = 'cmd_' + cmd_id;
-	// for(var i=1;i<=6;i++){
-		// var t_id = '#block_'+i;
-		// sub_cmd += '<input style="width: 15%; border-style:none;" type="number" value="'+$(t_id).val()+'"readonly>';
-	// }
-	sub_cmd += '<input style="width: 15%; border-style:none;" type="number" value="'+$('#shift_val').val()+'"readonly>';
-	console.log('option='+option);
+	
+	
+	var input_val = (val==undefined) ? $('#shift_val').val():val;
+	
+	
+	sub_cmd += '<input style="width: 15%; border-style:none;" type="number" value="'+input_val+'"readonly>';
+	//console.log('option='+option);
 	
 	var edit_img_new = $(edit_img).attr('target_cmd_id', cmd_id_str).prop('outerHTML');
 	
@@ -435,17 +437,28 @@ $("#run_btn").click(function() {
 });
 
 
-/* json example
+/* ------json example------
 {
-  "Joint":{
-    "Val_6": [0,0.3,0.4,0,1.57,0]
-  },
-  "PTP":{
-    "Val_6": [0,0.3,0.4,0,1.57,0]
-  },
-  "Shift_Y":{
-    "Val": 0.2
-  }
+	"001":{
+		"cmd": "PTP",
+		"val_6": [-0.2,0.3,0.7,0,-1.57,0]
+	},
+	"002":{
+		"cmd": "Shift_Y",
+		"val": 0.3
+	},
+	"003":{
+		"cmd": "Shift_Z",
+		"val": -0.2
+	},
+	"004":{
+		"cmd": "Vaccum",
+		"val": true
+	},
+	"005":{
+		"cmd": "Shift_Z",
+		"val": 0.2
+	}
   
 }
  */
@@ -454,39 +467,51 @@ $("#file_save_btn").click(function() {
 	$(this).addClass('disabled');
 	
 	var save_data = "{\n";
-	$('#teach_table tr').each(function() {
+	
+	var cmd_count = $('#teach_table tr').length;
+	$('#teach_table tr').each(function(index,element) {
 		//var cmd_msg;
 		var cmd_mod = $('#cmd_mod', this).text();
 		//console.log(cmd_mod);
 		//-------------CmdType.Joint-------------//
+		save_data += '\t"'+$(this).children('td:first').html()+'":{\n';	
 		if(cmd_mod==CmdType.Joint || cmd_mod==CmdType.PTP || cmd_mod==CmdType.Line){
-			save_data += '\t"'+cmd_mod+'":{\n';	// Joint or PTP or Line START
-			save_data += '\t\t"Val_6": ';	  //Val_6 Start
+			save_data += '\t\t"cmd": "'+cmd_mod+'",\n';	// Joint or PTP or Line START
+			save_data += '\t\t"val_6": ';	  //val_6 Start
 			var float_ary = [];
 			 $('input', this).each(function()
 		    {
 		    	var t_float = parseFloat( $(this).val() );
 		        float_ary.push( t_float );
 		    });
-			save_data += '[' + float_ary.toString()+"]\n";  //Val_6 End
+			save_data += '[' + float_ary.toString()+"]\n";  //val_6 End
 			
-			save_data += '\t},\n'; // Joint or PTP or Line  END
+			//save_data += '\t},\n'; // Joint or PTP or Line  END
 		//-------------CmdType.PTP-------------//
 		}else if(cmd_mod==CmdType.Shift_X || cmd_mod==CmdType.Shift_Y || cmd_mod==CmdType.Shift_Z){
-			save_data += '\t"'+cmd_mod+'":{\n';	// Shift_X or Shift_Y or Shift_Z START
-			save_data += '\t\t"Val": ';	  //Val Start
+			//save_data += '\t"'+cmd_mod+'":{\n';	// Shift_X or Shift_Y or Shift_Z START
+			save_data += '\t\t"cmd": "'+cmd_mod+'",\n';	// Joint or PTP or Line START
+			save_data += '\t\t"val": ';	  //Val Start
 			var val = $(this).children("td.SubCmd").children("input:first").val();
 			save_data +=  val +"\n";  //Val End
 			
-			save_data += '\t},\n'; // Shift_X or Shift_Y or Shift_Z  END
+			//save_data += '\t},\n'; // Shift_X or Shift_Y or Shift_Z  END
 		}else if(cmd_mod==CmdType.Vaccum){
-			save_data += '\t"'+cmd_mod+'":{\n';	// Vaccum START
-			save_data += '\t\t"Val": ';	  //Val Start
+			//save_data += '\t"'+cmd_mod+'":{\n';	// Vaccum START
+			save_data += '\t\t"cmd": "'+cmd_mod+'",\n';	// Joint or PTP or Line START
+			save_data += '\t\t"val": ';	  //Val Start
 			var vaccum_yn = $('#vaccum_select', this).val()=='On' ? true:false;
 			save_data +=  vaccum_yn +"\n";  //Val End
 			
-			save_data += '\t},\n'; // Vaccum END
+			//save_data += '\t},\n'; // Vaccum END
 		}
+		
+		if(index==cmd_count-1){
+			save_data += '\t}\n'; 
+		}else{
+			save_data += '\t},\n'; 
+		}
+		
 	});
 	save_data += "}";
 	var request = new ROSLIB.ServiceRequest({
@@ -505,38 +530,42 @@ $("#file_save_btn").click(function() {
 	
 });	
 
+
+
+
 $("#file_read_btn").click(function() {
 	$(this).removeClass('active');
 	$(this).addClass('disabled');
 	
-	
 	var request = new ROSLIB.ServiceRequest({
-	    cmd : "Teach:ReadFile",
+	    cmd : "Teach:ReadFile"
 	});
 	
 	ui_client.callService(request, function(res) {
-		console.log( 'Result : '   + res.result);
-		console.log('json : ' + res.res_s);
-		
-		
-		
+		console.log('Result : '   + res.result);
 		
 		var json = JSON.parse(res.res_s);     
-		for (var key in json) {
-			show_data += key + " : "; 
-			if(key=="PTP"){
-				var ptp_point = json[key].Point;
-				show_data += ptp_point.toString();
-			}else if(key=="Shift_Y"){
-				show_data += json[key].Val;
-			}
-			show_data += "<BR>";
+		
+		
+		for (var index in json) {
+			var cmd = json[index].cmd;
+			//console.log('cmd : ' + cmd);
 			
+			
+			var tr_html = '';
+			if(cmd==CmdType.PTP || cmd==CmdType.Line){
+				tr_html = get_block_tr(cmd,json[index].val_6);
+				
+			}else if(cmd==CmdType.Vaccum){
+				tr_html = get_vaccum_tr(json[index].val);
+			}else if(cmd==CmdType.Shift_X || cmd==CmdType.Shift_Y || cmd==CmdType.Shift_Z){
+				tr_html = get_shift_tr(cmd,json[index].val);
+			}
+			
+			
+			$('#teach_table').append(tr_html);
+
 		}
-		
-		
-		
-		
 		
 		
 	  	$("#file_read_btn").removeClass('disabled');
@@ -545,6 +574,30 @@ $("#file_read_btn").click(function() {
 
 });	
 
+
+function parse_json_2_cmd_list(cmd,val){
+	var tr_html = '';
+	
+	
+	console.log('cmd='+cmd+',val='+val)
+	
+	if(cmd==CmdType.PTP || cmd==CmdType.Line){
+		tr_html = get_block_tr(cmd,val.val_6);
+		
+	}else if(cmd==CmdType.Vaccum){
+		tr_html = get_vaccum_tr(val.Val);
+	}else if(cmd==CmdType.Shift_X || cmd==CmdType.Shift_Y || cmd==CmdType.Shift_Z){
+		tr_html = get_shift_tr(cmd,val.Val);
+	}else{
+		
+		return;
+	}
+	
+	
+	$('#teach_table').append(tr_html);
+	
+	
+}
 
 function teach_click(t){
 	//console.log('in teach btn');
