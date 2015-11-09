@@ -141,7 +141,7 @@
         <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="150.0" velocity="3.15"/>
       </xacro:unless>
       <xacro:if value="${joint_limited}">
-        <limit lower="${-pi}" upper="0.0" effort="150.0" velocity="3.15"/>
+        <limit lower="${-pi}" upper="${pi}" effort="150.0" velocity="3.15"/>
       </xacro:if>
       <dynamics damping="0.0" friction="0.0"/>
     </joint>
@@ -305,10 +305,34 @@
 
     <link name="${prefix}ee_link">
       <collision>
+        <origin xyz="0.04 0.1 0.0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.08 0.3 0.10"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin xyz="0.1 -0.05 -0.04" rpy="0 -1.57 0"/>
+        <geometry>
+          <mesh filename="package://ur_description/meshes/ur5/visual/ur5_tmp_vaccum.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="orange">
+          <color rgba="0.7 0.7 0.7 1.0"/>
+        </material>
+      </visual>
+    </link>
+
+    <joint name="$vaccum_joint" type="fixed">
+      <parent link="${prefix}ee_link" />
+      <child link = "${prefix}vaccum_link" />
+      <origin xyz="0.1 0.23 0.0" rpy="0.0 0.0 0.0" />
+    </joint>
+
+    <link name="${prefix}vaccum_link">
+      <collision>
         <geometry>
           <box size="0.01 0.01 0.01"/>
         </geometry>
-        <origin rpy="0 0 0" xyz="-0.01 0 0"/>
+        <origin rpy="0 0 0" xyz="0.0 0 0"/>
       </collision>
     </link>
 
