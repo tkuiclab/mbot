@@ -4,6 +4,9 @@
     info.py - Version 0.1 2014-01-14
 
 """
+
+import os
+
 from mbot_control.srv import *
 import rospy, sys
 import moveit_commander
@@ -20,12 +23,22 @@ from geometry_msgs.msg import Twist
 
 
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
+import rospkg
+
+
+
+#const of this node default name
+Node_Name = "info"
+#const of config package name
+Config_Pkg_Name = "mbot_config"
+#const of teach file name
+Teach_File_Name = "teach_mode.json"
 
 class info_class:
     def __init__(self):
         # Initialize the move_group API
         moveit_commander.roscpp_initialize(sys.argv)
-        rospy.init_node('info')
+        rospy.init_node(Node_Name)
 
 
         # Initialize the move group for the right arm
@@ -46,12 +59,22 @@ class info_class:
         s = rospy.Service('ui_server', UI_Server, self.handle_ui_server)
 
 
+
+        #init ros package
+        rospack = rospkg.RosPack()
+
+        # Config_Pkg_Name's "PATH" + Teach_File_Name
+        self.teach_file_path = rospack.get_path(Config_Pkg_Name) + "/" +  Teach_File_Name
+
+        print "teach_file_path= " + self.teach_file_path
+
+        '''
         rospy.wait_for_service('compute_fk')
         try:
             self.moveit_fk = rospy.ServiceProxy('compute_fk', GetPositionFK)
         except rospy.ServiceException, e:
             rospy.logerror("Service call failed: %s"%e)
-
+        '''
 
     def get_tool_position(self,joint_positions):
         robot = moveit_commander.RobotCommander()
@@ -102,6 +125,17 @@ class info_class:
 
         elif cmd=="Teach:Shift_Z":
             res.f = now_pose.linear.z - self.teach_get_pre_linear(req).z
+        elif cmd=="Teach:SaveFile":
+            rospy.loginfo('Save file to  ' + self.teach_file_path)
+            f = open(self.teach_file_path, 'w')
+            f.write(req.req_s)
+            f.close()
+        elif cmd=="Teach:ReadFile":
+            rospy.loginfo('Read file From  ' + self.teach_file_path)
+            f = open(self.teach_file_path, 'r')
+            read_data = f.read()
+            res.res_s = read_data
+            f.close()
 
 
         res.result = "UI_Server Success (Process " + cmd + ")"

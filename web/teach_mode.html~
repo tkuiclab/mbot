@@ -118,7 +118,7 @@
 			<input value="0" id="shift_val" style="width: 20%" type="number"/>
 		</div>
 	</nav>
-		<div style="overflow:auto; margin:auto; height:300px; width:98%; border-style: solid;
+		<div style="overflow:auto; margin:auto; height:500px; width:98%; border-style: solid;
 				border-width: medium; border-color:  #ffffff">
 
 		<table>
@@ -133,10 +133,10 @@
 				</tr>
 			</thead>
 			
-			<!--
+			
 			<tbody id="teach_table" style="font-size: 200%">
 			</tbody>
-			-->
+			
 
 			<!--
 			<tbody id="teach_table" style="font-size: 200%">

@@ -35,7 +35,16 @@ if __name__ == "__main__":
     #ur_arm.go()
 
 
-    print "init OK"
+    print "=================init  shit x=============="
+    ur_arm.set_start_state_to_current_state()
+    ur_arm.shift_pose_target(0,-0.6, end_effector_link)
+    ur_arm.go()
+
+    moveit_commander.roscpp_shutdown()
+    # Exit MoveIt
+    moveit_commander.os._exit(0)
+
+    exit()
 
     j_names = ur_arm.get_active_joints()
     for name in j_names:
