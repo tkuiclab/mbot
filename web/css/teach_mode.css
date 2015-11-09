@@ -1,0 +1,91 @@
+nav {
+	background-color: #b0c4de;
+	height: 55px;
+	margin-top: 20px;
+	margin-left: 30px;
+	margin-bottom: 10px;
+	margin-right: 30px;
+}
+
+.add{
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	top : 100%;
+	font-size: 20px;
+}
+
+.options{
+	font-size: 22px;
+	height: 80%;
+}
+
+#block,#shift_block input{
+	font-size: 22px;
+	height: 80%;
+	size:5;
+}
+
+#base{
+	border-style: solid;
+	border-width: medium;
+	margin-left: 30px;
+	margin-right: 30px;
+	height: 200px;
+	overflow:auto;
+}
+
+.default{
+	display:block;
+}
+
+.edit{
+	display:none;
+}
+
+table {
+	width : 99%;
+	margin : auto;
+}
+/*
+tr:nth-child(even){
+	background: #0099FF;
+}
+
+tr:nth-child(odd){
+	background: #FFF;
+}
+
+thead {
+	border-collapse: collapse;
+	border-bottom: solid #0000ff;
+	font-size : 20px;
+}
+*/
+
+thead {
+	border-collapse: collapse;
+	font-size : 20px;
+}
+
+.onDND{
+	background: #CCC;
+}
+
+
+
+.teach_btn{
+	height: 100%
+	
+}
+
+.edit_mod{
+
+}
+
+.img_show{
+	height: 32px;
+	width: 32px;
+	display: none;
+}

@@ -129,8 +129,10 @@ class ARM:
 			rospy.sleep(5)
 
 			rospy.loginfo("Path execution complete.")
+			return True
 		else:
 			rospy.loginfo("Path planning failed with only " + str(fraction) + " success after " + str(maxtries) + " attempts.")
+			return False
 
 
 
@@ -372,21 +374,37 @@ class ARM:
 		#self.arm.set_start_state_to_current_state()
 		#self.arm.shift_pose_target(0, i_x, self.end_effector_link)
 		#self.run()
-		rospy.sleep(1)
+		#rospy.sleep(1)
 
 	def shift_y(self, i_y):
 		self.cartesian_path('y',i_y)
 		#self.arm.set_start_state_to_current_state()
 		#self.arm.shift_pose_target(1, i_y, self.end_effector_link)
 		#self.run()
-		rospy.sleep(1)
+		#rospy.sleep(1)
 
 	def shift_z(self, i_z):
 		self.cartesian_path('z',i_z)
 		#self.arm.set_start_state_to_current_state()
 		#self.arm.shift_pose_target(2, i_z, self.end_effector_link)
 		#self.run()
-		rospy.sleep(1)
+		#rospy.sleep(1)
+
+	def shift_rx(self, i_val):
+		self.arm.set_start_state_to_current_state()
+		self.arm.shift_pose_target(3, i_val, self.end_effector_link)
+		self.run()
+
+	def shift_ry(self, i_val):
+		self.arm.set_start_state_to_current_state()
+		self.arm.shift_pose_target(4, i_val, self.end_effector_link)
+		self.run()
+
+	def shift_rz(self, i_val):
+		self.arm.set_start_state_to_current_state()
+		self.arm.shift_pose_target(5, i_val, self.end_effector_link)
+		self.run()
+
 
 	
 if __name__ == "__main__":

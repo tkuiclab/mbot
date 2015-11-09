@@ -1,0 +1,38 @@
+{
+	"001":{
+		"cmd": "PTP",
+		"val_6": [-0.2,0.3,0.7,0,-1.57,0]
+	},
+	"002":{
+		"cmd": "Shift_Y",
+		"val": 0.3
+	},
+	"003":{
+		"cmd": "Shift_Z",
+		"val": -0.2
+	},
+	"004":{
+		"cmd": "Vaccum",
+		"val": false
+	},
+	"005":{
+		"cmd": "Shift_Z",
+		"val": 0.2
+	},
+	"006":{
+		"cmd": "Shift_Y",
+		"val": -0.3
+	},
+	"007":{
+		"cmd": "Shift_X",
+		"val": 0.5
+	},
+	"008":{
+		"cmd": "Shift_Z",
+		"val": -0.3
+	},
+	"009":{
+		"cmd": "Vaccum",
+		"val": false
+	}
+}
