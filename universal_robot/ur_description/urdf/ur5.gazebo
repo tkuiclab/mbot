@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<robot>
+
+  <!-- Link1 -->
+  <gazebo reference="link1">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+</robot>
