@@ -1,0 +1,220 @@
+
+
+//----------------------開啟ur5_bringup.launch---------------//
+#roslaunch ur_bringup ur5_bringup.launch limited:=true robot_ip:=192.168.137.5
+#rostopic list
+/follow_joint_trajectory/cancel			:50001
+/follow_joint_trajectory/feedback
+/follow_joint_trajectory/goal
+/follow_joint_trajectory/result
+/follow_joint_trajectory/status
+/io_states					:30002
+/joint_states					:30003
+/rosout
+/rosout_agg
+/tf
+/tf2_buffer_server/cancel
+/tf2_buffer_server/feedback
+/tf2_buffer_server/goal
+/tf2_buffer_server/result
+/tf2_buffer_server/status
+/tf_static
+/wrench						:30003
+
+
+#rosservice list
+/robot_state_publisher/get_loggers
+/robot_state_publisher/set_logger_level
+/rosout/get_loggers
+/rosout/set_logger_level
+/set_io						:50001
+/tf2_buffer_server/get_loggers
+/tf2_buffer_server/set_logger_level
+/ur_driver/get_loggers
+/ur_driver/setPayload				:50001
+/ur_driver/set_logger_level
+
+
+#rosnode list
+/robot_state_publisher
+/rosout
+/tf2_buffer_server
+/ur_driver
+
+
+//----------------------開啟roslaunch ur_gazebo ur5.launch limited:=true---------------//
+#rosnode list
+iclab@iclab-DellNB:~$ rosnode list
+/arm_controller_spawner
+/fake_joint_calibration
+/gazebo
+/joint_state_controller_spawner
+/robot_state_publisher
+/rosout
+
+#rostopic list
+/arm_controller/command
+/arm_controller/follow_joint_trajectory/cancel
+/arm_controller/follow_joint_trajectory/feedback
+/arm_controller/follow_joint_trajectory/goal
+/arm_controller/follow_joint_trajectory/result
+/arm_controller/follow_joint_trajectory/status
+/arm_controller/gains/elbow_joint/parameter_descriptions
+/arm_controller/gains/elbow_joint/parameter_updates
+/arm_controller/gains/shoulder_lift_joint/parameter_descriptions
+/arm_controller/gains/shoulder_lift_joint/parameter_updates
+/arm_controller/gains/shoulder_pan_joint/parameter_descriptions
+/arm_controller/gains/shoulder_pan_joint/parameter_updates
+/arm_controller/gains/wrist_1_joint/parameter_descriptions
+/arm_controller/gains/wrist_1_joint/parameter_updates
+/arm_controller/gains/wrist_2_joint/parameter_descriptions
+/arm_controller/gains/wrist_2_joint/parameter_updates
+/arm_controller/gains/wrist_3_joint/parameter_descriptions
+/arm_controller/gains/wrist_3_joint/parameter_updates
+/arm_controller/state
+/calibrated
+/clock
+/gazebo/link_states
+/gazebo/model_states
+/gazebo/parameter_descriptions
+/gazebo/parameter_updates
+/gazebo/set_link_state
+/gazebo/set_model_state
+/joint_states
+/rosout
+/rosout_agg
+/tf
+
+
+#rosservice list
+/arm_controller/gains/elbow_joint/set_parameters
+/arm_controller/gains/shoulder_lift_joint/set_parameters
+/arm_controller/gains/shoulder_pan_joint/set_parameters
+/arm_controller/gains/wrist_1_joint/set_parameters
+/arm_controller/gains/wrist_2_joint/set_parameters
+/arm_controller/gains/wrist_3_joint/set_parameters
+/arm_controller/query_state
+/arm_controller_spawner/get_loggers
+/arm_controller_spawner/set_logger_level
+/controller_manager/list_controller_types
+/controller_manager/list_controllers
+/controller_manager/load_controller
+/controller_manager/reload_controller_libraries
+/controller_manager/switch_controller
+/controller_manager/unload_controller
+/fake_joint_calibration/get_loggers
+/fake_joint_calibration/set_logger_level
+/gazebo/apply_body_wrench
+/gazebo/apply_joint_effort
+/gazebo/clear_body_wrenches
+/gazebo/clear_joint_forces
+/gazebo/delete_model
+/gazebo/get_joint_properties
+/gazebo/get_link_properties
+/gazebo/get_link_state
+/gazebo/get_loggers
+/gazebo/get_model_properties
+/gazebo/get_model_state
+/gazebo/get_physics_properties
+/gazebo/get_world_properties
+/gazebo/pause_physics
+/gazebo/reset_simulation
+/gazebo/reset_world
+/gazebo/set_joint_properties
+/gazebo/set_link_properties
+/gazebo/set_link_state
+/gazebo/set_logger_level
+/gazebo/set_model_configuration
+/gazebo/set_model_state
+/gazebo/set_parameters
+/gazebo/set_physics_properties
+/gazebo/spawn_gazebo_model
+/gazebo/spawn_sdf_model
+/gazebo/spawn_urdf_model
+/gazebo/unpause_physics
+/joint_state_controller_spawner/get_loggers
+/joint_state_controller_spawner/set_logger_level
+/robot_state_publisher/get_loggers
+/robot_state_publisher/set_logger_level
+/rosout/get_loggers
+/rosout/set_logger_level
+
+
+
+
+//------------IO-----------------//
+1. code trace
+1.1. #vim /opt/ros/indigo/lib/ur_driver.py
+1.2. search /set_io
+1.3. handle_set_io()
+
+2. control
+FUN_SET_DIGITAL_OUT = 1
+FUN_SET_FLAG = 2
+FUN_SET_ANALOG_OUT = 3
+FUN_SET_TOOL_VOLTAGE = 4
+#rosservice call /set_io "fun: 1                   
+pin: 1
+state: 0.0"
+
+
+3.state
+#rostopic echo /io_states 
+
+
+
+//------------Joint-----------------//
+#rostopic echo /joint_states
+look name,position
+
+
+//------------Run Joint Command-----------------//
+由ur5套件中ur_drive的test_move.py得知
+#vim ur_driver tset_move.py
+控制由follow_joint_trajectory 的action決定
+
+
+//===============Launch Trace==============/
+
+//-----ur5_moveit_planning_execution.launch------//
+Note.
+a. ur5_moveit_planning_execution.launch  -> move_group.launch
+b. move_group.launch -> planning_context.launch
+c. planning_context.launch -> ur5_joint_limited_robot.urdf.xacro
+d. ur5_joint_limited_robot.urdf.xacro -> ur5.urdf.xacro
+
+1.ur5_moveit_planning_execution.launch
+universal_robot/ur5_moveit_config/ur5_moveit_planning_execution.launch 
+#roslaunch ur5_moveit_config ur5_moveit_planning_execution.launch sim:=true limited:=true
+
+
+2.move_group.launch
+universal_robot/ur5_moveit_config/move_group.launch
+
+3. ur5_joint_limited_robot.urdf.xacro
+universal_robot/ur_description/urdf/ur5_joint_limited_robot.urdf.xacro
+
+4. ur5.urdf.xacro
+universal_robot/ur_description/urdf/ur5.urdf.xacro
+
+
+//-----ur5_moveit_planning_execution.launch------//
+
+1. ur5_bringup.launch
+1.1. include ur_description ur5_upload.launch
+1.2. include ur_bringup ur_common.launch
+
+
+2. ur_description ur5_upload.launch
+if     limited -> ur_description/urdf/ur5_joint_limited_robot.urdf.xacro
+unless limited -> ur_description)/urdf/ur5_robot.urdf.xacro
+
+3. ur_bringup ur_common.launch
+3.1. driver.py
+if  teach_mode      -> ur_driver/driver.py
+unless  teach_mode  -> ur_driver/driver_teach.py
+
+3.2. tf2_ros
+pkg=tf2_ros type=buffer_server
+
+
