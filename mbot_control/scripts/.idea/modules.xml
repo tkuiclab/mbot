@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$USER_HOME$/ur5/python-urx/.idea/python-urx.iml" filepath="$USER_HOME$/ur5/python-urx/.idea/python-urx.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/scripts.iml" filepath="$PROJECT_DIR$/.idea/scripts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../universal_robot/.idea/universal_robot.iml" filepath="$PROJECT_DIR$/../../universal_robot/.idea/universal_robot.iml" />
     </modules>
   </component>
 </project>

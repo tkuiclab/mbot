@@ -1,0 +1,115 @@
+
+
+
+## whereis follow_joint_trajectory???? ##
+class URTrajectoryFollower:
+	 def __init__
+		self.robot = robot
+	 	self.server = actionlib.ActionServer("follow_joint_trajectory",
+                                             FollowJointTrajectoryAction,
+                                             self.on_goal, self.on_cancel, auto_start=False)
+	 def _update(self, event):
+		try:
+                    self.robot.send_servoj(999, setpoint.positions, 4 * self.RATE)
+                except socket.error:
+                    pass
+
+
+## whereis URTrajectoryFollower  usage???? ##
+def main():
+
+	 r = getConnectedRobot(wait=True, timeout=1.0)
+	...
+	action_server = URTrajectoryFollower(r, rospy.Duration(1.0))
+        action_server.start()
+
+
+
+## whereis getConnectedRobot  ???? ##
+def getConnectedRobot(wait=False, timeout=-1):
+        return connected_robot
+
+
+
+## whereis connected_robot  ???? ##
+## result: 50001 (CommanderTCPHandler) ##
+def setConnectedRobot(r):
+    global connected_robot, connected_robot_lock
+    with connected_robot_lock:
+        connected_robot = r
+        connected_robot_cond.notify()
+
+
+## whereis setConnectedRobot()  usage???? ##
+class CommanderTCPHandler(SocketServer.BaseRequestHandler):
+	...
+	def handle(self):
+        self.__socket_lock = threading.Lock()
+        setConnectedRobot(self)
+
+## whereis CommanderTCPHandler()  usage???? ##
+DEFAULT_REVERSE_PORT = 50001
+def main():
+	server = TCPServer(("", reverse_port), CommanderTCPHandler)
+
+
+
+
+
+
+
+
+//=====set_io==========//
+def set_io_server():
+    s= rospy.Service('set_io', SetIO, handle_set_io)
+
+
+def handle_set_io(req):
+    r = getConnectedRobot(wait=False)				#####  ------>  from :50001
+    if r:
+        if req.fun == FUN_SET_DIGITAL_OUT:
+            r.set_digital_out(req.pin, req.state)
+            return True
+        elif req.fun == FUN_SET_FLAG:
+            r.set_flag(req.pin, req.state)
+            return True
+        elif req.fun == FUN_SET_ANALOG_OUT:
+            r.set_analog_out(req.pin, req.state)
+            return True
+        elif req.fun == FUN_SET_TOOL_VOLTAGE:
+            r.set_tool_voltage(req.pin)
+            return True
+    else:
+        raise ROSServiceException("Robot not connected")
+
+
+
+
+//=====ur_driver/setPayload==========//
+
+class URServiceProvider(object):
+    def __init__(self, robot):
+        self.robot = robot
+        rospy.Service('ur_driver/setPayload', SetPayload, self.setPayload)
+
+    def set_robot(self, robot):
+        self.robot = robot
+
+    def setPayload(self, req):
+        if req.payload < min_payload or req.payload > max_payload:
+            print 'ERROR: Payload ' + str(req.payload) + ' out of bounds (' + str(min_payload) + ', ' + str(max_payload) + ')'
+            return False
+        
+        if self.robot:
+            self.robot.send_payload(req.payload)
+        else:
+            return False
+        return True
+
+
+def main():
+		if service_provider:
+                    service_provider.set_robot(r) 			---------->r :50001
+                else:
+                    service_provider = URServiceProvider(r)
+
