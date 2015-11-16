@@ -19,6 +19,39 @@
 </head>
 
 <body class="">
+<nav>
+	<ul class="list-unstyled main-menu">  
+		<!--Include your navigation here-->
+		<li class="text-left"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#" id="nav-close">x</a></li>
+		<li><a href="teach_mode.html">Teach Mode <span class="icon"></span></a></li>
+		<li><a href="http://www.facebook.com">Facebook <span class="icon"></span></a></li>
+		<li><a href="http://www.google.com">Google <span class="icon"></span></a></li>
+		<li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Dropdown<span class="caret"></span></a>
+		<ul class="list-unstyled" data-index="0" style="display: none;">
+			<li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu One <span class="icon"></span></a></li>
+			<li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu Two <span class="icon"></span></a></li>
+			<li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu Three <span class="icon"></span></a></li>
+		</ul>
+		</li>
+	</ul>
+</nav>
+<div id="fixedTop">
+	<ul>
+		<li class="left">
+			<a id="nav-expander" class="nav-expander fixed">
+			<i class="fa fa-bars fa-lg white"></i>
+			</a>
+		</li>
+		<li class="center">
+			<strong>Mobile Manipulator</strong>
+		</li>
+		<li  class="right">				
+		</li>
+	</ul>
+</div>
+<BR>
+<BR>
+<BR>
 <div class="container">
 	<!--Direction_Panel-->
 	<div id="directionPanel" class="col-md-4"  style="border:3px #4fd7f4 double">
@@ -89,32 +122,32 @@
 			<tr>
 				<td>Y</td>
 				<td><h4 id="output_ly" style="color:red"></td>
-				<td><a id="plus_ly" class="control"><i class="fa fa-plus-circle fa-2x"></i></a></td>
-				<td><a id="minus_ly" class="control"><i class="fa fa-minus-circle fa-2x"></i></a></td>
+				<td><a id="plus_ly" class="control"><i class="fa fa-plus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
+				<td><a id="minus_ly" class="control"><i class="fa fa-minus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
 			</tr>
 			<tr>
 				<td>Z</td>
 				<td><h4 id="output_lz" style="color:red"></td>
-				<td><a id="plus_lz" class="control"><i class="fa fa-plus-circle fa-2x"></i></a></td>
-				<td><a id="minus_lz" class="control"><i class="fa fa-minus-circle fa-2x"></i></a></td>
+				<td><a id="plus_lz" class="control"><i class="fa fa-plus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
+				<td><a id="minus_lz" class="control"><i class="fa fa-minus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
 			</tr>
 			<tr>
 				<td>RX</td>
 				<td><h4 id="output_ax" style="color:red"></td>
-				<td><a id="plus_ax" class="control"><i class="fa fa-plus-circle fa-2x"></i></a></td>
-				<td><a id="minus_ax" class="control"><i class="fa fa-minus-circle fa-2x"></i></a></td>
+				<td><a id="plus_ax" class="control"><i class="fa fa-plus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
+				<td><a id="minus_ax" class="control"><i class="fa fa-minus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
 			</tr>
 			<tr>
 				<td>RY</td>
 				<td><h4 id="output_ay" style="color:red"></td>
-				<td><a id="plus_ay" class="control"><i class="fa fa-plus-circle fa-2x"></i></a></td>
-				<td><a id="minus_ay" class="control"><i class="fa fa-minus-circle fa-2x"></i></a></td>
+				<td><a id="plus_ay" class="control"><i class="fa fa-plus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
+				<td><a id="minus_ay" class="control"><i class="fa fa-minus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
 			</tr>
 			<tr>
 				<td>RZ</td>
 				<td><h4 id="output_az" style="color:red"></td>
-				<td><a id="plus_az" class="control"><i class="fa fa-plus-circle fa-2x"></i></a></td>
-				<td><a id="minus_az" class="control"><i class="fa fa-minus-circle fa-2x"></i></a></td>
+				<td><a id="plus_az" class="control"><i class="fa fa-plus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
+				<td><a id="minus_az" class="control"><i class="fa fa-minus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
 			</tr>
 			<tr>
 				<td colspan="2">&nbsp;</td>
@@ -337,6 +370,15 @@
 	var io_default = false;
 	var mouseStillDown = false;
 	var eef_Sub_lx,eef_Sub_ly,eef_Sub_lz,eef_Sub_ax,eef_Sub_ay,eef_Sub_az;
+	//Navigation Menu Slider
+	$('#nav-expander').on('click',function(e){
+		e.preventDefault();
+		$('body').toggleClass('nav-expanded');
+	});
+	$('#nav-close').on('click',function(e){
+		e.preventDefault();
+		$('body').removeClass('nav-expanded');
+	});
 </script>
 </body>
 </html>
