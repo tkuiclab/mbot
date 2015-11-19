@@ -163,7 +163,13 @@ class joint_states_publisher(threading.Thread):
     def __init__(self):
         #super(joint_states_publisher,self).__init__(name="thread-pub_joint_states")
         threading.Thread.__init__(self)
+        #************Subscribe ur_speed to control ur5
+        rospy.Subscriber("ur_speed", Twist, self.speed_callback)
         #rospy.init_node('ur_control_server')
+
+    def speed_callback(self,data):
+        speeds = [0,0,0,0,0,0]
+        print(data.linear.x)
 
     def run(self):
         joint_states_pub = rospy.Publisher('joint_states', JointState, queue_size=10)
@@ -173,6 +179,8 @@ class joint_states_publisher(threading.Thread):
         joint_states = JointState()
         rate = rospy.Rate(10) # 10hz
         while not rospy.is_shutdown():
+
+            #*************Publish Joint states & EEF states
             joint_tmp = rob.getj()
             eef_tmp = rob.getl()
             #print(pose)
@@ -199,9 +207,10 @@ class joint_states_publisher(threading.Thread):
             eef_states.angular.y = eef_tmp[4]
             eef_states.angular.z = eef_tmp[5]
 
-
             joint_states_pub.publish(joint_states)
             eef_pub.publish(eef_states)
+
+
             rate.sleep()
 
 
