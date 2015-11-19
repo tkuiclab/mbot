@@ -169,7 +169,14 @@ class joint_states_publisher(threading.Thread):
 
     def speed_callback(self,data):
         speeds = [0,0,0,0,0,0]
-        print(data.linear.x)
+        speeds[0] = data.linear.x
+        speeds[1] = data.linear.y
+        speeds[2] = data.linear.z
+        speeds[3] = data.angular.x
+        speeds[4] = data.angular.y
+        speeds[5] = data.angular.z
+
+        rob.speedl(speeds, acc=0.1, min_time=2)
 
     def run(self):
         joint_states_pub = rospy.Publisher('joint_states', JointState, queue_size=10)
