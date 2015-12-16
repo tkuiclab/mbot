@@ -107,14 +107,20 @@
 
 	xmlhttp.onreadystatechange = function(){
 		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
-			var myArr = JSON.parse(xmlhttp.responseText);
-			myFunction(myArr);
+			//var myArr = JSON.parse(xmlhttp.responseText);
+			//show_APC_json(myArr);
+			parse_APC_json(xmlhttp.responseText);
 		}
 	};
 	xmlhttp.open("GET",url,true);
 	xmlhttp.send();
 
-	function myFunction(arr){
+	function parse_APC_json(data){
+		var myArr = JSON.parse(data);
+		show_APC_json(myArr);
+	}
+
+	function show_APC_json(arr){
 		var outA="";var outB="";var outC="";
 		var outD="";var outE="";var outF="";
 		var outG="";var outH="";var outI="";

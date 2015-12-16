@@ -20,8 +20,8 @@
 		<ul class="list-unstyled main-menu">  
 			<!--Include your navigation here-->
 			<li class="text-left"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#" id="nav-close">x</a></li>
+			<li><a href="index.html">Remote Control <span class="icon"></span></a></li>
 			<li><a href="teach_mode.html">Teach Mode <span class="icon"></span></a></li>
-			<li><a href="json_decoder.html">JSON Decoder <span class="icon"></span></a></li>
 			<li><a href="http://www.iarc.tku.edu.tw/">TKU IARC <span class="icon"></span></a></li>
 			<li><a href="http://www.facebook.com">Facebook <span class="icon"></span></a></li>
 			<li><a href="http://www.google.com">Google <span class="icon"></span></a></li>
@@ -107,12 +107,19 @@
 
 	xmlhttp.onreadystatechange = function(){
 		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
-			var myArr = JSON.parse(xmlhttp.responseText);
-			myFunction(myArr);
+			//var myArr = JSON.parse(xmlhttp.responseText);
+			//myFunction(myArr);
+			parse_APC_json(xmlhttp.responseText);
 		}
 	};
 	xmlhttp.open("GET",url,true);
 	xmlhttp.send();
+
+	function parse_APC_json(data){
+		var myArr = JSON.parse(xmlhttp.responseText);
+		myFunction(myArr);
+		
+	}
 
 	function myFunction(arr){
 		var outA="";var outB="";var outC="";
