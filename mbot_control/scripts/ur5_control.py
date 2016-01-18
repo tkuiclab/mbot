@@ -8,7 +8,7 @@ import time
 import rospy
 import sys
 import threading
-from ur_control.srv import *
+#from ur_control.srv import *
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 import logging
@@ -58,7 +58,7 @@ class ur_control(object):
                     rob.set_digital_out(1,True)
                 else:
                     rob.set_digital_out(1,False)
-                rospy.sleep(2)
+                rospy.sleep(1)
 
 
             elif cmd.cmd == 'Joint':
@@ -67,8 +67,8 @@ class ur_control(object):
                 for j in range(len(cmd.joint_position)):
                     target_joints[j] = cmd.joint_position[j]
 
-                rob.movej(target_joints,acc,vel)
-                rospy.sleep(2)
+                rob.movej(target_joints,acc,vel,wait=True,relative=False,threshold=None)
+                #rospy.sleep(2)
 
             elif cmd.cmd == 'PTP':
                 # target pose x y z r p y
@@ -83,11 +83,11 @@ class ur_control(object):
                 p_target_pose[4] = cmd.pose.angular.y
                 p_target_pose[5] = cmd.pose.angular.z
 
-                #print "x={0}, y={1}, z={2}, rx={3}, ry={4}, rz={5} ...);".\
-                #    format(target_position[0],target_position[1],target_position[2],target_pose[0],target_pose[1],target_pose[2])
+                print "(x={0}, y={1}, z={2}, rx={3}, ry={4}, rz={5} ...);".\
+                    format(p_target_pose[0],p_target_pose[1],p_target_pose[2],p_target_pose[3],p_target_pose[4],p_target_pose[5])
 
-                rob.movep(p_target_pose,acc,vel)
-                rospy.sleep(2)
+                rob.movep(p_target_pose,acc,vel,wait=True,relative=False)
+                #rospy.sleep(2)
 
             elif cmd.cmd == 'Line':
                 l_target_pose = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
@@ -99,21 +99,21 @@ class ur_control(object):
                 l_target_pose[5] = cmd.pose.angular.z
 
                 rob.movel(l_target_pose,acc,vel)
-                rospy.sleep(2)
+                #rospy.sleep(2)
 
             elif cmd.cmd == 'Shift_X':
                 int_X = cmd.pose.linear.x
                 pose = [0.0,0.0,0.0,0.0,0.0,0.0]
                 pose[0] += int_X
-                rob.movel(pose,acc,vel,False,True)
-                rospy.sleep(2)
+                rob.movel(pose,acc,vel,wait=True,relative=True)
+                #rospy.sleep(2)
 
             elif cmd.cmd == 'Shift_Y':
                 int_Y = cmd.pose.linear.y
                 pose = [0.0,0.0,0.0,0.0,0.0,0.0]
                 pose[1] += int_Y
-                rob.movel(pose,acc,vel,False,True)
-                rospy.sleep(2)
+                rob.movel(pose,acc,vel,wait=True,relative=True)
+                #rospy.sleep(2)
 
             elif cmd.cmd == 'Shift_Z':
                 int_Z = cmd.pose.linear.z
@@ -125,31 +125,33 @@ class ur_control(object):
                 print(pose)
                 '''
                 pose[2] += int_Z
-                rob.movel(pose,acc,vel,False,True)
-                rospy.sleep(2)
+                rob.movel(pose,acc,vel,wait=True,relative=True)
+                #rospy.sleep(2)
 
             elif cmd.cmd == 'Shift_RX':
                 ang = cmd.pose.angular.x
                 pose = [0.0,0.0,0.0,0.0,0.0,0.0]
                 pose[3] += ang
-                rob.movel(pose,acc,vel,False,True)
-                rospy.sleep(2)
+                rob.movel(pose,acc,vel,wait=True,relative=True)
+                #rospy.sleep(2)
 
             elif cmd.cmd == 'Shift_RY':
                 ang = cmd.pose.angular.y
                 pose = [0.0,0.0,0.0,0.0,0.0,0.0]
                 pose[4] += ang
-                rob.movel(pose,acc,vel,False,True)
-                rospy.sleep(2)
+                rob.movel(pose,acc,vel,wait=True,relative=True)
+                #rospy.sleep(2)
 
             elif cmd.cmd == 'Shift_RZ':
                 ang = cmd.pose.angular.z
                 pose = [0.0,0.0,0.0,0.0,0.0,0.0]
                 pose[5] += ang
-                rob.movel(pose,acc,vel,False,True)
-                rospy.sleep(2)
+                rob.movel(pose,acc,vel,wait=True,relative=True)
+                #rospy.sleep(2)
+
 
         if success:
+            rospy.loginfo('------Control Finish------')
             self._result.notify = 'Success'
             self._as.set_succeeded(self._result)
 
@@ -164,7 +166,7 @@ class joint_states_publisher(threading.Thread):
         #super(joint_states_publisher,self).__init__(name="thread-pub_joint_states")
         threading.Thread.__init__(self)
         #************Subscribe ur_speed to control ur5
-        rospy.Subscriber("ur_speed", Twist, self.speed_callback)
+        rospy.Subscriber("ur_speed", Twist, self.speed_callback,None,1)
         #rospy.init_node('ur_control_server')
 
     def speed_callback(self,data):
@@ -238,8 +240,10 @@ if __name__ == "__main__":
     try:
         js_p = joint_states_publisher()
         js_p.start()
-        ur_commander = ur_control(rospy.get_name(),0.8,0.2)
-        ur_commander.set_speed(0.8,0.2)
+        ur_commander = ur_control(rospy.get_name(),0.1,0.04)
+        ur_commander.set_speed(0.15,0.1)
+        #ur_commander.set_speed(0.60,0.10)
+        #ur_commander.set_speed(0.80,0.20)
         rospy.spin()
     finally:
         rob.close()

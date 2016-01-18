@@ -60,3 +60,12 @@ $ sudo vim /etc/default/mini-httpd
 
 START=1
 
+
+# ur control
+roslaunch rosbridge_server rosbridge_websocket.launch
+
+rosrun mbot_control info.py
+
+rosrun mbot_control ur5_control.py
+
+

@@ -40,7 +40,7 @@ class Service(object):
         global pub
         global msg
         msg = Twist()
-        pub = rospy.Publisher('ur_speed', Twist, queue_size=10)
+        pub = rospy.Publisher('ur_speed', Twist, queue_size=1)
 
     def init_joystick(self):
         pygame.init()
