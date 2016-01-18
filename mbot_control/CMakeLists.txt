@@ -72,20 +72,16 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-## Declare a cpp library
-# add_library(strategy
-#   src/${PROJECT_NAME}/strategy.cpp
-# )
 
-## Declare a cpp executable
-# add_executable(strategy_node src/strategy_node.cpp)
 
-## Add cmake target dependencies of the executable/library
-## as an example, message headers may need to be generated before nodes
-# add_dependencies(strategy_node strategy_generate_messages_cpp)
 
-## Specify libraries to link a library or executable target against
-# target_link_libraries(strategy_node
-#   ${catkin_LIBRARIES}
-# )
+##############################################################################
+# Subprojects
+##############################################################################
 
+foreach(subdir
+    base
+    )
+  #install(DIRECTORY ${subdir} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/qt_tutorials)
+  add_subdirectory(${subdir})
+endforeach()

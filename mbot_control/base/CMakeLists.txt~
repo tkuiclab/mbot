@@ -1,0 +1,7 @@
+
+
+add_library(csslLib cssl/cssl.h cssl/cssl.c cssl/uty.c)
+add_executable(base motion.cpp MotorControl.h)
+target_link_libraries(base ${catkin_LIBRARIES})
+target_link_libraries(base csslLib)
+
