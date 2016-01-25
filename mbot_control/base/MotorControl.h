@@ -65,8 +65,8 @@ int mcssl_init()
         //puts("\n--->RS232 OPEN FAIL (cssl_open error) <---");
         fflush(stdout);
 
-	//-------try to open /dev/ttyACM1 -------
-	char *dev_ACM1="/dev/ttyACM1";
+	//-------try to open /dev/ttyACM3 -------
+	char *dev_ACM1="/dev/ttyACM3";
 	printf("(Base Node) Open RS232(%s)\n",dev_ACM1);
 	serial=cssl_open(dev_ACM1, mcssl_callback, 0, serial_speed, 8, 0, 1);
 	

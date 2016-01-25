@@ -1,7 +1,6 @@
 // demo: CAN-BUS Shield, send data
 #include "CAN_BUS_Shield/mcp_can.h"
 #include <SPI.h>
-
 // the cs pin of the version after v1.1 is default to D9
 // v0.9b and v1.0 is default D10
 const int SPI_CS_PIN = 9;
@@ -20,6 +19,16 @@ int id_1 = 0x601;
 int id_2 = 0x602;
 int id_3 = 0x603;
 int id_4 = 0x604;
+double pi = 3.14159265359;
+double sita = 0;
+double alfa = 0.25*pi;
+double l = 388.91;
+double beta1 = 0.25*pi;
+double beta2 = 0.75*pi;
+double beta3 = 1.25*pi;
+double beta4 = 1.75*pi;
+double r = 25.4;
+float v1,v2,v3,v4;
 
 
 
@@ -94,16 +103,24 @@ void stop_all(){
 
 
 void set_motor_rpm(int id,int rpm){
-  unsigned char rpm_low  = 0xff & rpm;          //get 0x00ff of rpm
-  unsigned char rpm_high = (rpm >> 8) & 0xff;   //get 0xff00 of rpm
-  
-  
+//    Serial.println(rpm, HEX);
+  unsigned char rpm_low1  = 0xff & rpm;          //get 0x00ff of rpm
+  unsigned char rpm_high2 = (rpm >> 8)  & 0xff;   //get 0xff00 of rpm
+  unsigned char rpm_low3  = (rpm >> 8 >> 8 ) & 0xff;    //get 0xff0000 of rpm
+  unsigned char rpm_high4 = (rpm >> 8 >> 8 >> 8) & 0xff;   //get 0xff000000 of rpm
+      
+//      Serial.println(rpm_low1, HEX);
+//      Serial.println(rpm_high2, HEX);
+//      Serial.println(rpm_low3, HEX);
+//      Serial.println(rpm_high4, HEX);
   //speed for buffer 
-  unsigned char buf_speed[8]={0x23, 0xff, 0x60, 0, rpm_low, rpm_high, 0,0};
+  unsigned char buf_speed[8]={0x23, 0xff, 0x60, 0, rpm_low1, rpm_high2, rpm_low3, rpm_high4};
+  
   CAN.sendMsgBuf(id, 0, 8, buf_speed);
+//        Serial.println(v3);
 
   //char *show_str = new char[64];
-  //sprintf(show_str,"set Motor %d to rpm=%d(0x%04x),rpm_low=0x%02x,rpm_high=0x%02x",id,rpm,rpm,rpm_low,rpm_high);
+//  sprintf(show_str,"set Motor %d to rpm=%d(0x%04x),rpm_low=0x%02x,rpm_high=0x%02x",id,rpm,rpm,rpm_low,rpm_high);
   //Serial.println(show_str);
 
 }
@@ -112,22 +129,47 @@ void set_motor_rpm(int id,int rpm){
 void set_base_speed(int x,int y,int yaw){
   if(x==0 && y==0 && yaw==0){
     stop_all();
-  }
-
-  set_motor_rpm(id_1,500);
-  set_motor_rpm(id_2,400);
-  set_motor_rpm(id_3,300);
-  set_motor_rpm(id_4,400);
+  } 
   
+    v1= (cos(sita+alfa)/sin(-alfa))*x + (sin(sita+alfa)/sin(-alfa))*y + (l*sin(sita+alfa-beta2)/sin(-alfa))*yaw;
+    v2= (cos(sita-alfa)/sin(alfa))*x + (sin(sita-alfa)/sin(alfa))*y + (l*sin(sita-alfa-beta1)/sin(alfa))*yaw;
+    v3= (cos(sita-alfa)/sin(alfa))*x + (sin(sita-alfa)/sin(alfa))*y + (l*sin(sita-alfa-beta3)/sin(alfa))*yaw;
+    v4= (cos(sita+alfa)/sin(-alfa))*x +(sin(sita+alfa)/sin(-alfa))*y + (l*sin(sita+alfa-beta4)/sin(-alfa))*yaw;
+
+    v1*=1/r;
+    v2*=-1/r;
+    v3*=1/r;
+    v4*=-1/r;
+//
+        Serial.print("v1=");
+        Serial.println(v1);
+                Serial.print("v2=");
+        Serial.println(v2);
+                Serial.print("v3=");
+        Serial.println(v3);
+                Serial.print("v4=");
+        Serial.println(v4);
+//  CAN.sendMsgBuf(id_1, 0, 8, speed500);
+//  CAN.sendMsgBuf(id_2, 0, 8, speed500);
+//  CAN.sendMsgBuf(id_3, 0, 8, speed500);
+//  CAN.sendMsgBuf(id_4, 0, 8, speed500);
+    set_motor_rpm(id_1,v1*500);
+    set_motor_rpm(id_2,v2*500);
+    set_motor_rpm(id_3,v3*500);
+    set_motor_rpm(id_4,v4*500);
+
+//    set_motor_rpm(id_4,-500);
+    
+    
 }
 
 
 void test_all_speed500(){
   Serial.println("all_speed500");
-  CAN.sendMsgBuf(id_1, 0, 8, speed500);
-  CAN.sendMsgBuf(id_2, 0, 8, speed500);
-  CAN.sendMsgBuf(id_3, 0, 8, speed500);
-  CAN.sendMsgBuf(id_4, 0, 8, speed500);
+  CAN.sendMsgBuf(0x601, 0, 8, speed500);
+  CAN.sendMsgBuf(0x602, 0, 8, speed500);
+  CAN.sendMsgBuf(0x603, 0, 8, speed500);
+  CAN.sendMsgBuf(0x604, 0, 8, speed500);
   
 }
 
@@ -173,6 +215,10 @@ const int VAL = 2;    //get value
 int step = CMD;
 
 
+
+//   x   -100   y 
+
+
 //arduino loop function
 void loop()
 {
@@ -183,7 +229,7 @@ void loop()
         Serial.print("get data=");
         Serial.println(data);
 
-
+        
          switch (step)
         {
             case CMD: 

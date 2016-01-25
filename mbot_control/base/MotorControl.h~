@@ -56,22 +56,22 @@ int mcssl_init()
     cssl_start();
 
     // modify 9600 to desire value 
-    printf("(Base Node): Open RS232(%s)\n",devs);
+    printf("(Base Node) Open RS232(%s)\n",devs);
     serial=cssl_open(devs, mcssl_callback, 0, serial_speed, 8, 0, 1);
 
     if (!serial){
         printf("%s\n",cssl_geterrormsg());
-	printf("(Base Node): Open RS232(%s) fail\n",devs);
+	printf("(Base Node) Open RS232(%s) fail\n",devs);
         //puts("\n--->RS232 OPEN FAIL (cssl_open error) <---");
         fflush(stdout);
 
-	//-------try to open /dev/ttyACM1 -------
-	char *dev_ACM1="/dev/ttyACM1";
-	printf("(Base Node): Open RS232(%s)\n",dev_ACM1);
+	//-------try to open /dev/ttyACM2 -------
+	char *dev_ACM1="/dev/ttyACM2";
+	printf("(Base Node) Open RS232(%s)\n",dev_ACM1);
 	serial=cssl_open(dev_ACM1, mcssl_callback, 0, serial_speed, 8, 0, 1);
 	
 	if (!serial){
-		printf("(Base Node): Open RS232(%s) fail\n",dev_ACM1);
+		printf("(Base Node) Open RS232(%s) fail\n",dev_ACM1);
 		fflush(stdout);
         	return -1;
 	}
@@ -93,12 +93,12 @@ void mcssl_finish(){
 }
 
 void mcssl_motor_stop(){
-	printf("(Base Node): stop all motors\n");
+	printf("(Base Node) stop all motors\n");
 	cssl_putchar(serial,'s');
 }
 
 void mcssl_motor_init(){
-	printf("(Base Node)  init all motors\n");
+	printf("(Base Node) init all motors\n");
 	cssl_putchar(serial,'i');
 }
 

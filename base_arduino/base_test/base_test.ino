@@ -26,11 +26,14 @@ int id_4 = 0x604;
 unsigned char buf[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 
 // 1. shutdown
-unsigned char down[8] = {0x2b, 0x40, 0x60,0, 0x60, 0,0,0};
+unsigned char down[8] = {0x2b, 0x40, 0x60,0, 0x06, 0,0,0};
 
 // 2. switch on
 unsigned char on0[8] = {0x2b, 0x40, 0x60, 0, 0x0E, 0,0,0};
 unsigned char on[8] = {0x2b, 0x40, 0x60, 0, 7, 0,0,0};
+
+// 2. switch off
+unsigned char switchOff[8] = {0x2b, 0x40, 0x60, 0, 0xd, 0,0,0};
 
 // 3. enable 
 unsigned char enable[8] = {0x2b, 0x40, 0x60, 0, 15, 0,0,0};
@@ -71,12 +74,34 @@ void init_motor(int id){
   
 }
 
+
+
 //init all motors
 void init_all(){
   init_motor(id_1);
   init_motor(id_2);
   init_motor(id_3);
   init_motor(id_4);
+  
+}
+
+
+//restart motor for motor(id)
+void restart_motor(int id){
+  int delay_time = 50;
+  
+  CAN.sendMsgBuf(id, 0, 8, down);
+  
+  CAN.sendMsgBuf(id, 0, 8, on);
+  
+  CAN.sendMsgBuf(id, 0, 8, enable);
+
+  CAN.sendMsgBuf(id, 0, 8, opmod3);
+  
+  
+  char *show_str = new char[20];
+  sprintf(show_str,"Motor %d -- restart FINISH",id);
+  Serial.println(show_str);
   
 }
 
@@ -99,9 +124,9 @@ void set_motor_rpm(int id,int rpm){
   unsigned char buf_speed[8]={0x23, 0xff, 0x60, 0, rpm_low, rpm_high, 0,0};
   CAN.sendMsgBuf(id, 0, 8, buf_speed);
 
-  char *show_str = new char[32];
-  sprintf(show_str,"set Motor %d to rpm=%d(0x%04x),rpm_low=0x%02x,rpm_high=0x%02x",id,rpm,rpm,rpm_low,rpm_high);
-  Serial.println(show_str);
+  //char *show_str = new char[32];
+  //sprintf(show_str,"set Motor %d to rpm=%d(0x%04x),rpm_low=0x%02x,rpm_high=0x%02x",id,rpm,rpm,rpm_low,rpm_high);
+  //Serial.println(show_str);
 
 }
 
@@ -144,14 +169,42 @@ START_INIT:
 //arduino loop function
 void loop()
 {
-	
+  //CAN.sendMsgBuf(id_1, 0, 8, switchOff);
+  //Serial.println("switchOff finish");
+
   stop_all();
-  delay(2000);
+  Serial.println("Stop");
+
+  delay(3000);
+/*
+  set_motor_rpm(id_1,4000);
+  set_motor_rpm(id_2,4000);
+  set_motor_rpm(id_3,4000);
+  set_motor_rpm(id_4,4000);
+  Serial.println("Run speed at 4000");
+
+  
+
+  delay(3000);
+//*/
+  
+  /*
+  CAN.sendMsgBuf(id_2, 0, 8, switchOff);
+  Serial.println("switchOff finish");
+
+  delay(3000);
 
 
-  //set_motor_rpm(id_1,500);
-  //delay(5000);
+ 
 
+  Serial.println("Enable finish");
+  delay(3000);
+  
+  //init(id_2);
+
+  CAN.sendMsgBuf(id_2, 0, 8, speed500);
+  delay(5000);
+  */
 }
 
 /*********************************************************************************************************
