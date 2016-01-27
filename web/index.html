@@ -52,7 +52,7 @@
 <BR>
 <div class="paddingContainer">
 	<!--Direction_Panel-->
-	<div id="directionPanel" class="col-lg-1 col-md-1" style="border:3px #4fd7f4 double" padding="5">
+	<div id="directionPanel" class="col-lg-1 col-md-1" style="border:3px #4fd7f4 double">
 		<table width="100%" height="100%" cellpadding="0" cellspacing="0">
 		<tr colspan="3"><strong>Manipulator Control</strong></tr>
 		<tr height="10%">
@@ -76,24 +76,29 @@
 			<td width="20%">&nbsp;</td>
 		</tr>
 		<tr height="10%">
-			<td width="20%"><a id="direction_Rup" class="control"><i class="fa fa fa-angle-double-left  fa-3x"></i></a></td>
+			<td width="20%"><a id="direction_yaw_left" class="control"><i class="fa fa fa-angle-double-left  fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_Rdown" class="control"><i class="fa fa fa-angle-double-right fa-3x"></i></a></td>
+			<td width="20%"><a id="direction_yaw_right" class="control"><i class="fa fa fa-angle-double-right fa-3x"></i></a></td>
 		</tr>
 		<tr height="10%">
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_Rup" class="control"><i class="fa fa-arrow-up  fa-3x"></i></a></td>
+			<td width="20%"><a id="direction_pitch_up" class="control"><i class="fa fa-arrow-up  fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
 		</tr>
 		<tr height="10%">
-			<td width="20%"><a id="direction_Rleft" class="control"><i class="fa fa-arrow-left fa-3x"></i></a></td>
+			<td width="20%"><a id="direction_roll_left" class="control"><i class="fa fa-arrow-left fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_Rright" class="control"><i class="fa fa-arrow-right fa-3x"></i></a></td>
+			<td width="20%"><a id="direction_roll_right" class="control"><i class="fa fa-arrow-right fa-3x"></i></a></td>
 		</tr>
-		<tr height="20%">
+		<tr height="10%">
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_Rback" class="control"><i class="fa fa-arrow-down fa-3x"></i></a></td>
+			<td width="20%"><a id="direction_pitch_down" class="control"><i class="fa fa-arrow-down fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
+		</tr>
+		<tr height="10%">
+			<td width="20%">Speed&nbsp;</td>
+			<td width="20%"><input id="direction_value" style="width:100px" placeholder="50"></input></td>
+			<td width="20%">%&nbsp;&nbsp;<a id="direction_send" class="control"><i class="fa fa-paper-plane fa-lg"></i></a></td>
 		</tr>
 		</table>
 	</div>
@@ -127,8 +132,8 @@
 		</tr>
 		<tr height="50%">
 			<td width="20%">Speed&nbsp;</td>
-			<td width="20%"><input style="width:100px"></input></td>
-			<td width="20%">&nbsp;<a class="control"><i class="fa fa-paper-plane fa-2x"></i></a></td>
+			<td width="20%"><input style="width:100px" placeholder="50"></input></td>
+			<td width="20%">%&nbsp;<a class="control"><i class="fa fa-paper-plane fa-lg"></i></a></td>
 		</tr>
 		</table>
 	</div>
@@ -278,7 +283,7 @@
 		<div id="panelTop">Information</div>
 		<div id="infoContent" class="panelContent"></div>
 	</div>
-	<!-- Dialog -->
+	<!-- Dialog : popup when the button is clicked -->
 	<div class="modal fade" id="setting_Dialog" role="dialog">
 		<div class="modal-dialog">
 		<!--content-->
@@ -361,8 +366,10 @@
 				<table id="dialog_table_plus">
 				<tbody>
 				<tr height="15%">
-					<td><h4 id="dialog_show_plus"></h4></td>
-					<td><input type="text" class="form-control" id="input_plus_d"data-fv-field="number"></td>
+					<td><h4 id="dialog_show_plus" class="plus_lx minus_lx plus_ly minus_ly plus_lz minus_lz
+										plus_ax minus_ax plus_ay minus_ay plus_az minus_az"></h4>
+					</td>
+					<td><input type="text" class="form-control" id="input_plus_d" data-fv-field="number" autofocus></td>
 					<td><h4>mm</h4></td>
 				</tr>
 				<tr height="10%">
@@ -401,7 +408,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- /container -->
+<!-- /container -->
 </div>
 <!-- Javascript
 ================================================== -->
@@ -417,11 +424,12 @@
 
 <script src="js/index.js"></script>
 <script src="js/index_eef_panel.js"></script>
+<script src="js/index_direct_panel.js"></script>
 <script type="text/javascript" type="text/javascript">
 	var mlist = [];
 	var io_default = false;
 	var mouseStillDown = false;
-	var eef_Sub_lx,eef_Sub_ly,eef_Sub_lz,eef_Sub_ax,eef_Sub_ay,eef_Sub_az;
+	var eef_Sub_lx=0,eef_Sub_ly=0,eef_Sub_lz=0,eef_Sub_ax=0,eef_Sub_ay=0,eef_Sub_az=0;
 	//Navigation Menu Slider
 	$('#nav-expander').on('click',function(e){
 		e.preventDefault();
@@ -431,6 +439,11 @@
 		e.preventDefault();
 		$('body').removeClass('nav-expanded');
 	});
+	//Global function
+	function returnArray6(val1,val2,val3,val4,val5,val6){
+		var tmpArr = [val1,val2,val3,val4,val5,val6];
+		return tmpArr;
+	}
 </script>
 </body>
 </html>

@@ -1,0 +1,2 @@
+string msnname
+string msnmessage

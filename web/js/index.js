@@ -23,6 +23,13 @@ var teachModeClient = new ROSLIB.ActionClient({
 	serverName : '/teach_mode_server',
 	actionName : 'mbot_control/TeachCommandListAction'
 });
+// Publishing to a Topic
+// ----------------------
+var direct_Pub = new ROSLIB.Topic({
+	ros:ros,
+	name:'ur_speed',
+	messageType : 'geometry_msgs/Twist'
+});
 // Subscribing to a Topic
 // ----------------------
 var joint_Sub = new ROSLIB.Topic({
@@ -35,10 +42,6 @@ var eef_Sub = new ROSLIB.Topic({
 	name: '/eef_states',
 	messageType : 'geometry_msgs/Twist'
 });
-
-function saveBtn(){
-	console.log("save Btn click");
-}
 
 $(document).ready(function(){
 	$("#infoPanel").draggable();
@@ -73,7 +76,7 @@ $(document).ready(function(){
 		float64[4] = $('#input_j5').val()*(Math.PI/180);
 		float64[5] = $('#input_j6').val()*(Math.PI/180);
 		var send_joint = new ROSLIB.Message({
-			cmd : 'JointPosition',
+			cmd : 'Joint',
 			joint_position : [float64[0],float64[1],float64[2],
 					  float64[3],float64[4],float64[5]]
 		});
@@ -122,7 +125,7 @@ $(document).ready(function(){
 			}
 		});
 		var send_eef = new ROSLIB.Message({
-			cmd : 'EEFPosition',
+			cmd : 'PTP',
 			pose : twist
 		});
 		mlist.push(send_eef);
@@ -194,7 +197,7 @@ $(document).ready(function(){
 		float64[4] = 0;
 		float64[5] = 0;
 		var send_joint = new ROSLIB.Message({
-			cmd : 'JointPosition',
+			cmd : 'Joint',
 			joint_position : [float64[0],float64[1],float64[2],
 					  float64[3],float64[4],float64[5]]
 		});
@@ -221,8 +224,6 @@ $(document).ready(function(){
 		goal.send();
 		mlist = [];
 	});
-	//Panel control(use Left,Right,Plus,Minus button)
-	
 	//Dialog_send
 	$('#control_send_eef_d').on('click',function(e){
 		//console.log(('#table_test').children("tr:nth-child(1)").children("td:nth-child(1)").html('X'));
@@ -246,7 +247,7 @@ $(document).ready(function(){
 			}
 		});
 		var send_eef = new ROSLIB.Message({
-			cmd : 'EEFPosition',
+			cmd : 'PTP',
 			pose : twist
 		});
 		mlist.push(send_eef);
@@ -285,7 +286,7 @@ $(document).ready(function(){
 		float64[4] = $('#input_j5_d').val()*(Math.PI/180);
 		float64[5] = $('#input_j6_d').val()*(Math.PI/180);
 		var send_joint = new ROSLIB.Message({
-			cmd : 'JointPosition',
+			cmd : 'Joint',
 			joint_position : [float64[0],float64[1],float64[2],
 					  float64[3],float64[4],float64[5]]
 		});

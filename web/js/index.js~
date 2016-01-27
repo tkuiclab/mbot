@@ -21,7 +21,14 @@ ros.on('close', function() {
 var teachModeClient = new ROSLIB.ActionClient({
 	ros : ros,
 	serverName : '/teach_mode_server',
-	actionName : 'mbot_control/TeachCommandList'
+	actionName : 'mbot_control/TeachCommandListAction'
+});
+// Publishing to a Topic
+// ----------------------
+var direct_Pub = new ROSLIB.Topic({
+	ros:ros,
+	name:'ur_speed',
+	messageType : 'geometry_msgs/Twist'
 });
 // Subscribing to a Topic
 // ----------------------
@@ -63,6 +70,7 @@ $(document).ready(function(){
 		$('#dialog_table_base').show();
 	});
 	//ROS_Bridge
+	//Joint Control Panel
 	$('#control_send_joint').on('click',function(e){
 		var float64 = new Float64Array(6);
 		float64[0] = $('#input_j1').val()*(Math.PI/180);
@@ -72,7 +80,7 @@ $(document).ready(function(){
 		float64[4] = $('#input_j5').val()*(Math.PI/180);
 		float64[5] = $('#input_j6').val()*(Math.PI/180);
 		var send_joint = new ROSLIB.Message({
-			cmd : 'JointPosition',
+			cmd : 'Joint',
 			joint_position : [float64[0],float64[1],float64[2],
 					  float64[3],float64[4],float64[5]]
 		});
@@ -99,6 +107,7 @@ $(document).ready(function(){
 		goal.send();
 		mlist = [];
 	});
+	//EEF Control Panel
 	$('#control_send_eef').on('click',function(e){
 		var float64 = new Float64Array(6);
 		float64[0] = $('#input_lx').val();
@@ -120,7 +129,7 @@ $(document).ready(function(){
 			}
 		});
 		var send_eef = new ROSLIB.Message({
-			cmd : 'EEFPosition',
+			cmd : 'PTP',
 			pose : twist
 		});
 		mlist.push(send_eef);
@@ -144,6 +153,7 @@ $(document).ready(function(){
 		goal.send();
 		mlist = [];
 	});
+	//IO Control Panel
 	$('#control_io').on('click',function(e){
 		if(io_default===false){
 			io_default=true;
@@ -181,6 +191,7 @@ $(document).ready(function(){
 		goal.send();
 		mlist = [];
 	});
+	//Go Home Control Panel
 	$('#control_send_home').on('click',function(e){
 		var float64 = new Float64Array(6);
 		float64[0] = 0;
@@ -190,7 +201,7 @@ $(document).ready(function(){
 		float64[4] = 0;
 		float64[5] = 0;
 		var send_joint = new ROSLIB.Message({
-			cmd : 'JointPosition',
+			cmd : 'Joint',
 			joint_position : [float64[0],float64[1],float64[2],
 					  float64[3],float64[4],float64[5]]
 		});
@@ -217,8 +228,6 @@ $(document).ready(function(){
 		goal.send();
 		mlist = [];
 	});
-	//Panel control(use Left,Right,Plus,Minus button)
-	
 	//Dialog_send
 	$('#control_send_eef_d').on('click',function(e){
 		//console.log(('#table_test').children("tr:nth-child(1)").children("td:nth-child(1)").html('X'));
@@ -242,7 +251,7 @@ $(document).ready(function(){
 			}
 		});
 		var send_eef = new ROSLIB.Message({
-			cmd : 'EEFPosition',
+			cmd : 'PTP',
 			pose : twist
 		});
 		mlist.push(send_eef);
@@ -281,7 +290,7 @@ $(document).ready(function(){
 		float64[4] = $('#input_j5_d').val()*(Math.PI/180);
 		float64[5] = $('#input_j6_d').val()*(Math.PI/180);
 		var send_joint = new ROSLIB.Message({
-			cmd : 'JointPosition',
+			cmd : 'Joint',
 			joint_position : [float64[0],float64[1],float64[2],
 					  float64[3],float64[4],float64[5]]
 		});
@@ -309,6 +318,7 @@ $(document).ready(function(){
 		mlist = [];
 	});
 	//Topic_Subscribe
+	//Joint info feedback
 	joint_Sub.subscribe(function(message){
 		//Show Progress-bar
 //		document.getElementById('progress-bar_j1').style.width = ((((message.position[0]/Math.PI)*180)+360)/720)*100+'%';
@@ -326,6 +336,7 @@ $(document).ready(function(){
 		$("#output_j5p").html(((message.position[4]/Math.PI)*180).toFixed(2));
 		$("#output_j6p").html(((message.position[5]/Math.PI)*180).toFixed(2));
 	});
+	//EEF info feedback
 	eef_Sub.subscribe(function(message){
 		eef_Sub_lx = message.linear.x;
 		eef_Sub_ly = message.linear.y;
