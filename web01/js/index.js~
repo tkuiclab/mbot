@@ -21,7 +21,7 @@ ros.on('close', function() {
 var teachModeClient = new ROSLIB.ActionClient({
 	ros : ros,
 	serverName : '/teach_mode_server',
-	actionName : 'mbot_control/TeachCommandListAction'
+	actionName : 'mbot_control/TeachCommandList'
 });
 // Subscribing to a Topic
 // ----------------------
@@ -63,7 +63,6 @@ $(document).ready(function(){
 		$('#dialog_table_base').show();
 	});
 	//ROS_Bridge
-	//Joint Control Panel
 	$('#control_send_joint').on('click',function(e){
 		var float64 = new Float64Array(6);
 		float64[0] = $('#input_j1').val()*(Math.PI/180);
@@ -82,7 +81,7 @@ $(document).ready(function(){
 		var goal = new ROSLIB.Goal({
 			actionClient : teachModeClient,
 			goalMessage : {
-				cmd_list : mlist
+				cmd : mlist
 			}
 		});
 		// Print out their output into the terminal.
@@ -100,7 +99,6 @@ $(document).ready(function(){
 		goal.send();
 		mlist = [];
 	});
-	//EEF Control Panel
 	$('#control_send_eef').on('click',function(e){
 		var float64 = new Float64Array(6);
 		float64[0] = $('#input_lx').val();
@@ -146,7 +144,6 @@ $(document).ready(function(){
 		goal.send();
 		mlist = [];
 	});
-	//IO Control Panel
 	$('#control_io').on('click',function(e){
 		if(io_default===false){
 			io_default=true;
@@ -168,7 +165,7 @@ $(document).ready(function(){
 		var goal = new ROSLIB.Goal({
 			actionClient : teachModeClient,
 			goalMessage : {
-				cmd_list : mlist
+				cmd : mlist
 			}
 		});
 		goal.on('feedback', function(feedback) {
@@ -184,7 +181,6 @@ $(document).ready(function(){
 		goal.send();
 		mlist = [];
 	});
-	//Go Home Control Panel
 	$('#control_send_home').on('click',function(e){
 		var float64 = new Float64Array(6);
 		float64[0] = 0;
@@ -313,7 +309,6 @@ $(document).ready(function(){
 		mlist = [];
 	});
 	//Topic_Subscribe
-	//Joint info feedback
 	joint_Sub.subscribe(function(message){
 		//Show Progress-bar
 //		document.getElementById('progress-bar_j1').style.width = ((((message.position[0]/Math.PI)*180)+360)/720)*100+'%';
@@ -331,7 +326,6 @@ $(document).ready(function(){
 		$("#output_j5p").html(((message.position[4]/Math.PI)*180).toFixed(2));
 		$("#output_j6p").html(((message.position[5]/Math.PI)*180).toFixed(2));
 	});
-	//EEF info feedback
 	eef_Sub.subscribe(function(message){
 		eef_Sub_lx = message.linear.x;
 		eef_Sub_ly = message.linear.y;

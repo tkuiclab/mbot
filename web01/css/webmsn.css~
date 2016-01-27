@@ -1,0 +1,44 @@
+.clear{
+	clear:both;
+}
+#display_area{
+	text-align:center;
+	background-color:#94DBFF;
+	width: 250px;
+	height: 500px; 
+	padding: 0.5em;
+}
+#display_area .bubble{
+	font-size: 16px;
+}
+#display_area .blue{
+	background:#88FDF8;
+}
+#display_area .left{
+	margin:0 90px 4px 8px;
+	float:left;
+}
+#display_area .bubble{
+	clear:both;
+	word-wrap:break-word;
+	word-break:break-all;
+	display:inline-block;
+	border-radius:10px;
+	padding:0.5em 1em;
+	position:relative;
+	text-shadow:1px 1px rgba(69, 114, 121 ,0.34);
+}
+
+#down_area{
+	position:absolute;
+	left:0;
+	right:0;
+	bottom:0;
+	height:80px;
+}
+#sendMessageButton{
+	height:100%;
+	width:80px;
+	position:absolute;
+	right:0;
+}

@@ -285,11 +285,6 @@ hr{
 	height: 400px; 
 	padding: 0.5em;
 }
-#imgPanel {
-	text-align:center;
-	width: 400px;
-	height: 400px;
-}
 #ros_Output{
 /*	position:absolute;
 	right:50px;*/

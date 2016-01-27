@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+	<!-- mm_web -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  	<meta charset="utf-8">
+	<title>JSON Decoder</title>
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  	<!-- Styles -->
+	<link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/starter-template.css">
+   
+   	<!-- jQuery UI-->
+	<link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css">
+	<!------------------------------------------------------------------------------>
+<body>
+	<nav>
+		<ul class="list-unstyled main-menu">  
+			<!--Include your navigation here-->
+			<li class="text-left"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#" id="nav-close">x</a></li>
+			<li><a href="index.html">Remote Control <span class="icon"></span></a></li>
+			<li><a href="teach_mode.html">Teach Mode <span class="icon"></span></a></li>
+			<li><a href="http://www.iarc.tku.edu.tw/">TKU IARC <span class="icon"></span></a></li>
+			<li><a href="http://www.facebook.com">Facebook <span class="icon"></span></a></li>
+			<li><a href="http://www.google.com">Google <span class="icon"></span></a></li>
+		</ul>
+	</nav>
+	<div id="fixedTop">
+		<ul>
+			<li class="left">
+				<a id="nav-expander" class="nav-expander fixed">
+				<i class="fa fa-bars fa-lg white"></i>
+				</a>
+			</li>
+			<li class="center">
+				<strong>Mobile Manipulator</strong>
+			</li>
+			<li  class="right">				
+			</li>
+		</ul>
+	</div>
+	<BR>
+	<BR>
+	<BR>
+	<!-- Cupboard Table -->
+	<div class="col-md-3"></div>
+	<div id="id01" class="col-md-4">
+		<table width="300px" height="400px" cellpadding="0" cellspacing="0" border="3px" bordercolor="#4fd7f4">
+		<tr height="25%">
+			<td id="bin_A" width="33%"></td>
+			<td id="bin_B" width="34%"></td>
+			<td id="bin_C" width="33%"></td>
+		</tr>
+		<tr height="25%">
+			<td id="bin_D" width="20%"></td>
+			<td id="bin_E" width="20%"></td>
+			<td id="bin_F" width="20%"></td>
+		</tr>
+		<tr height="25%">
+			<td id="bin_G" width="20%"></td>
+			<td id="bin_H" width="20%"></td>
+			<td id="bin_I" width="20%"></td>
+		</tr>
+		<tr height="25%">
+			<td id="bin_J" width="20%"></td>
+			<td id="bin_K" width="20%"></td>
+			<td id="bin_L" width="20%"></td>
+		</tr>
+		</table>
+	</div>
+	<div class="col-md-3"></div>
+	<!-- Dialog -->
+	<div class="row"></div>
+	<input type="file" id="files" name="files[]" multiple />
+	<output id="list"></output>
+
+	<div class="modal fade" id="setting_Dialog" role="dialog">
+		<div class="modal-dialog">
+		<!--content-->
+		<div class="modal-content" style="width:300px">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>Dialog Setting</h4>
+			</div>
+			<div class="modal-body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.navgoco.js"></script>
+<script src="js/main.js"></script>
+
+<script src="jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+<script src="jquery-ui-1.11.4/jquery-ui.js"></script>
+<script type="text/javascript" type="text/javascript">
+	var dialog_localFiles;
+	var dialog_openBool;
+	//Read JSON file
+	var xmlhttp = new XMLHttpRequest();
+	var url = "apc.json";
+
+	xmlhttp.onreadystatechange = function(){
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			//var myArr = JSON.parse(xmlhttp.responseText);
+			//myFunction(myArr);
+			parse_APC_json(xmlhttp.responseText);
+		}
+	};
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+
+	function parse_APC_json(data){
+		var myArr = JSON.parse(xmlhttp.responseText);
+		myFunction(myArr);
+		
+	}
+
+	function myFunction(arr){
+		var outA="";var outB="";var outC="";
+		var outD="";var outE="";var outF="";
+		var outG="";var outH="";var outI="";
+		var outJ="";var outK="";var outL="";
+		var i;
+		for(i=0;i<arr.bin_contents.bin_A.length;i++){
+			if(arr.bin_contents.bin_A[i] === arr.work_order[0].item){
+				outA+='<strong style="color:red">'+arr.bin_contents.bin_A[i]+'</strong>'+"<br>";
+			}else{
+				outA+=arr.bin_contents.bin_A[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_B.length;i++){
+			if(arr.bin_contents.bin_B[i] === arr.work_order[1].item){
+				outB+='<strong style="color:red">'+arr.bin_contents.bin_B[i]+'</strong>'+"<br>";
+			}else{
+				outB+=arr.bin_contents.bin_B[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_C.length;i++){
+			if(arr.bin_contents.bin_C[i] === arr.work_order[2].item){
+				outC+='<strong style="color:red">'+arr.bin_contents.bin_C[i]+'</strong>'+"<br>";
+			}else{
+				outC+=arr.bin_contents.bin_C[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_D.length;i++){
+			if(arr.bin_contents.bin_D[i] === arr.work_order[3].item){
+				outD+='<strong style="color:red">'+arr.bin_contents.bin_D[i]+'</strong>'+"<br>";
+			}else{
+				outD+=arr.bin_contents.bin_D[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_E.length;i++){
+			if(arr.bin_contents.bin_E[i] === arr.work_order[4].item){
+				outE+='<strong style="color:red">'+arr.bin_contents.bin_E[i]+'</strong>'+"<br>";
+			}else{
+				outE+=arr.bin_contents.bin_E[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_F.length;i++){
+			if(arr.bin_contents.bin_F[i] === arr.work_order[5].item){
+				outF+='<strong style="color:red">'+arr.bin_contents.bin_F[i]+'</strong>'+"<br>";
+			}else{
+				outF+=arr.bin_contents.bin_F[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_G.length;i++){
+			if(arr.bin_contents.bin_G[i] === arr.work_order[6].item){
+				outG+='<strong style="color:red">'+arr.bin_contents.bin_G[i]+'</strong>'+"<br>";
+			}else{
+				outG+=arr.bin_contents.bin_G[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_H.length;i++){
+			if(arr.bin_contents.bin_H[i] === arr.work_order[7].item){
+				outH+='<strong style="color:red">'+arr.bin_contents.bin_H[i]+'</strong>'+"<br>";
+			}else{
+				outH+=arr.bin_contents.bin_H[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_I.length;i++){
+			if(arr.bin_contents.bin_I[i] === arr.work_order[8].item){
+				outI+='<strong style="color:red">'+arr.bin_contents.bin_I[i]+'</strong>'+"<br>";
+			}else{
+				outI+=arr.bin_contents.bin_I[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_J.length;i++){
+			if(arr.bin_contents.bin_J[i] === arr.work_order[9].item){
+				outJ+='<strong style="color:red">'+arr.bin_contents.bin_J[i]+'</strong>'+"<br>";
+			}else{
+				outJ+=arr.bin_contents.bin_J[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_K.length;i++){
+			if(arr.bin_contents.bin_K[i] === arr.work_order[10].item){
+				outK+='<strong style="color:red">'+arr.bin_contents.bin_K[i]+'</strong>'+"<br>";
+			}else{
+				outK+=arr.bin_contents.bin_K[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_L.length;i++){
+			if(arr.bin_contents.bin_L[i] === arr.work_order[11].item){
+				outL+='<strong style="color:red">'+arr.bin_contents.bin_L[i]+'</strong>'+"<br>";
+			}else{
+				outL+=arr.bin_contents.bin_L[i]+"<br>";
+			}
+		}
+		/*for(i=0;i<arr.length;i++){
+			out+='<a href="'+arr[i].url+'">'+arr[i].display+'</a><br>';
+		}*/
+		document.getElementById("bin_A").innerHTML = outA;
+		document.getElementById("bin_B").innerHTML = outB;
+		document.getElementById("bin_C").innerHTML = outC;
+		document.getElementById("bin_D").innerHTML = outD;
+		document.getElementById("bin_E").innerHTML = outE;
+		document.getElementById("bin_F").innerHTML = outF;
+		document.getElementById("bin_G").innerHTML = outG;
+		document.getElementById("bin_H").innerHTML = outH;
+		document.getElementById("bin_I").innerHTML = outI;
+		document.getElementById("bin_J").innerHTML = outJ;
+		document.getElementById("bin_K").innerHTML = outK;
+		document.getElementById("bin_L").innerHTML = outL;
+	}
+	//Open Local Files Dialog
+	function handleFileSelect(evt) {
+		var files = evt.target.files; // FileList object
+
+		// files is a FileList of File objects. List some properties.
+		var output = [];
+		for (var i = 0, f; f = files[i]; i++) {
+			output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+			f.size, ' bytes, last modified: ',
+			f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+			'</li>');
+
+			url = f.name;
+			xmlhttp.open("GET",url,true);
+			xmlhttp.send();
+		}
+		document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+	}
+	document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+	//Navigation Menu Slider
+	$('#nav-expander').on('click',function(e){
+		e.preventDefault();
+		$('body').toggleClass('nav-expanded');
+	});
+	$('#nav-close').on('click',function(e){
+		e.preventDefault();
+		$('body').removeClass('nav-expanded');
+	});
+</script>
+</body>
+</html>

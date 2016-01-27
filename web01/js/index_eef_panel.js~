@@ -1,5 +1,4 @@
 	//EEF_plus or minus
-	//cause there has 12 button need to send the value each other,so move this js code stand out the index.js
 	$('#plus_lx').on('click',function(e){
 		$('#dialog_table_eef').hide();
 		$('#dialog_table_joint').hide();
