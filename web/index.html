@@ -97,8 +97,8 @@
 		</tr>
 		<tr height="10%">
 			<td width="20%">Speed&nbsp;</td>
-			<td width="20%"><input id="direction_value" style="width:100px" placeholder="50"></input></td>
-			<td width="20%">%&nbsp;&nbsp;<a id="direction_send" class="control"><i class="fa fa-paper-plane fa-lg"></i></a></td>
+			<td width="20%"><input id="direction_speed_value" style="width:100px" placeholder="50"></input></td>
+			<td width="20%">%&nbsp;&nbsp;<a id="direction_speed_send" class="control"><i class="fa fa-paper-plane fa-lg"></i></a></td>
 		</tr>
 		</table>
 	</div>
@@ -110,30 +110,30 @@
 			<strong>Base Control</strong>
 		</tr>
 		<tr height="20%">
-			<td width="20%"><a id="" class="control"><i class="fa fa-cog fa-spin fa-3x"></i></a></td>
+			<td width="20%"><a id="direction_base_enable" class="control"><i class="fa fa-cog fa-spin fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="" class="control"><i class="fa fa-stop fa-3x"></i></a></td>
+			<td width="20%"><a id="direction_base_disable" class="control"><i class="fa fa-stop fa-3x"></i></a></td>
 		</tr>
 		<tr height="10%"></tr>
 		<tr height="10%">
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="" class="control"><i class="fa fa-arrow-up  fa-3x"></i></a></td>
+			<td width="20%"><a id="direction_base_front" class="control"><i class="fa fa-arrow-up  fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
 		</tr>
 		<tr height="10%">
-			<td width="20%"><a id="" class="control"><i class="fa fa-arrow-left fa-3x"></i></a></td>
+			<td width="20%"><a id="direction_base_left" class="control"><i class="fa fa-arrow-left fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="" class="control"><i class="fa fa-arrow-right  fa-3x"></i></a></td>
+			<td width="20%"><a id="direction_base_right" class="control"><i class="fa fa-arrow-right  fa-3x"></i></a></td>
 		</tr>
 		<tr height="10%">
 			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="" class="control"><i class="fa fa-arrow-down  fa-3x"></i></a></td>
+			<td width="20%"><a id="direction_base_back" class="control"><i class="fa fa-arrow-down  fa-3x"></i></a></td>
 			<td width="20%">&nbsp;</td>
 		</tr>
 		<tr height="50%">
 			<td width="20%">Speed&nbsp;</td>
-			<td width="20%"><input style="width:100px" placeholder="50"></input></td>
-			<td width="20%">%&nbsp;<a class="control"><i class="fa fa-paper-plane fa-lg"></i></a></td>
+			<td width="20%"><input id="direction_base_speed_value" style="width:100px" placeholder="50"></input></td>
+			<td width="20%">%&nbsp;<a id="direction_speed_send" class="control"><i class="fa fa-paper-plane fa-lg"></i></a></td>
 		</tr>
 		</table>
 	</div>
@@ -186,10 +186,6 @@
 				<td><h4 id="output_az" style="color:red"></td>
 				<td><a id="plus_az" class="control"><i class="fa fa-plus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
 				<td><a id="minus_az" class="control"><i class="fa fa-minus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-			</tr>
-			<tr>
-				<td colspan="2">&nbsp;</td>
-				<td colspan="2"><a class="control"><i class="fa fa-paper-plane fa-2x"></i></a></td>
 			</tr>
 			</tbody>
 		</table>
@@ -386,19 +382,22 @@
 				<tbody>
 				<tr height="15%">
 					<td>Speed X&nbsp;</td>
-					<td><input type="text" class="form-control" id=""data-fv-field="number"></input></td>
+					<td><input id="input_base_lx_d" type="text" class="form-control" id=""data-fv-field="number"></input></td>
+					<td>&nbsp;%</td>
 				</tr>
 				<tr height="15%">
 					<td>Speed Y&nbsp;</td>
-					<td><input type="text" class="form-control" id=""data-fv-field="number"></input></td>
+					<td><input id="input_base_ly_d" type="text" class="form-control" id=""data-fv-field="number"></input></td>
+					<td>&nbsp;%</td>
 				</tr>
 				<tr height="15%">
 					<td>Speed yaw&nbsp;</td>
-					<td><input type="text" class="form-control" id=""data-fv-field="number"></input></td>
+					<td><input id="input_base_az_d" type="text" class="form-control" id=""data-fv-field="number"></input></td>
+					<td>&nbsp;%</td>
 				</tr>
 				<tr height="10%">
 					<td>Send&nbsp;</td>
-					<td><a id="" class="control"><i class="fa fa-paper-plane fa-2x"></i></a></td>
+					<td><a id="control_send_base_d" class="control"><i class="fa fa-paper-plane fa-2x"></i></a></td>
 				</tr>
 				</tbody>
 				</table>
@@ -424,7 +423,9 @@
 
 <script src="js/index.js"></script>
 <script src="js/index_eef_panel.js"></script>
+<script src="js/index_joint_panel.js"></script>
 <script src="js/index_direct_panel.js"></script>
+<script src="js/index_base_panel.js"></script>
 <script type="text/javascript" type="text/javascript">
 	var mlist = [];
 	var io_default = false;
