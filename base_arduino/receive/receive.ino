@@ -45,12 +45,18 @@ void loop()
         
 
         
-        if((canId != 1537)&&(canId != 1409)&&(canId != 1793)){        
+        if( (canId != 1537)&&(canId != 1409)&&(canId != 1793)
+//          (canId != 1537)&&(canId != 1538)&&(canId != 1539)&&(canId != 1540)&&
+//        (canId != 1409)&&(canId != 1410)&&(canId != 1411)&&(canId != 1412)&&
+//        (canId != 1793)&&(canId != 1794)&&(canId != 1795)&&(canId != 1796)
+        )
+        {        
           Serial.println("-----------------------------");
           Serial.print("get data from ID: ");
           Serial.println(canId, HEX);        
           for(int i = 0; i<len; i++)    // print the data
           {
+              
               Serial.print(buf[i],HEX);
               Serial.print("\t");
           }        

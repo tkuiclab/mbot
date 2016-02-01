@@ -43,10 +43,6 @@ var eef_Sub = new ROSLIB.Topic({
 	messageType : 'geometry_msgs/Twist'
 });
 
-function saveBtn(){
-	console.log("save Btn click");
-}
-
 $(document).ready(function(){
 	$("#infoPanel").draggable();
 	$("#ioPanel").draggable();
