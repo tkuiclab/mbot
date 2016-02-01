@@ -2,11 +2,11 @@
 //cause there has a lot of button need to send the value each other,so move this js code stand out the index.js
 var speedArr;
 var default_speed = 0.5;
-$('#direction_send').on('click',function(e){
-	if(document.getElementById('direction_value').value >=0 && document.getElementById('direction_value').value<=100){
-		default_speed = document.getElementById('direction_value').value / 100;
-		document.getElementById('direction_value').value = '';
-		document.getElementById('direction_value').placeholder = default_speed * 100;
+$('#direction_speed_send').on('click',function(e){
+	if(document.getElementById('direction_speed_value').value >=0 && document.getElementById('direction_speed_value').value<=100){
+		default_speed = document.getElementById('direction_speed_value').value / 100;
+		document.getElementById('direction_speed_value').value = '';
+		document.getElementById('direction_speed_value').placeholder = default_speed * 100;
 	}else{
 		alert("Speed only allow 0~100%");
 	}

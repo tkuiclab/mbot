@@ -32,8 +32,17 @@ function direct(dirID,spArr){
 					+"<BR>angular<BR>"+ twist.angular.x +"<BR>"+ twist.angular.y +"<BR>"+ twist.angular.z
 		);
 	});
+	//when mouseUp stop the motion
 	$(dirID).on('mouseup',function(e){
-		console.log("mouseUp");
+		var twist = new ROSLIB.Message({
+			linear : {x : 0,y : 0,z : 0},
+			angular : {x : 0,y : 0,z : 0}
+		});
+		direct_Pub.publish(twist);
+		$("#infoContent").html('Topic was send twist'
+					+"<BR>linear:<BR>"+ twist.linear.x +"<BR>"+ twist.linear.y +"<BR>"+ twist.linear.z
+					+"<BR>angular<BR>"+ twist.angular.x +"<BR>"+ twist.angular.y +"<BR>"+ twist.angular.z
+		);
 	});
 }
 speedArr = [ 0, 0, 1, 0, 0, 0];
