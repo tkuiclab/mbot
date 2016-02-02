@@ -178,7 +178,7 @@ class joint_states_publisher(threading.Thread):
         speeds[4] = data.angular.y
         speeds[5] = data.angular.z
 
-        rob.speedl(speeds, acc=0.1, min_time=2)
+        rob.speedl(speeds, acc=0.1, min_time=8)
 
     def run(self):
         joint_states_pub = rospy.Publisher('joint_states', JointState, queue_size=10)

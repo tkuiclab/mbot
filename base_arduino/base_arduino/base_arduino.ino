@@ -29,8 +29,7 @@ double beta3 = 1.25 * pi;
 double beta4 = 1.75 * pi;
 double r = 25.4;
 float v1, v2, v3, v4;
-
-
+float dtemp1 = 0, dtemp2 = 0, dtemp3 = 0, dtemp4 = 0;
 
 unsigned char buf[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 unsigned char len = 0;
@@ -85,7 +84,6 @@ void init_motor(int id) {
 }
 
 void get_encoder (){
-  int delay_time = 100;
   CAN.sendMsgBuf(id_1, 0, 8, tpos);
   get_receive();
   CAN.sendMsgBuf(id_2, 0, 8, tpos);
@@ -133,7 +131,7 @@ void init_all() {
 //stop all motors at speed 0
 void stop_all() {
   CAN.sendMsgBuf(id_1, 0, 8, speed0);
-  CAN.sendMsgBuf(id_2, 0, 8, speed0);
+  CAN.sendMsgBuf(id_2, 0, 8, speed0);float v1, v2, v3, v4;
   CAN.sendMsgBuf(id_3, 0, 8, speed0);
   CAN.sendMsgBuf(id_4, 0, 8, speed0);
 
@@ -204,20 +202,41 @@ void set_base_speed(int x, int y, int yaw) {
       v4*=250;
     }  
       
-  Serial.print("v1=");
+  /*Serial.print("v1=");
   Serial.println(v1);
   Serial.print("v2=");
   Serial.println(v2);
   Serial.print("v3=");
   Serial.println(v3);
   Serial.print("v4=");
-  Serial.println(v4);
+  Serial.println(v4);*/
   
-  set_motor_rpm(id_1, v1);
-  set_motor_rpm(id_2, v2);
-  set_motor_rpm(id_3, v3);
-  set_motor_rpm(id_4, v4);
+float a1 =(v1-dtemp1)/10;
+float a2 =(v2-dtemp2)/10;
+float a3 =(v3-dtemp3)/10;
+float a4 =(v4-dtemp4)/10;
 
+  for(int i=1 ; i <=10 ; i++){
+    dtemp1 = dtemp1+a1;
+    dtemp2 = dtemp2+a2;
+    dtemp3 = dtemp3+a3;
+    dtemp4 = dtemp4+a4;
+    
+    set_motor_rpm(id_1, dtemp1);
+    set_motor_rpm(id_2, dtemp2);
+    set_motor_rpm(id_3, dtemp3);
+    set_motor_rpm(id_4, dtemp4);
+    delay (50);
+          
+  /*Serial.print("dtemp1=");
+  Serial.println(dtemp1);
+  Serial.print("dtemp2=");
+  Serial.println(dtemp2);
+  Serial.print("dtemp3=");
+  Serial.println(dtemp3);
+  Serial.print("dtemp4=");
+  Serial.println(dtemp4);*/
+  }
   
 //  get_encoder();
  
@@ -259,7 +278,7 @@ START_INIT:
 
   if (CAN_OK == CAN.begin(CAN_1000KBPS))                  // init can bus : baudrate = 500k
   {
-    Serial.println("CAN BUS Shield init ok!(send)");
+    Serial.println("CAN BUS Shield init ok!(send)");  //    set_motor_rpm(id_4,-500);
   }
   else
   {
