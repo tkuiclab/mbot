@@ -68,4 +68,7 @@ rosrun mbot_control info.py
 
 rosrun mbot_control ur5_control.py
 
+# urx install
+https://github.com/SintefRaufossManufacturing/python-urx   (download url)
 
+python setup.py install
