@@ -17,7 +17,11 @@ import roslib
 roslib.load_manifest('mbot_control')
 import actionlib
 import mbot_control.msg
+import geometry_msgs.msg
 from sensor_msgs.msg import JointState
+
+
+base_topic_name = 'base_vel'
 
 class ur_control(object):
     _feedback = mbot_control.msg.TeachCommandListFeedback()
@@ -29,6 +33,9 @@ class ur_control(object):
                                                 execute_cb=self.cmd_handler, auto_start = False)
         self.set_speed(v,a)
         self._as.start()
+
+        self.base_pub = rospy.Publisher(base_topic_name, geometry_msgs.msg.Twist, queue_size=10)
+        rospy.loginfo('mbot_control init finish')
 
     def set_speed(self,v,a):
         global vel,acc
@@ -47,7 +54,7 @@ class ur_control(object):
                 break
             self._feedback.status = 'Execute Command ' + str(i)
 
-            #rospy.loginfo('Execute Command ' + str(i))
+            rospy.loginfo('Execute Command ' + str(i))
 
             cmd = goal.cmd_list[i]
             show_str = "(%2d) Execute %s " % (i, cmd.cmd)
@@ -149,6 +156,51 @@ class ur_control(object):
                 rob.movel(pose,acc,vel,wait=True,relative=True)
                 #rospy.sleep(2)
 
+            elif cmd.cmd == 'Base_Vel':
+                x_vel = cmd.pose.linear.x
+                y_vel = cmd.pose.linear.y
+                yaw_vel = cmd.pose.angular.z
+
+                print('x_vel='+str(x_vel) +',y_vel='+str(y_vel) +',yaw_vel='+str(yaw_vel))
+
+                self.base_pub.publish(cmd.pose)
+                rospy.sleep(1)
+
+            elif cmd.cmd == 'Base_Init':
+                t_twist = Twist()
+                t_twist.angular.x = 1
+                self.base_pub.publish(t_twist)
+                rospy.sleep(1)
+
+            elif cmd.cmd == 'Base_Stop':
+                t_twist = Twist()
+                t_twist.angular.x = 2
+                self.base_pub.publish(t_twist)
+                rospy.sleep(1)
+
+            elif cmd.cmd == 'Base_Pos_Index_1':
+                t_twist = Twist()
+                t_twist.angular.x = 3
+                t_twist.angular.y = 1
+                self.base_pub.publish(t_twist)
+                rospy.sleep(1)
+
+            elif cmd.cmd == 'Base_Pos_Index_2':
+                t_twist = Twist()
+                t_twist.angular.x = 3
+                t_twist.angular.y = 2
+                self.base_pub.publish(t_twist)
+                rospy.sleep(1)
+
+            elif cmd.cmd == 'Base_Pos_Index_3':
+                t_twist = Twist()
+                t_twist.angular.x = 3
+                t_twist.angular.y = 3
+                self.base_pub.publish(t_twist)
+                rospy.sleep(1)
+
+
+
 
         if success:
             rospy.loginfo('------Control Finish------')
@@ -231,11 +283,15 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
     global rob
+
+
     rob = urx.Robot("192.168.5.5")
     #rob = urx.Robot("localhost")
     rob.set_tcp((0, 0, 0, 0, 0, 0))
     rob.set_payload(0.5, (0, 0, 0))
-    rospy.init_node('teach_mode_server')
+
+
+    rospy.init_node('mbot_control')
 
     try:
         js_p = joint_states_publisher()
@@ -247,4 +303,10 @@ if __name__ == "__main__":
         rospy.spin()
     finally:
         rob.close()
+
+    ''' for test
+    rospy.init_node('mbot_control')
+    ur_commander = ur_control(rospy.get_name(),0.1,0.04)
+    rospy.spin()
+    '''
 
