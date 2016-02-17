@@ -34,6 +34,7 @@
 		goal.send();
 		mlist = [];
 	};
+	//Show the dialog table which one is needed.
 	function showDialog(showTagID){
 		$('#dialog_table_eef').hide();
 		$('#dialog_table_joint').hide();
@@ -41,6 +42,7 @@
 		$('#dialog_table_base').hide();
 		$(showTagID).show();
 	};
+	//Minus or Plus the value to EEF Position right now.
 	function MinusPlusDialog(tagID,operator){
 		$('.'+tagID).html(eef_Sub_lx + " "+operator+" ");
 		$('#control_send_plus_d').on('click',function(e){

@@ -103,7 +103,7 @@
 	var dialog_openBool;
 	//Read JSON file
 	var xmlhttp = new XMLHttpRequest();
-	var url = "apc_test.json";
+	var url = "apc.json";
 
 	xmlhttp.onreadystatechange = function(){
 		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
