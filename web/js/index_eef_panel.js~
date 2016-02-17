@@ -45,7 +45,6 @@
 		$('.'+tagID).html(eef_Sub_lx + " "+operator+" ");
 		$('#control_send_plus_d').on('click',function(e){
 			var float64 = new Float64Array(6);
-			console.log(tagID +" "+ operator);
 			if(tagID != '' && operator != ''){
 				float64[0] = eef_Sub_lx;
 				float64[1] = eef_Sub_ly;

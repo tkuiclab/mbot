@@ -1,0 +1,93 @@
+#include <ros/ros.h>
+#include <actionlib/server/simple_action_server.h>
+#include <vision/vision_cmdAction.h>
+#include <geometry_msgs/Twist.h>
+
+class vision_cmdAction
+{
+protected:
+
+  ros::NodeHandle nh_;
+  // NodeHandle instance must be created before this line. Otherwise strange error may occur.
+  actionlib::SimpleActionServer<vision::vision_cmdAction> as_; 
+  std::string action_name_;
+  // create messages that are used to published feedback/result
+  vision::vision_cmdFeedback feedback_;
+  vision::vision_cmdResult result_;
+
+public:
+
+  vision_cmdAction(std::string name) :
+    as_(nh_, name, boost::bind(&vision_cmdAction::executeCB, this, _1), false),
+    action_name_(name)
+  {
+    as_.start();
+  }
+
+  ~vision_cmdAction(void)
+  {
+  }
+
+  void executeCB(const vision::vision_cmdGoalConstPtr &goal)
+  {
+    // helper variables
+    ros::Rate r(1);
+    bool success = true;
+
+    // push_back the seeds for the fibonacci sequence
+/*    feedback_.sequence.clear();
+    feedback_.sequence.push_back(0);
+    feedback_.sequence.push_back(1);*/
+	feedback_.status = "Neet is be ready.";
+
+    // publish info to the console for the user
+//    ROS_INFO("%s: Executing, creating vision_cmd sequence of objID %i with seeds %s", action_name_.c_str(), goal->objID, feedback_.status);
+
+    // start executing the action
+    for(int i=1; i<=goal->objID; i++)
+    {
+      // check that preempt has not been requested by the client
+      if (as_.isPreemptRequested() || !ros::ok())
+      {
+//        ROS_INFO("%s: Preempted", action_name_.c_str());
+        // set the action state to preempted
+        as_.setPreempted();
+        success = false;
+        break;
+      }
+      feedback_.status = "Neet's status";
+      // publish the feedback
+      as_.publishFeedback(feedback_);
+      // this sleep is not necessary, the sequence is computed at 1 Hz for demonstration purposes
+      r.sleep();
+    }
+
+    if(success)
+    {
+	geometry_msgs::Twist twist;
+	twist.linear.x = 0;
+	twist.linear.y = 1;
+	twist.linear.z = 2;
+	twist.angular.x = 3;
+	twist.angular.y = 4;
+	twist.angular.z = 5;
+      result_.objPose = twist;
+//      ROS_INFO("%s: Succeeded", action_name_.c_str());
+      // set the action state to succeeded
+      as_.setSucceeded(result_);
+    }
+  }
+
+
+};
+
+
+int main(int argc, char** argv)
+{
+  ros::init(argc, argv, "simVision_server");
+
+  vision_cmdAction simVision_server(ros::this_node::getName());
+  ros::spin();
+
+  return 0;
+}

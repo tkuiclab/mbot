@@ -1,0 +1,8 @@
+#goal definition
+int32 objID
+---
+#result definition
+geometry_msgs/Twist objPose
+---
+#feedback
+string status
