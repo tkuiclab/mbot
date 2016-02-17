@@ -69,7 +69,7 @@ rosrun mbot_control info.py
 rosrun mbot_control ur5_control.py
 
 # urx install
-#sudo pip install math3d  (maybe you need to  #sudo apt-get install python-pip)
+##sudo pip install math3d  (maybe you need to  #sudo apt-get install python-pip)
 
 https://github.com/SintefRaufossManufacturing/python-urx   (download url)
 
