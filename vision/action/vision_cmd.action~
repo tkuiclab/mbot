@@ -1,8 +1,8 @@
 #goal definition
-int32 binID
+int32 objID
 ---
 #result definition
-string objID
+string obj
 geometry_msgs/Twist objPose
 ---
 #feedback
