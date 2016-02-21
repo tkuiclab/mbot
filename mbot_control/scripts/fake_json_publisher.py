@@ -17,9 +17,9 @@ import mbot_control.msg
 import rospkg
 
 def UI_client(file_path):
-    f = open(file_path, 'r')
-    data = f.read()
-    f.close()
+    with open(file_path, 'r') as f:
+        data = f.read()
+        f.close()
     client = actionlib.SimpleActionClient('strategy_uifo',mbot_control.msg.UIFOAction)
     client.wait_for_server()
     goal = mbot_control.msg.UIFOGoal(cmd = data)
