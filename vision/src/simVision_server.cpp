@@ -42,23 +42,12 @@ public:
 	ROS_INFO("%s : status is '%s'",action_name_.c_str(),feedback_.status.c_str());
 
     // start executing the action
-    for(int i=1; i<=goal->binID; i++)
-    {
-      // check that preempt has not been requested by the client
-      if (as_.isPreemptRequested() || !ros::ok())
-      {
-	ROS_INFO("%s : Preempted",action_name_.c_str());
-        // set the action state to preempted
-        as_.setPreempted();
-        success = false;
-        break;
-      }
+
       feedback_.status = "Neet's status";
       // publish the feedback
       as_.publishFeedback(feedback_);
       // this sleep is not necessary, the sequence is computed at 1 Hz for demonstration purposes
       r.sleep();
-    }
 
     if(success)
     {

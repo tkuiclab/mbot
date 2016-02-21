@@ -39,21 +39,21 @@ class strategy_class(object):
     def control_mbot(self,bin_ID,json_data):
         rospy.loginfo("Controlling the Mbot move to bin %d" % bin_ID)
         switch = {
-            1:self.vision_client(1),
-            2:self.vision_client(2),
-            3:self.vision_client(3),
-            4:self.vision_client(4),
-            5:self.vision_client(5),
-            6:self.vision_client(6),
-            7:self.vision_client(7),
-            8:self.vision_client(8),
-            9:self.vision_client(9),
-            10:self.vision_client(10),
-            11:self.vision_client(11),
-            12:self.vision_client(12)
+            1:self.vision_client,
+            2:self.vision_client,
+            3:self.vision_client,
+            4:self.vision_client,
+            5:self.vision_client,
+            6:self.vision_client,
+            7:self.vision_client,
+            8:self.vision_client,
+            9:self.vision_client,
+            10:self.vision_client,
+            11:self.vision_client,
+            12:self.vision_client
         }
-        obj = switch.get(bin_ID,None)
-        #obj = self.vision_client(bin_ID)
+        obj = switch[bin_ID](bin_ID)
+        rospy.loginfo("Grapping items in bin_%d" % bin_ID)
         return obj
 
     ############################################## UI_INFO Execute Callback ##############################################
@@ -68,9 +68,8 @@ class strategy_class(object):
             json_data = json.load(data_file)
             data_file.close()
 
-
         for bin_ID in range(1,13,1):
-            self.control_mbot(bin_ID,json_data)
+            obj = self.control_mbot(bin_ID,json_data)
             self._feedback.tag = "Jianming is Super hot %d!" % bin_ID
             self._feedback.msg = "Jianming is Super cool %d!" % bin_ID
             self._as.publish_feedback(self._feedback)
@@ -84,14 +83,15 @@ class strategy_class(object):
     #################################################### Vision Client ###################################################
     def vision_client(self,bin_ID):
         rospy.loginfo("vision_client_execute")
+        rospy.loginfo("Processing bin_%d"%bin_ID)
         client = actionlib.SimpleActionClient('simVision_server', vision.msg.vision_cmdAction)
         client.wait_for_server()
         goal = vision.msg.vision_cmdGoal(binID=bin_ID)
         client.send_goal(goal)
         client.wait_for_result()
         obj = client.get_result()
-        rospy.loginfo(obj.objID)
-        rospy.loginfo(obj.objPose)
+        #rospy.loginfo(obj.objID)
+        #rospy.loginfo(obj.objPose)
         return obj
 
     ###################################################### For Test ######################################################
