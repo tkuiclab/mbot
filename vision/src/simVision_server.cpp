@@ -1,4 +1,5 @@
 #include <ros/ros.h>
+#include <ros/console.h>
 #include <actionlib/server/simple_action_server.h>
 #include <vision/vision_cmdAction.h>
 #include <geometry_msgs/Twist.h>
@@ -31,25 +32,22 @@ public:
   void executeCB(const vision::vision_cmdGoalConstPtr &goal)
   {
     // helper variables
-    ros::Rate r(1);
+    ros::Rate r(1000);
     bool success = true;
 
-    // push_back the seeds for the fibonacci sequence
-/*    feedback_.sequence.clear();
-    feedback_.sequence.push_back(0);
-    feedback_.sequence.push_back(1);*/
+    // push_back the status for the feedback_ status
 	feedback_.status = "Neet is be ready.";
 
     // publish info to the console for the user
-//    ROS_INFO("%s: Executing, creating vision_cmd sequence of objID %i with seeds %s", action_name_.c_str(), goal->objID, feedback_.status);
+	ROS_INFO("%s : status is '%s'",action_name_.c_str(),feedback_.status.c_str());
 
     // start executing the action
-    for(int i=1; i<=goal->objID; i++)
+    for(int i=1; i<=goal->binID; i++)
     {
       // check that preempt has not been requested by the client
       if (as_.isPreemptRequested() || !ros::ok())
       {
-//        ROS_INFO("%s: Preempted", action_name_.c_str());
+	ROS_INFO("%s : Preempted",action_name_.c_str());
         // set the action state to preempted
         as_.setPreempted();
         success = false;
@@ -72,15 +70,13 @@ public:
 	twist.angular.y = 4;
 	twist.angular.z = 5;
       result_.objPose = twist;
-//      ROS_INFO("%s: Succeeded", action_name_.c_str());
+	result_.objID = "milk tea";
+	ROS_INFO("%s : Succeeded",action_name_.c_str());
       // set the action state to succeeded
       as_.setSucceeded(result_);
     }
   }
-
-
 };
-
 
 int main(int argc, char** argv)
 {
