@@ -1,8 +1,0 @@
-#goal definition
-TeachCommand cmd
----
-#result definition
-string notify
----
-#feedback
-string status
