@@ -25,6 +25,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 add_message_files(
    FILES
    TeachCommand.msg
+   WebChat.msg
  )
 
 ## Generate services in the 'srv' folder

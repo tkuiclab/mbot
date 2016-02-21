@@ -136,14 +136,22 @@ include_directories(
 # add_dependencies(vision ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_executable(simVision_server src/simVision_server.cpp)
-
 target_link_libraries(
   simVision_server
   ${catkin_LIBRARIES}
 )
-
 add_dependencies(
   simVision_server
+  ${vision_EXPORTED_TARGETS}
+)
+
+add_executable(simVision_client src/simVision_client.cpp)
+target_link_libraries(
+  simVision_client
+  ${catkin_LIBRARIES}
+)
+add_dependencies(
+  simVision_client
   ${vision_EXPORTED_TARGETS}
 )
 

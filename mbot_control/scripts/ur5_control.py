@@ -279,7 +279,7 @@ class joint_states_publisher(threading.Thread):
 
 
 
-if __name__ == "__main__":
+if __name__ == "__talker()main__":
     logging.basicConfig(level=logging.INFO)
 
     global rob
