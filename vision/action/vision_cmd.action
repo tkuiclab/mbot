@@ -1,0 +1,9 @@
+#goal definition
+int32 binID
+---
+#result definition
+string objID
+geometry_msgs/Twist objPose
+---
+#feedback
+string status

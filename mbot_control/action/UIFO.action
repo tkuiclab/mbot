@@ -1,0 +1,9 @@
+#goal definition
+string cmd		# Read file, pick, stow
+---
+#result definition
+string result
+---
+#feedback
+string tag		# Info, Shelf, Tote
+string msg

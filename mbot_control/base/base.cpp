@@ -21,7 +21,7 @@ const char *motion_topic_name = "/base_vel";
 void motionCallback(const geometry_msgs::Twist::ConstPtr& msg)
 {
 
-    //ROS_INFO("motor : x[%lf], y[%lf], yaw[%lf]", msg->linear.x,msg->linear.y, msg->angular.z);
+    ROS_INFO("motor : x[%lf], y[%lf], yaw[%lf], cmd[%lf], cmd_2[%lf]", msg->linear.x,msg->linear.y, msg->angular.z, msg->angular.x, msg->angular.y);
     if(msg->angular.x==1){
 	mcssl_motor_init();
 	return;

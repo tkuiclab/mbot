@@ -8,22 +8,41 @@ var CmdType = {
 	Rotate_X: "Rotate_X",
 	Rotate_Y: "Rotate_Y",
 	Rotate_Z: "Rotate_Z",
-	Vaccum: "Vaccum"
+	Vaccum: "Vaccum",
+	Base_Init: "Base_Init",
+	Base_Stop: "Base_Stop",
+	Base_Vel : "Base_Vel",
+	Base_Pos_Index_1: "Base_Pos_Index_1",
+	Base_Pos_Index_2: "Base_Pos_Index_2",
+	Base_Pos_Index_3: "Base_Pos_Index_3"
 };
 
+
+
 function command_selected(cmd){
+	//console.log('cmd='+cmd);
+	
 	var command_select = '<select class="options_cmd_none" disabled="disabled" onchange="Cmd_change(this)">'+
-			'<option value="Joint"'+((cmd=='Joint')?"selected":"")+'>Joint</option>'+
-			'<option value="PTP"'+((cmd=='PTP')?"selected":"")+'>PTP</option>'+
-			'<option value="Line"'+((cmd=='Line')?"selected":"")+'>Line</option>'+
-			'<option value="Shift_X"'+((cmd=='Shift_X')?"selected":"")+'>Shift_X</option>'+
-			'<option value="Shift_Y"'+((cmd=='Shift_Y')?"selected":"")+'>Shift_Y</option>'+
-			'<option value="Shift_Z"'+((cmd=='Shift_Z')?"selected":"")+'>Shift_Z</option>'+
-			'<option value="Rotate_X"'+((cmd=='Rotate_X')?"selected":"")+'>Rotate_X</option>'+
-			'<option value="Rotate_Y"'+((cmd=='Rotate_Y')?"selected":"")+'>Rotate_Y</option>'+
-			'<option value="Rotate_Z"'+((cmd=='Rotate_Z')?"selected":"")+'>Rotate_Z</option>'+
-     	'<option value="Vaccum"'+((cmd=='Vaccum')?"selected":"")+'>Vaccum</option>'+
-		'</select>';
+			'<option value="Joint"'+((cmd==CmdType.Joint)?"selected":"")+'>Joint</option>'+
+			'<option value="PTP"'+((cmd==CmdType.PTP)?"selected":"")+'>PTP</option>'+
+			'<option value="Line"'+((cmd==CmdType.Line)?"selected":"")+'>Line</option>'+
+			'<option value="Shift_X"'+((cmd==CmdType.Shift_X)?"selected":"")+'>Shift_X</option>'+
+			'<option value="Shift_Y"'+((cmd==CmdType.Shift_Y)?"selected":"")+'>Shift_Y</option>'+
+			'<option value="Shift_Z"'+((cmd==CmdType.Shift_Z)?"selected":"")+'>Shift_Z</option>'+
+			'<option value="Rotate_X"'+((cmd==CmdType.Rotate_X)?"selected":"")+'>Rotate_X</option>'+
+			'<option value="Rotate_Y"'+((cmd==CmdType.Rotate_Y)?"selected":"")+'>Rotate_Y</option>'+
+			'<option value="Rotate_Z"'+((cmd==CmdType.Rotate_Z)?"selected":"")+'>Rotate_Z</option>'+
+			'<option value="Vaccum"'+((cmd==CmdType.Vaccum)?"selected":"")+'>Vaccum</option>'+
+			'<option value="-----------------------">----------------------</option>'+
+			'<option value="Base_Init"'+((cmd==CmdType.Base_Init)?"selected":"")+'>Base_Init</option>'+
+			'<option value="Base_Stop"'+((cmd==CmdType.Base_Stop)?"selected":"")+'>Base_Stop</option>'+
+			'<option value="Base_Vel"'+((cmd==CmdType.Base_Vel)?"selected":"")+'>Base_Vel</option>'+
+			'<option value="Base_Pos_Index_1"'+((cmd==CmdType.Base_Pos_Index_1)?"selected":"")+'>Base_Pos_Index_1</option>'+
+			'<option value="Base_Pos_Index_2"'+((cmd==CmdType.Base_Pos_Index_2)?"selected":"")+'>Base_Pos_Index_2</option>'+
+			'<option value="Base_Pos_Index_3"'+((cmd==CmdType.Base_Pos_Index_3)?"selected":"")+'>Base_Pos_Index_3</option>'+
+			'</select>';
+			
+     	
 	return command_select;
 }
 
@@ -39,6 +58,7 @@ function hide_all(){
 	$("#block").hide();
 	$("#vaccum_block").hide();
 	$("#shift_block").hide();
+	$("#base_vel_block").hide();
 }
 
 function order_list(){
@@ -107,6 +127,9 @@ function cmd_select_change(ev,mod){
 				 cmd==CmdType.Rotate_X || cmd==CmdType.Rotate_Y || cmd==CmdType.Rotate_Z){
 		$("#shift_block").show();
 		$("#shift_block").css("display","inline");
+	}else if(cmd==CmdType.Base_Vel){
+		$("#base_vel_block").show();
+		$("#base_vel_block").css("display","inline");
 	}
 
 	if(ev != undefined){
@@ -151,7 +174,7 @@ function get_block_tr(option_cmd,val){
 				'<option value="On"'+((val==true)?"selected":"")+'>On</option>'+
 				'<option value="Off"'+((val==false)?"selected":"")+'>Off</option>' +
 			'</select>';
-			console.log("in vaccum",val);
+			//console.log("in vaccum",val);
 			if(val == 'true') console.log("vaccum == true");
 		}
 		
@@ -161,6 +184,20 @@ function get_block_tr(option_cmd,val){
 			sub_cmd = '<input class="block_sty_none" type="number" value="'+$('#shift_val').val()+'"readonly>';
 		}else{
 			sub_cmd = '<input class="block_sty_none" type="number" value="'+val+'"readonly>';
+		}
+	}else if(option_cmd==CmdType.Base_Vel ){
+		
+		if(val==undefined){
+			for(var i=1;i<=3;i++){
+				var t_id = '#base_vel_block_'+i;
+				sub_cmd += '<input class="block_sty_none" type="number" value="'+$(t_id).val()+'"readonly>';
+			}
+		}else{
+			
+			
+			for(var i=0;i<3;i++){
+				sub_cmd += '<input class="block_sty_none" type="number" value="'+val[i]+'"readonly>\n';
+			}
 		}
 	}
 	
@@ -185,6 +222,8 @@ addbtn.onclick = function(){
 	var tr_html = '';
 	
 	if(cmd != 'Choose') tr_html = get_block_tr(cmd);
+	
+	//console.log(tr_html);
 	
 	$('#teach_table').append(tr_html);
 
@@ -245,10 +284,11 @@ function edit_Cmd(edit){
 	
 	var i = 0;
 	
-	console.log(mod);
-	if(mod==CmdType.Joint || mod==CmdType.PTP || mod==CmdType.Line ||
+	if(mod=='Base_Vel' || mod==CmdType.Joint || mod==CmdType.PTP || mod==CmdType.Line ||
 			mod==CmdType.Shift_X || mod==CmdType.Shift_Y || mod==CmdType.Shift_Z ||
-			mod==CmdType.Rotate_X || mod==CmdType.Rotate_Y || mod==CmdType.Rotate_Z){
+			mod==CmdType.Rotate_X || mod==CmdType.Rotate_Y || mod==CmdType.Rotate_Z || mod==CmdType.Base_Vel
+			){
+				
 		$('#'+m_cmd_id).children("td.SubCmd").children("input").each(function(){
 			$(this).removeAttr("readonly");
 			//$(this).css("border-style","inset");
@@ -279,7 +319,7 @@ function save_Cmd(edit){
 	
 	if(mod==CmdType.Joint || mod==CmdType.PTP || mod==CmdType.Line ||
 			mod==CmdType.Shift_X || mod==CmdType.Shift_Y || mod==CmdType.Shift_Z ||
-			mod==CmdType.Rotate_X || mod==CmdType.Rotate_Y || mod==CmdType.Rotate_Z){
+			mod==CmdType.Rotate_X || mod==CmdType.Rotate_Y || mod==CmdType.Rotate_Z ||  mod==CmdType.Base_Vel){
 		$('#'+m_cmd_id).children("td.SubCmd").children("input").each(function(){
 			//console.log("in save");
 			$(this).attr("readonly","readonly");
@@ -310,7 +350,7 @@ function break_Cmd(edit){
 	var i = 0;
 	if(mod==CmdType.Joint || mod==CmdType.PTP || mod==CmdType.Line ||
 			mod==CmdType.Shift_X || mod==CmdType.Shift_Y || mod==CmdType.Shift_Z ||
-			mod==CmdType.Rotate_X || mod==CmdType.Rotate_Y || mod==CmdType.Rotate_Z){
+			mod==CmdType.Rotate_X || mod==CmdType.Rotate_Y || mod==CmdType.Rotate_Z || mod==CmdType.Base_Vel){
 		$('#'+m_cmd_id).children("td.SubCmd").children("input").each(function(){
 			$(this).val(cmd_edit[i++]);
 			$(this).attr("readonly","readonly");
@@ -431,7 +471,7 @@ $("#run_btn").click(function() {
 			console.log('twist.linear.x ='+ twist.linear.x  +',y=' + twist.linear.y + ',z=' + twist.linear.z);
 		
 			var cmd_msg = new ROSLIB.Message({
-				cmd : CmdType.PTP,
+				cmd : cmd_mod,
 				pose : twist
 			});
 			mlist.push(cmd_msg);
@@ -473,8 +513,37 @@ $("#run_btn").click(function() {
 			});
 			
 			mlist.push(cmd_msg);
-		}else{
+		}else if(cmd_mod==CmdType.Base_Vel ){
+		    
+			var refer = $(this).children("td.SubCmd");
+			var twist = new ROSLIB.Message({
+				linear : {
+					x : parseFloat(refer.children("input:nth-child(1)").val()),
+					y : parseFloat(refer.children("input:nth-child(2)").val()),
+					z : 0,
+				},
+				angular : {
+					x : 0,
+					y : 0,
+					z : parseFloat(refer.children("input:nth-child(3)").val()),
+				}
+			});
 			
+			//console.log('twist.linear.x ='+ twist.linear.x  +',y=' + twist.linear.y + ',z=' + twist.linear.z);
+		
+			var cmd_msg = new ROSLIB.Message({
+				cmd : cmd_mod,
+				pose : twist
+			});
+			mlist.push(cmd_msg);
+		//-------------CmdType.Shift_X-------------//
+		}else if(cmd_mod==CmdType.Base_Init || cmd_mod==CmdType.Base_Stop || 
+				 cmd_mod==CmdType.Base_Pos_Index_1 || cmd_mod==CmdType.Base_Pos_Index_2 || cmd_mod==CmdType.Base_Pos_Index_3){
+			var cmd_msg = new ROSLIB.Message({
+				cmd : cmd_mod
+			});
+			
+			mlist.push(cmd_msg);
 		}
 	});
 
@@ -539,7 +608,7 @@ $("#file_save_btn").click(function() {
 			
 			save_data +=  '\n';
 			
-			//save_data += '\t},\n'; // Shift_X or Shift_Y or Shift_Z  END
+			
 		}else if(cmd_mod==CmdType.Vaccum){
 			//save_data += '\t"'+cmd_mod+'":{\n';	// Vaccum START
 			save_data += '\t\t"cmd": "'+cmd_mod+'",\n';	// Joint or PTP or Line START
@@ -548,6 +617,19 @@ $("#file_save_btn").click(function() {
 			save_data +=  vaccum_yn +"\n";  //Val End
 			
 			//save_data += '\t},\n'; // Vaccum END
+		}else if(cmd_mod==CmdType.Base_Vel){
+			save_data += '\t\t"cmd": "'+cmd_mod+'",\n';	//Base_Vel
+			save_data += '\t\t"val_3": ';	  //val_3 Start
+			var float_ary = [];
+			 $(this).children("td.SubCmd").children("input").each(function()
+		    {
+		    	var t_float = parseFloat( $(this).val() );
+		      float_ary.push( t_float );
+		    });
+			save_data += '[' + float_ary.toString()+"]\n";  //val_3 End
+		}else if(cmd_mod==CmdType.Base_Init || cmd_mod==CmdType.Base_Stop || 
+				 cmd_mod==CmdType.Base_Pos_Index_1 || cmd_mod==CmdType.Base_Pos_Index_2 || cmd_mod==CmdType.Base_Pos_Index_3){
+			save_data += '\t\t"cmd": "'+cmd_mod+'"\n';	//Base_Vel
 		}
 		
 		if(index==cmd_count-1){
@@ -606,9 +688,20 @@ $("#file_read_btn").click(function() {
 			}else if(cmd==CmdType.Vaccum){
 				tr_html = get_block_tr(cmd,json[index].val);
 			}else if(cmd==CmdType.Shift_X  || cmd==CmdType.Shift_Y  || cmd==CmdType.Shift_Z||
-			     	 cmd==CmdType.Rotate_X || cmd==CmdType.Rotate_Y || cmd==CmdType.Rotate_Z ){
+			     	 cmd==CmdType.Rotate_X || cmd==CmdType.Rotate_Y || cmd==CmdType.Rotate_Z 
+					){
 				tr_html = get_block_tr(cmd,json[index].val,json[index].pose);
+			}else if(cmd==CmdType.Base_Vel){
+				
+				tr_html = get_block_tr(cmd,json[index].val_3);
+				
+			}else if(cmd==CmdType.Base_Init || cmd==CmdType.Base_Stop || 
+				 cmd==CmdType.Base_Pos_Index_1 || cmd==CmdType.Base_Pos_Index_2 || cmd==CmdType.Base_Pos_Index_3
+				 ){
+				tr_html = get_block_tr(cmd);
 			}
+			
+			
 			$('#teach_table').append(tr_html);
 			order_list();
 		}
@@ -652,7 +745,7 @@ function teach_click(t){
 		mod = $('#'+m_cmd_id).children('[name=cmd_mod]').children('select').val();
 	}
 
-	console.log("mod="+mod);
+	//console.log("mod="+mod);
 
 	var i = 0;
 	if(mod==CmdType.Joint){
@@ -820,7 +913,7 @@ ros.on('close', function() {
 //-----------ActionClient-------------//
 var teachModeClient = new ROSLIB.ActionClient({
 	ros : ros,
-	serverName : '/teach_mode_server',
+	serverName : '/mbot_control',
 	actionName : 'mbot_control/TeachCommandListAction'
 });
 

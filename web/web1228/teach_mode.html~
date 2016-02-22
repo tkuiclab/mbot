@@ -5,88 +5,15 @@
 
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/teach_mode.css" rel="stylesheet">
 		
-    	
-		<style>
-			nav {
-				background-color: #b0c4de;
-				height: 55px;
-				margin-top: 20px;
-				margin-left: 30px;
-				margin-bottom: 10px;
-				margin-right: 30px;
-			}
-			
-			.add{
-				margin-top: 10px;
-				margin-left: 10px;
-				margin-bottom: 10px;
-				margin-right: 10px;
-				top : 100%;
-				font-size: 20px;
-			}
-			
-			.options{
-				font-size: 22px;
-				height: 80%;
-			}
-			
-			#block,#shift_block input{
-				font-size: 22px;
-				height: 80%;
-				size:5;
-			}
-			
-			#base{
-				border-style: solid;
-				border-width: medium;
-				margin-left: 30px;
-				margin-right: 30px;
-				height: 200px;
-				overflow:auto;
-			}
-			
-			.default{
-				display:block;
-			}
-			
-			.edit{
-				display:none;
-			}
-			
-			table {
-				width : 99%;
-				margin : auto;
-				
-			}
-			
-			thead {
-				border-collapse: collapse;
-				border-bottom: solid #0000ff;
-				font-size : 20px;
-			}
-			
-			.teach_btn{
-				height: 100%
-				
-			}
-			
-			.edit_mod{
-			
-			}
-			
-			.img_show{
-				height: 32px;
-				width: 32px;
-				display: none;
-			}
-			
-		</style>
-		
-</head>
+	</head>
 <body>
 	<nav>
-		<button type="button" id="addbtn" class="add" ><span class="glyphicon glyphicon-plus"></span></button>
+		<button type="button" id="addbtn" class="add">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+		
 		<select class="options" id="cmd_select">
 			<option value="Choose">Choose</option>
 			<option value="Joint">Joint</option>
@@ -95,16 +22,26 @@
 			<option value="Shift_X">Shift_X</option>
 			<option value="Shift_Y">Shift_Y</option>
 			<option value="Shift_Z">Shift_Z</option>
-     		<option value="Vaccum">Vaccum</option>
+			<option value="Rotate_X">Rotate_X</option>
+			<option value="Rotate_Y">Rotate_Y</option>
+			<option value="Rotate_Z">Rotate_Z</option>
+     			<option value="Vaccum">Vaccum</option>
+			<option value="------------">-----------</option>
+			<option value="Base_Vel">Base_Vel</option>
+			<option value="Base_Stop">Base_Stop</option>
+			<option value="Base_Init">Base_Init</option>
+			<option value="Base_Pos_Index_1">Base_Pos_Index_1</option>
+			<option value="Base_Pos_Index_2">Base_Pos_Index_2</option>
+			<option value="Base_Pos_Index_3">Base_Pos_Index_3</option>
 		</select>
 		
 		<div id="block" style= "display:none;">
-			<input value="0" id="block_1" style="width: 10%" type="number"/>
-			<input value="0" id="block_2" style="width: 10%" type="number"/>
-			<input value="0" id="block_3" style="width: 10%" type="number"/>
-			<input value="0" id="block_4" style="width: 10%" type="number"/>
-			<input value="0" id="block_5" style="width: 10%" type="number"/>
-			<input value="0" id="block_6" style="width: 10%" type="number"/>
+			<input value="0" id="block_1" class="block_sty" type="number"/>
+			<input value="0" id="block_2" class="block_sty" type="number"/>
+			<input value="0" id="block_3" class="block_sty" type="number"/>
+			<input value="0" id="block_4" class="block_sty" type="number"/>
+			<input value="0" id="block_5" class="block_sty" type="number"/>
+			<input value="0" id="block_6" class="block_sty" type="number"/>
 		</div>
 		
 		<div id="vaccum_block" style= "display:none;">
@@ -115,42 +52,44 @@
 		</div>
 		
 		<div id="shift_block" style= "display:none;">
-			<input value="0" id="shift_val" style="width: 20%" type="number"/>
+			<input value="0" id="shift_val" class="block_sty" type="number"/>
 		</div>
+		
+		<button name="teach_btn" class="teach_btn" style="width:10%; float:right;" onclick="teach_click(this)">
+		<span class="glyphicon glyphicon-pushpin"/>Teach
+		</button>
 	</nav>
-		<div style="overflow:auto; margin:auto; height:500px; width:98%; border-style: solid;
-				border-width: medium; border-color:  #ffffff">
-
-		<table>
-			<thead>
-				<tr style="font-size: 120%">
-					<th style="width:10%">Order</th>
-					<th style="width:10%">Command</th>
-					<th style="width:50%">Parameter</th>
-					<th style="width:15%">Edit</th>
-					<th style="width:10%">Delete</th>
-					<th style="width:10%">Teach</th>
-				</tr>
-			</thead>
-			
-			
-			<tbody id="teach_table" style="font-size: 200%">
-			</tbody>
-			
-
-			<!--
-			<tbody id="teach_table" style="font-size: 200%">
-			<tr id="cmd_1"><td>001</td><td id="cmd_mod">Joint</td><td class="SubCmd"><input style="width: 15%; border-style:none;" type="number" value="0" readonly=""><input style="width: 15%; border-style:none;" type="number" value="0" readonly=""><input style="width: 15%; border-style:none;" type="number" value="0" readonly=""><input style="width: 15%; border-style:none;" type="number" value="0" readonly=""><input style="width: 15%; border-style:none;" type="number" value="0" readonly=""><input style="width: 15%; border-style:none;" type="number" value="0" readonly=""></td><td><img id="edit_btn" src="img/edit.png" onclick="edit_Cmd(this)" target_cmd_id="cmd_1"><img id="true_btn" src="img/true.png" class="img_show" onclick="save_Cmd(this)" target_cmd_id="cmd_1"><img id="false_btn" src="img/false.png" class="img_show" onclick="break_Cmd(this)" target_cmd_id="cmd_1"></td><td><img id="delete_opt" src="img/delete.png" style="width:20%; height:auto;" onclick="delete_Cmd(this)" target_cmd_id="cmd_1"></td><td><a id="teach_btn" href="#" class="btn btn-info btn-block" onclick="teach_click(this)" target_cmd_id="cmd_1"><span class="glyphicon glyphicon-pushpin"></span> Teach</a></td></tr><tr id="cmd_2"><td>002</td><td id="cmd_mod">Joint</td><td class="SubCmd"><input style="width: 15%; border-style: none;" type="number" value="0"><input style="width: 15%; border-style: none;" type="number" value="0"><input style="width: 15%; border-style: none;" type="number" value="0"><input style="width: 15%; border-style: none;" type="number" value="0"><input style="width: 15%; border-style: none;" type="number" value="0"><input style="width: 15%; border-style: none;" type="number" value="0"></td><td><img id="edit_btn" src="img/edit.png" onclick="edit_Cmd(this)" target_cmd_id="cmd_2" style="display: inline;"><img id="true_btn" src="img/true.png" class="img_show" onclick="save_Cmd(this)" target_cmd_id="cmd_2" style="display: none;"><img id="false_btn" src="img/false.png" class="img_show" onclick="break_Cmd(this)" target_cmd_id="cmd_2" style="display: none;"></td><td><img id="delete_opt" src="img/delete.png" style="width:20%; height:auto;" onclick="delete_Cmd(this)" target_cmd_id="cmd_2"></td><td><a id="teach_btn" href="#" class="btn btn-info btn-block" onclick="teach_click(this)" target_cmd_id="cmd_2"><span class="glyphicon glyphicon-pushpin"></span> Teach</a></td></tr><tr id="cmd_10"><td>0010</td><td id="cmd_mod">Shift_Y</td><td class="SubCmd"><input style="width: 15%; border-style:none;" type="number" value="0.1" readonly=""></td><td><img id="edit_btn" src="img/edit.png" onclick="edit_Cmd(this)" target_cmd_id="cmd_10"><img id="true_btn" src="img/true.png" class="img_show" onclick="save_Cmd(this)" target_cmd_id="cmd_10"><img id="false_btn" src="img/false.png" class="img_show" onclick="break_Cmd(this)" target_cmd_id="cmd_10"></td><td><img id="delete_opt" src="img/delete.png" style="width:20%; height:auto;" onclick="delete_Cmd(this)" target_cmd_id="cmd_10"></td><td><a id="teach_btn" href="#" class="btn btn-info btn-block" onclick="teach_click(this)" target_cmd_id="cmd_10"><span class="glyphicon glyphicon-pushpin"></span> Teach</a></td></tr><tr id="cmd_11"><td>0011</td><td id="cmd_mod">Shift_Y</td><td class="SubCmd"><input style="width: 15%; border-style:none;" type="number" value="-0.1" readonly=""></td><td><img id="edit_btn" src="img/edit.png" onclick="edit_Cmd(this)" target_cmd_id="cmd_11"><img id="true_btn" src="img/true.png" class="img_show" onclick="save_Cmd(this)" target_cmd_id="cmd_11"><img id="false_btn" src="img/false.png" class="img_show" onclick="break_Cmd(this)" target_cmd_id="cmd_11"></td><td><img id="delete_opt" src="img/delete.png" style="width:20%; height:auto;" onclick="delete_Cmd(this)" target_cmd_id="cmd_11"></td><td><a id="teach_btn" href="#" class="btn btn-info btn-block" onclick="teach_click(this)" target_cmd_id="cmd_11"><span class="glyphicon glyphicon-pushpin"></span> Teach</a></td></tr><tr id="cmd_14"><td>0014</td><td id="cmd_mod">Shift_X</td><td class="SubCmd"><input style="width: 15%; border-style:none;" type="number" value="0.4" readonly=""></td><td><img id="edit_btn" src="img/edit.png" onclick="edit_Cmd(this)" target_cmd_id="cmd_14"><img id="true_btn" src="img/true.png" class="img_show" onclick="save_Cmd(this)" target_cmd_id="cmd_14"><img id="false_btn" src="img/false.png" class="img_show" onclick="break_Cmd(this)" target_cmd_id="cmd_14"></td><td><img id="delete_opt" src="img/delete.png" style="width:20%; height:auto;" onclick="delete_Cmd(this)" target_cmd_id="cmd_14"></td><td><a id="teach_btn" href="#" class="btn btn-info btn-block" onclick="teach_click(this)" target_cmd_id="cmd_14"><span class="glyphicon glyphicon-pushpin"></span> Teach</a></td></tr><tr id="cmd_15"><td>0015</td><td id="cmd_mod">Shift_Z</td><td class="SubCmd"><input style="width: 15%; border-style:none;" type="number" value="-0.2" readonly=""></td><td><img id="edit_btn" src="img/edit.png" onclick="edit_Cmd(this)" target_cmd_id="cmd_15"><img id="true_btn" src="img/true.png" class="img_show" onclick="save_Cmd(this)" target_cmd_id="cmd_15"><img id="false_btn" src="img/false.png" class="img_show" onclick="break_Cmd(this)" target_cmd_id="cmd_15"></td><td><img id="delete_opt" src="img/delete.png" style="width:20%; height:auto;" onclick="delete_Cmd(this)" target_cmd_id="cmd_15"></td><td><a id="teach_btn" href="#" class="btn btn-info btn-block" onclick="teach_click(this)" target_cmd_id="cmd_15"><span class="glyphicon glyphicon-pushpin"></span> Teach</a></td></tr></tbody>
-	-->		
-			
-		</table>
+	
+		<div class="borderimg">
+			<table>
+				<thead>
+					<tr>
+						<th class="font_black">Order<input id="move_cmd" style="margin-left:2px;" type="checkbox"></td>
+						<th class="font_black">Command</td>
+						<th class="font_black">Parameter</td>
+						<th class="font_black">Edit</td>
+						<th class="font_black">Delete</td>
+					</tr>
+				</thead>
+				<tbody id="teach_table" style="font-size: 24px" ondrop="drop(event)" ondragover="allowDrop(event)">
+				</tbody>
+			</table>
 		</div>
-	<BR>
-	<div align="center">
+	<br>
+	<div style="text-align:center;">
 		<button id="run_btn" type="button" class="btn btn-success btn-lg active">Run Teach Command</button>
+		<button id="file_save_btn" type="button" class="btn btn-success btn-lg active">Save</button>
+		<button id="file_read_btn" type="button" class="btn btn-success btn-lg active">Read</button>
+	</div>
+	
+	<div class="show_area">
+		<textarea id="test_json_data" style="display:none;" cols="40" rows="20">
+
+		</textarea>
+		<button id="show_btn" >S h o w</button>
 	</div>
 	<script src="js/jquery.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
 	
 	<script src="js/eventemitter2.min.js"></script>
 	<script src="js/roslib.js"></script>

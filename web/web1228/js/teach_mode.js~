@@ -5,25 +5,42 @@ var CmdType = {
 	Shift_X: "Shift_X",
 	Shift_Y: "Shift_Y",
 	Shift_Z: "Shift_Z",
-	Shift_RX: "Shift_RX",
-	Shift_RY: "Shift_RY",
-	Shift_RZ: "Shift_RZ",
-	Vaccum: "Vaccum"
+	Rotate_X: "Rotate_X",
+	Rotate_Y: "Rotate_Y",
+	Rotate_Z: "Rotate_Z",
+	Vaccum: "Vaccum",
+	Base_Init: "Base_Init",
+	Base_Stop: "Base_Stop",
+	Base_Vel : "Base_Vel",
+	Base_Pos_Index_1: "Base_Pos_Index_1",
+	Base_Pos_Index_2: "Base_Pos_Index_2",
+	Base_Pos_Index_3: "Base_Pos_Index_3"
 };
+
+
 
 function command_selected(cmd){
 	var command_select = '<select class="options_cmd_none" disabled="disabled" onchange="Cmd_change(this)">'+
-			'<option value="Joint"'+((cmd=='Joint')?"selected":"")+'>Joint</option>'+
-			'<option value="PTP"'+((cmd=='PTP')?"selected":"")+'>PTP</option>'+
-			'<option value="Line"'+((cmd=='Line')?"selected":"")+'>Line</option>'+
-			'<option value="Shift_X"'+((cmd=='Shift_X')?"selected":"")+'>Shift_X</option>'+
-			'<option value="Shift_Y"'+((cmd=='Shift_Y')?"selected":"")+'>Shift_Y</option>'+
-			'<option value="Shift_Z"'+((cmd=='Shift_Z')?"selected":"")+'>Shift_Z</option>'+
-			'<option value="Shift_RX"'+((cmd=='Shift_RX')?"selected":"")+'>Shift_RX</option>'+
-			'<option value="Shift_RY"'+((cmd=='Shift_RY')?"selected":"")+'>Shift_RY</option>'+
-			'<option value="Shift_RZ"'+((cmd=='Shift_RZ')?"selected":"")+'>Shift_RZ</option>'+
-     	'<option value="Vaccum"'+((cmd=='Vaccum')?"selected":"")+'>Vaccum</option>'+
-		'</select>';
+			'<option value="Joint"'+((cmd==CmdType.Joint)?"selected":"")+'>Joint</option>'+
+			'<option value="PTP"'+((cmd==CmdType.PTP)?"selected":"")+'>PTP</option>'+
+			'<option value="Line"'+((cmd==CmdType.Line)?"selected":"")+'>Line</option>'+
+			'<option value="Shift_X"'+((cmd==CmdType.Shift_X)?"selected":"")+'>Shift_X</option>'+
+			'<option value="Shift_Y"'+((cmd==CmdType.Shift_Y)?"selected":"")+'>Shift_Y</option>'+
+			'<option value="Shift_Z"'+((cmd==CmdType.Shift_Z)?"selected":"")+'>Shift_Z</option>'+
+			'<option value="Rotate_X"'+((cmd==CmdType.Rotate_X)?"selected":"")+'>Rotate_X</option>'+
+			'<option value="Rotate_Y"'+((cmd==CmdType.Rotate_Y)?"selected":"")+'>Rotate_Y</option>'+
+			'<option value="Rotate_Z"'+((cmd==CmdType.Rotate_Z)?"selected":"")+'>Rotate_Z</option>'+
+			'<option value="Vaccum"'+((cmd==CmdType.Vaccum)?"selected":"")+'>Vaccum</option>'+
+			'<option value="-----------------------">----------------------</option>'+
+			'<option value="Base_Init"'+((cmd.Base_Init)?"selected":"")+'>Base_Init</option>'+
+			'<option value="Base_Stop"'+((cmd.Base_Stop)?"selected":"")+'>Base_Stop</option>'+
+			'<option value="Base_Vel "'+((cmd.Base_Vel)?"selected":"")+'>Base_Vel</option>'+
+			'<option value="Base_Pos_Index_1"'+((cmd.Base_Pos_Index_1)?"selected":"")+'>Base_Pos_Index_1</option>'+
+			'<option value="Base_Pos_Index_2"'+((cmd.Base_Pos_Index_2)?"selected":"")+'>Base_Pos_Index_2</option>'+
+			'<option value="Base_Pos_Index_3"'+((cmd.Base_Pos_Index_3)?"selected":"")+'>Base_Pos_Index_3</option>'+
+			'</select>';
+			
+     	
 	return command_select;
 }
 
@@ -47,14 +64,24 @@ function order_list(){
 		cmd_id = 'cmd_' + num;
 		$(this).attr('id',cmd_id);
 		if($(this).children('td.order').length == 0){
-			$(this).children("td:first").before('<td class="order">'+$('#teach_table').children().length+'</td>');
+			$(this).children("td:first").before('<td class="order" onclick="copy(this)">'+$('#teach_table').children().length+'</td>');
 		}else{
 			$(this).children("td:first").remove();
-			$(this).children("td:first").before('<td class="order">'+num+'</td>');
+			$(this).children("td:first").before('<td class="order" onclick="copy(this)">'+num+'</td>');
 		}		
 		num++;
 	});
 	mov_it();
+}
+
+function copy(tr){
+	var tar_id = "cmd_"+$(tr)[0].outerText;
+	
+	var mod = $('tr#'+tar_id).find('[name=cmd_mod]').children('select').val();
+	
+	$("#cmd_select").val(mod);
+	
+	cmd_select_change(tar_id,mod);
 }
 
 function mov_it(){
@@ -80,7 +107,11 @@ $("#move_cmd").change(function(){
 });
 
 $("#cmd_select").change(function() {
-	var cmd = $(this).val();
+	cmd_select_change();
+});
+
+function cmd_select_change(ev,mod){
+	var cmd = $("#cmd_select").val();
 	
 	hide_all();
 	if(cmd==CmdType.Joint || cmd==CmdType.PTP || cmd==CmdType.Line){
@@ -90,11 +121,25 @@ $("#cmd_select").change(function() {
 		$("#vaccum_block").show();
 		$("#vaccum_block").css("display","inline");
 	}else if(cmd==CmdType.Shift_X || cmd==CmdType.Shift_Y || cmd==CmdType.Shift_Z || 
-		     cmd==CmdType.Shift_RX || cmd==CmdType.Shift_RY || cmd==CmdType.Shift_RZ){
+				 cmd==CmdType.Rotate_X || cmd==CmdType.Rotate_Y || cmd==CmdType.Rotate_Z){
 		$("#shift_block").show();
 		$("#shift_block").css("display","inline");
 	}
-});
+
+	if(ev != undefined){
+		if(mod==CmdType.Joint || mod==CmdType.PTP || mod==CmdType.Line){
+			var i = 1;
+			$('#'+ev).children("td.SubCmd").children("input").each(function(){
+				$("#block_"+i++).val($(this).val());
+			});
+		}else if(mod==CmdType.Vaccum){
+			$("#vaccum_select").val($('#'+ev).find('[name=vaccum_select]').val());
+		}else if(mod==CmdType.Shift_X || mod==CmdType.Shift_Y || mod==CmdType.Shift_Z || 
+					 mod==CmdType.Rotate_X || mod==CmdType.Rotate_Y || mod==CmdType.Rotate_Z){
+			$("#shift_val").val($('#'+ev).children("td.SubCmd").children("input").val());
+		}
+	}
+}
 
 function get_block_tr(option_cmd,val){
 	var sub_cmd = '';
@@ -128,16 +173,27 @@ function get_block_tr(option_cmd,val){
 		}
 		
 	}else if(option_cmd==CmdType.Shift_X || option_cmd==CmdType.Shift_Y || option_cmd==CmdType.Shift_Z|| 
-		     option_cmd==CmdType.Shift_RX || option_cmd==CmdType.Shift_RY || option_cmd==CmdType.Shift_RZ){
+		     option_cmd==CmdType.Rotate_X || option_cmd==CmdType.Rotate_Y || option_cmd==CmdType.Rotate_Z){
 		if(val==undefined){
 			sub_cmd = '<input class="block_sty_none" type="number" value="'+$('#shift_val').val()+'"readonly>';
 		}else{
 			sub_cmd = '<input class="block_sty_none" type="number" value="'+val+'"readonly>';
 		}
+	}else if(option_cmd==CmdType.Base_Vel ){
+		if(val==undefined){
+			for(var i=1;i<=3;i++){
+				var t_id = '#block_'+i;
+				sub_cmd += '<input class="block_sty_none" type="number" value="'+$(t_id).val()+'"readonly>';
+			}
+		}else{
+			for(var i=0;i<3;i++){
+				sub_cmd += '<input class="block_sty_none" type="number" value="'+val[i]+'"readonly>\n';
+			}
+		}
 	}
 	
 	var add_tr = 
-	'<tr class="font_white" id="" >' +
+	'<tr class="font_black" id="" >' +
 		'<td name="cmd_mod">'+command_selected(option_cmd)+'</td>'+
 		'<td class="SubCmd">'+sub_cmd+'</td>'+
 		'<td>'+edit_img+
@@ -159,6 +215,8 @@ addbtn.onclick = function(){
 	if(cmd != 'Choose') tr_html = get_block_tr(cmd);
 	
 	$('#teach_table').append(tr_html);
+
+	$('#teach_table').scrollTop($('#teach_table')[0].scrollHeight);
 	
 	order_list();
 }
@@ -188,7 +246,7 @@ function Cmd_change(edit,val_6){
 				'<option value="Off"'+(($('#vaccum_select').val() == "Off")?"selected":"")+'>Off</option>' +
 			'</select>';	
 	}else if(cmd==CmdType.Shift_X || cmd==CmdType.Shift_Y || cmd==CmdType.Shift_Z|| 
-		     cmd==CmdType.Shift_RX || cmd==CmdType.Shift_RY || cmd==CmdType.Shift_RZ){
+		     cmd==CmdType.Rotate_X || cmd==CmdType.Rotate_Y || cmd==CmdType.Rotate_Z){
 		sub_cmd = '<input class="block_sty" type="number" value="'+$('#shift_val').val()+'">';
 	}
 	
@@ -218,7 +276,7 @@ function edit_Cmd(edit){
 	console.log(mod);
 	if(mod==CmdType.Joint || mod==CmdType.PTP || mod==CmdType.Line ||
 			mod==CmdType.Shift_X || mod==CmdType.Shift_Y || mod==CmdType.Shift_Z ||
-			mod==CmdType.Shift_RX || mod==CmdType.Shift_RY || mod==CmdType.Shift_RZ){
+			mod==CmdType.Rotate_X || mod==CmdType.Rotate_Y || mod==CmdType.Rotate_Z){
 		$('#'+m_cmd_id).children("td.SubCmd").children("input").each(function(){
 			$(this).removeAttr("readonly");
 			//$(this).css("border-style","inset");
@@ -249,7 +307,7 @@ function save_Cmd(edit){
 	
 	if(mod==CmdType.Joint || mod==CmdType.PTP || mod==CmdType.Line ||
 			mod==CmdType.Shift_X || mod==CmdType.Shift_Y || mod==CmdType.Shift_Z ||
-			mod==CmdType.Shift_RX || mod==CmdType.Shift_RY || mod==CmdType.Shift_RZ){
+			mod==CmdType.Rotate_X || mod==CmdType.Rotate_Y || mod==CmdType.Rotate_Z){
 		$('#'+m_cmd_id).children("td.SubCmd").children("input").each(function(){
 			//console.log("in save");
 			$(this).attr("readonly","readonly");
@@ -280,7 +338,7 @@ function break_Cmd(edit){
 	var i = 0;
 	if(mod==CmdType.Joint || mod==CmdType.PTP || mod==CmdType.Line ||
 			mod==CmdType.Shift_X || mod==CmdType.Shift_Y || mod==CmdType.Shift_Z ||
-			mod==CmdType.Shift_RX || mod==CmdType.Shift_RY || mod==CmdType.Shift_RZ){
+			mod==CmdType.Rotate_X || mod==CmdType.Rotate_Y || mod==CmdType.Rotate_Z){
 		$('#'+m_cmd_id).children("td.SubCmd").children("input").each(function(){
 			$(this).val(cmd_edit[i++]);
 			$(this).attr("readonly","readonly");
@@ -350,8 +408,7 @@ function get_twist(){
 			y : 0.0,
 			z : 0.0,
 		}
-		}
-	);
+	});
 	
 	return twist;
 }
@@ -364,7 +421,6 @@ $("#run_btn").click(function() {
 	
 	//get each command
 	$('#teach_table tr').each(function(){
-		//var cmd_msg;
 		var cmd_mod = $(this).find('[name=cmd_mod]').children('select').val();
 		console.log(cmd_mod);
 		//-------------CmdType.Joint-------------//
@@ -409,7 +465,7 @@ $("#run_btn").click(function() {
 			mlist.push(cmd_msg);
 		//-------------CmdType.Shift_X-------------//
 		}else if(cmd_mod==CmdType.Shift_X  || cmd_mod==CmdType.Shift_Y  || cmd_mod==CmdType.Shift_Z||
-			     cmd_mod==CmdType.Shift_RX || cmd_mod==CmdType.Shift_RY || cmd_mod==CmdType.Shift_RZ ){
+			     cmd_mod==CmdType.Rotate_X || cmd_mod==CmdType.Rotate_Y || cmd_mod==CmdType.Rotate_Z ){
 		    
 			var data = $(this).children("td.SubCmd").children("input").val();
 			var twist = get_twist();
@@ -420,11 +476,11 @@ $("#run_btn").click(function() {
 				twist.linear.y = parseFloat(data);
 			}else if(cmd_mod==CmdType.Shift_Z){
 				twist.linear.z = parseFloat(data);
-			}else if(cmd_mod==CmdType.Shift_RX){
+			}else if(cmd_mod==CmdType.Rotate_X){
 				twist.angular.x = parseFloat(data);
-			}else if(cmd_mod==CmdType.Shift_RY){
+			}else if(cmd_mod==CmdType.Rotate_Y){
 				twist.angular.y = parseFloat(data);
-			}else if(cmd_mod==CmdType.Shift_RZ){
+			}else if(cmd_mod==CmdType.Rotate_Z){
 				twist.angular.z = parseFloat(data);
 			}
 			//console.log('twist.linear.x ='+ twist.linear.x  +',y=' + twist.linear.y + ',z=' + twist.linear.z);
@@ -468,32 +524,6 @@ $("#run_btn").click(function() {
 	goal.send();
 });
 
-
-/* ------json example------
-{
-	"001":{
-		"cmd": "PTP",
-		"val_6": [-0.2,0.3,0.7,0,-1.57,0]
-	},
-	"002":{
-		"cmd": "Shift_Y",
-		"val": 0.3
-	},
-	"003":{
-		"cmd": "Shift_Z",
-		"val": -0.2
-	},
-	"004":{
-		"cmd": "Vaccum",
-		"val": true
-	},
-	"005":{
-		"cmd": "Shift_Z",
-		"val": 0.2
-	}
-  
-}
- */
 $("#file_save_btn").click(function() {
 	$(this).removeClass('active');
 	$(this).addClass('disabled');
@@ -519,7 +549,7 @@ $("#file_save_btn").click(function() {
 			
 		//-------------CmdType.Shift-------------//
 		}else if(cmd_mod==CmdType.Shift_X  || cmd_mod==CmdType.Shift_Y  || cmd_mod==CmdType.Shift_Z ||
-			     cmd_mod==CmdType.Shift_RX || cmd_mod==CmdType.Shift_RY || cmd_mod==CmdType.Shift_RZ ){
+			     cmd_mod==CmdType.Rotate_X || cmd_mod==CmdType.Rotate_Y || cmd_mod==CmdType.Rotate_Z ){
 			//save_data += '\t"'+cmd_mod+'":{\n';	// Shift_X or Shift_Y or Shift_Z START
 			save_data += '\t\t"cmd": "'+cmd_mod+'",\n';	// Joint or PTP or Line START
 			save_data += '\t\t"val": ';	  //Val Start
@@ -572,9 +602,6 @@ $("#file_save_btn").click(function() {
 	
 });	
 
-
-
-
 $("#file_read_btn").click(function() {
 	$(this).removeClass('active');
 	$(this).addClass('disabled');
@@ -607,7 +634,7 @@ $("#file_read_btn").click(function() {
 			}else if(cmd==CmdType.Vaccum){
 				tr_html = get_block_tr(cmd,json[index].val);
 			}else if(cmd==CmdType.Shift_X  || cmd==CmdType.Shift_Y  || cmd==CmdType.Shift_Z||
-			     	 cmd==CmdType.Shift_RX || cmd==CmdType.Shift_RY || cmd==CmdType.Shift_RZ ){
+			     	 cmd==CmdType.Rotate_X || cmd==CmdType.Rotate_Y || cmd==CmdType.Rotate_Z ){
 				tr_html = get_block_tr(cmd,json[index].val,json[index].pose);
 			}
 			$('#teach_table').append(tr_html);
@@ -632,7 +659,7 @@ function parse_json_2_cmd_list(cmd,val){
 	}else if(cmd==CmdType.Vaccum){
 		tr_html = get_block_tr(val.Val);
 	}else if(cmd==CmdType.Shift_X  || cmd==CmdType.Shift_Y  || cmd==CmdType.Shift_Z ||
-			 cmd==CmdType.Shift_RX || cmd==CmdType.Shift_RY || cmd==CmdType.Shift_RZ ){
+			 cmd==CmdType.Rotate_X || cmd==CmdType.Rotate_Y || cmd==CmdType.Rotate_Z ){
 		tr_html = get_block_tr(cmd,val.Val);
 	}else{
 		return;
@@ -644,10 +671,17 @@ function teach_click(t){
 	
 	var m_cmd_id = $(t).parents('tr').attr('id');
 	console.log("m_cmd_id="+m_cmd_id);
-	
-	var mod = $('#'+m_cmd_id).children('[name=cmd_mod]').children('select').val();
+
+	var mod;
+
+	if(m_cmd_id == undefined){
+		mod = $("#cmd_select").val();
+	}else{
+		mod = $('#'+m_cmd_id).children('[name=cmd_mod]').children('select').val();
+	}
+
 	console.log("mod="+mod);
-	
+
 	var i = 0;
 	if(mod==CmdType.Joint){
 		var i = 0;
@@ -668,17 +702,20 @@ function teach_click(t){
 			
 			console.log( 'Result : '   + res.result);
 			console.log( 'Pose : '   + l.x + "," + l.y + "," + l.z + "," + a.x + "," + a.y + "," + a.z );
-		  	
-		  	
-		  	var refer = $('#'+m_cmd_id).children("td.SubCmd");
-		  	refer.children("input:nth-child(1)").val(l.x.toFixed(2));
-		  	refer.children("input:nth-child(2)").val(l.y.toFixed(2));
-		  	refer.children("input:nth-child(3)").val(l.z.toFixed(2));
-		  	refer.children("input:nth-child(4)").val(a.x.toFixed(2));
-		  	refer.children("input:nth-child(5)").val(a.y.toFixed(2));
-		  	refer.children("input:nth-child(6)").val(a.z.toFixed(2));
-		  	
-		  	
+
+		  	if(m_cmd_id == undefined){
+		  		var val_6 = [l.x,l.y,l.z,a.x,a.y,a.z];
+		  		if(mod != 'Choose') tr_html = get_block_tr(mod,val_6);
+				$('#teach_table').append(tr_html);
+			}else{
+				var refer = $('#'+m_cmd_id).children("td.SubCmd");
+				refer.children("input:nth-child(1)").val(l.x.toFixed(2));
+				refer.children("input:nth-child(2)").val(l.y.toFixed(2));
+				refer.children("input:nth-child(3)").val(l.z.toFixed(2));
+				refer.children("input:nth-child(4)").val(a.x.toFixed(2));
+				refer.children("input:nth-child(5)").val(a.y.toFixed(2));
+				refer.children("input:nth-child(6)").val(a.z.toFixed(2));
+			}
 		});
 	
 	}else if(mod==CmdType.Shift_X || mod==CmdType.Shift_Y || mod==CmdType.Shift_Z){
@@ -692,8 +729,7 @@ function teach_click(t){
 		console.log(m_cmd_id);
 		do{
 			var pre_id = $('#'+now_cmd_id).prev("tr").prop("id");
-			console.log($('#'+now_cmd_id).prev().prop("id"));
-			if(pre_id==undefined)	{
+			if(pre_id==undefined){
 				console.error('Teach Click -> Cannot find previous position');
 				return;
 			}
@@ -720,8 +756,9 @@ function teach_click(t){
 				if(pre_pose_str!=undefined){
 				
 					var pre_pose_ary = pre_pose_str.split(",");
-					for(var str in pre_pose_ary){
-				        pre_pose.push( parseFloat( str ) );
+					for(var ind in pre_pose_ary){
+						console.log('str='+pre_pose_ary[ind]);
+						pre_pose.push( parseFloat( pre_pose_ary[ind] ) );
 					}
 					find = true;
 				}

@@ -25,7 +25,14 @@
 			<option value="Rotate_X">Rotate_X</option>
 			<option value="Rotate_Y">Rotate_Y</option>
 			<option value="Rotate_Z">Rotate_Z</option>
-     	<option value="Vaccum">Vaccum</option>
+     			<option value="Vaccum">Vaccum</option>
+			<option value="-----------------------">----------------------</option>
+			<option value="Base_Vel">Base_Vel</option>
+			<option value="Base_Stop">Base_Stop</option>
+			<option value="Base_Init">Base_Init</option>
+			<option value="Base_Pos_Index_1">Base_Pos_Index_1</option>
+			<option value="Base_Pos_Index_2">Base_Pos_Index_2</option>
+			<option value="Base_Pos_Index_3">Base_Pos_Index_3</option>
 		</select>
 		
 		<div id="block" style= "display:none;">
@@ -46,6 +53,12 @@
 		
 		<div id="shift_block" style= "display:none;">
 			<input value="0" id="shift_val" class="block_sty" type="number"/>
+		</div>
+		
+		<div id="base_vel_block" style= "display:none;">
+			<input value="0" id="base_vel_block_1" class="block_sty" type="number"/>
+			<input value="0" id="base_vel_block_2" class="block_sty" type="number"/>
+			<input value="0" id="base_vel_block_3" class="block_sty" type="number"/>
 		</div>
 		
 		<button name="teach_btn" class="teach_btn" style="width:10%; float:right;" onclick="teach_click(this)">
