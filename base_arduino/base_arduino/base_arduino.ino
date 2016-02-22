@@ -19,6 +19,7 @@ int id_1 = 0x601;
 int id_2 = 0x602;
 int id_3 = 0x603;
 int id_4 = 0x604;
+int ptemp = 2;
 double pi = 3.14159265359;
 double sita = 0;
 double alfa = 0.25 * pi;
@@ -30,6 +31,8 @@ double beta4 = 1.75 * pi;
 double r = 25.4;
 float v1, v2, v3, v4;
 float dtemp1 = 0, dtemp2 = 0, dtemp3 = 0, dtemp4 = 0;
+int max_speed =700;
+
 
 unsigned char buf[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 unsigned char len = 0;
@@ -131,10 +134,13 @@ void init_all() {
 //stop all motors at speed 0
 void stop_all() {
   CAN.sendMsgBuf(id_1, 0, 8, speed0);
-  CAN.sendMsgBuf(id_2, 0, 8, speed0);float v1, v2, v3, v4;
+  CAN.sendMsgBuf(id_2, 0, 8, speed0);
   CAN.sendMsgBuf(id_3, 0, 8, speed0);
   CAN.sendMsgBuf(id_4, 0, 8, speed0);
-
+  dtemp1=0;
+  dtemp2=0;
+  dtemp3=0;
+  dtemp4=0;
 
 }
 
@@ -164,9 +170,9 @@ void set_motor_rpm(int id, int rpm) {
 
 
 void set_base_speed(int x, int y, int yaw) {
-  if (x == 0 && y == 0 && yaw == 0) {
-    stop_all();
-  }
+//  if (x == 0 && y == 0 && yaw == 0) {
+//    stop_all();
+//  }
 
   v1 = (cos(sita + alfa) / sin(-alfa)) * x + (sin(sita + alfa) / sin(-alfa)) * y + (l * sin(sita + alfa - beta2) / sin(-alfa)) * yaw;
   v2 = (cos(sita - alfa) / sin(alfa)) * x + (sin(sita - alfa) / sin(alfa)) * y + (l * sin(sita - alfa - beta1) / sin(alfa)) * yaw;
@@ -177,30 +183,34 @@ void set_base_speed(int x, int y, int yaw) {
   v2 *= -1 / r;
   v3 *= 1 / r;
   v4 *= -1 / r;
-
-    if( v1*250>=500 || v1*250<=-500){
-      v1=(v1/abs(v1))*500;
+ 
+    if( v1*max_speed/2>=max_speed || v1*max_speed/2<=-max_speed){
+      v1=(v1/abs(v1))*max_speed;
     }else{
-      v1*=250;
+      v1*=max_speed/2;
     }
       
-    if( v2*250>=500 || v2*250<=-500){
-      v2=(v2/abs(v2))*500;
+    if( v2*max_speed/2>=max_speed || v2*max_speed/2<=-max_speed){
+      v2=(v2/abs(v2))*max_speed;
     }else{
-      v2*=250;
+      v2*=max_speed/2;
     }
       
-    if( v3*250>=500 || v3*250<=-500){
-      v3=(v3/abs(v3))*500;
+    if( v3*max_speed/2>=max_speed || v3*max_speed/2<=-max_speed){
+      v3=(v3/abs(v3))*max_speed;
     }else{
-      v3*=250;
+      v3*=max_speed/2;
     }
       
-    if( v4*250>=500 || v4*250<=-500){
-      v4=(v4/abs(v4))*500;
+    if( v4*max_speed/2>=max_speed || v4*max_speed/2<=-max_speed){
+      v4=(v4/abs(v4))*max_speed;  
     }else{
-      v4*=250;
+      v4*=max_speed/2;
     }  
+      set_motor_rpm(id_1, v1);
+      set_motor_rpm(id_2, v2);
+      set_motor_rpm(id_3, v3);
+      set_motor_rpm(id_4, v4);
       
   /*Serial.print("v1=");
   Serial.println(v1);
@@ -209,60 +219,52 @@ void set_base_speed(int x, int y, int yaw) {
   Serial.print("v3=");
   Serial.println(v3);
   Serial.print("v4=");
-  Serial.println(v4);*/
+  Serial.println(v4);//*/
   
-float a1 =(v1-dtemp1)/10;
-float a2 =(v2-dtemp2)/10;
-float a3 =(v3-dtemp3)/10;
-float a4 =(v4-dtemp4)/10;
-
-  for(int i=1 ; i <=10 ; i++){
-    dtemp1 = dtemp1+a1;
-    dtemp2 = dtemp2+a2;
-    dtemp3 = dtemp3+a3;
-    dtemp4 = dtemp4+a4;
+float a1 = (v1-dtemp1)/10;
+float a2 = (v2-dtemp2)/10;
+float a3 = (v3-dtemp3)/10;
+float a4 = (v4-dtemp4)/10;
+  if((a1!=0)&&(a2!=0)&&(a3!=0)&&(a4!=0)){
+    for(int i=1 ; i <=10 ; i++){
+      dtemp1 = dtemp1+a1;
+      dtemp2 = dtemp2+a2;
+      dtemp3 = dtemp3+a3;
+      dtemp4 = dtemp4+a4;
     
-    set_motor_rpm(id_1, dtemp1);
-    set_motor_rpm(id_2, dtemp2);
-    set_motor_rpm(id_3, dtemp3);
-    set_motor_rpm(id_4, dtemp4);
-    delay (50);
-          
-  /*Serial.print("dtemp1=");
-  Serial.println(dtemp1);
-  Serial.print("dtemp2=");
-  Serial.println(dtemp2);
-  Serial.print("dtemp3=");
-  Serial.println(dtemp3);
-  Serial.print("dtemp4=");
-  Serial.println(dtemp4);*/
+      set_motor_rpm(id_1, dtemp1);
+      set_motor_rpm(id_2, dtemp2);
+      set_motor_rpm(id_3, dtemp3);
+      set_motor_rpm(id_4, dtemp4);
+      delay (20);
+      
+   /* Serial.print("dtemp1=");
+      Serial.println(dtemp1);
+      Serial.print("dtemp2=");
+      Serial.println(dtemp2);
+      Serial.print("dtemp3=");
+      Serial.println(dtemp3);
+      Serial.print("dtemp4=");
+      Serial.println(dtemp4);//*/
+    }
   }
-  
-//  get_encoder();
- 
-   
-//  set_motor_rpm(id_1, -500);
-//  set_motor_rpm(id_2, -500);
-//  set_motor_rpm(id_3, -500);
-//  set_motor_rpm(id_4, -500);
-  //  CAN.sendMsgBuf(id_1, 0, 8, speed500);
-  //  CAN.sendMsgBuf(id_2, 0, 8, speed500);
-  //  CAN.sendMsgBuf(id_3, 0, 8, speed500);
-  //  CAN.sendMsgBuf(id_4, 0, 8, speed500);
-
-  //    set_motor_rpm(id_4,-500);
-
-
 }
 
-
-void test_all_speed500() {
-  Serial.println("all_speed500");
-  CAN.sendMsgBuf(0x601, 0, 8, speed500);
-  CAN.sendMsgBuf(0x602, 0, 8, speed500);
-  CAN.sendMsgBuf(0x603, 0, 8, speed500);
-  CAN.sendMsgBuf(0x604, 0, 8, speed500);
-
+void run_point(int point) {
+  
+    if((ptemp-point)<0){
+        set_base_speed(0, 50, 0);
+        delay((point-ptemp)*6800);
+        set_base_speed(0, 0, 0);
+        ptemp=point;
+      }else if((ptemp-point)>0){
+        set_base_speed(0, -50, 0);
+        delay((ptemp-point)*6800);
+        set_base_speed(0, 0, 0);
+        ptemp=point;
+      }else{
+        set_base_speed(0, 0, 0);     
+      }
 }
 
 
@@ -295,6 +297,7 @@ START_INIT:
 int8_t x_speed;
 int8_t y_speed;
 int8_t yaw_speed;
+int8_t point_index;
 int8_t *ref_val;
 
 char *loop_show_str = new char[64];
@@ -319,8 +322,8 @@ void loop()
   if (Serial.available() > 0) {
     unsigned char data = Serial.read();
 
-    Serial.print("get data=");
-    Serial.println(data);
+//    Serial.print("get data=");
+//    Serial.println(data);
 
  
 
@@ -332,7 +335,6 @@ void loop()
         {
           case 'i':
             init_all();        
-            get_encoder();
             break;
 
           case 'x':
@@ -352,14 +354,23 @@ void loop()
 
           case 'r':
             //------------------------RUN----------------------------//
-            sprintf(loop_show_str, "x_speed=%d,y_speed=%d", x_speed, y_speed);
-            Serial.println(loop_show_str);
+//            sprintf(loop_show_str, "x_speed=%d,y_speed=%d", x_speed, y_speed);
+//            Serial.println(loop_show_str);
 
 
             set_base_speed(x_speed, y_speed, yaw_speed);
  
             break;
-
+          case 'a':
+            //------------------------read_point----------------------//
+            ref_val = &point_index;
+            step = VAL;
+            break;
+          case 'b':
+            //--------------------run_point--------------------------//
+            Serial.print("RUN_POINT=");
+            Serial.println(point_index);
+            run_point(point_index); 
           case 's':
             stop_all();
             break;

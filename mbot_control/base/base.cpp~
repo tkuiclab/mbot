@@ -28,6 +28,17 @@ void motionCallback(const geometry_msgs::Twist::ConstPtr& msg)
     }else if(msg->angular.x==2){
 	mcssl_motor_stop();
 	return;
+    }else if(msg->angular.x==3){
+	int index = msg->angular.y;
+
+	if(index <= 0 || index > 3){
+		ROS_INFO("Error Point");
+		return ;
+	}	
+
+	mcssl_base_position_index(index);
+		
+	return;
     }else{
 	mcssl_base_spped(msg->linear.x, msg->linear.y,msg->angular.z);
     }

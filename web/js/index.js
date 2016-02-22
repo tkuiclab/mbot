@@ -27,7 +27,7 @@ var teachModeClient = new ROSLIB.ActionClient({
 // ----------------------
 var direct_Pub = new ROSLIB.Topic({
 	ros:ros,
-	name:'ur_speed',
+	name:'base_vel',
 	messageType : 'geometry_msgs/Twist'
 });
 // Subscribing to a Topic
