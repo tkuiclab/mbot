@@ -23,8 +23,6 @@
 			<li><a href="index.html">Remote Control <span class="icon"></span></a></li>
 			<li><a href="teach_mode.html">Teach Mode <span class="icon"></span></a></li>
 			<li><a href="http://www.iarc.tku.edu.tw/">TKU IARC <span class="icon"></span></a></li>
-			<li><a href="http://www.facebook.com">Facebook <span class="icon"></span></a></li>
-			<li><a href="http://www.google.com">Google <span class="icon"></span></a></li>
 		</ul>
 	</nav>
 	<div id="fixedTop">
@@ -44,33 +42,53 @@
 	<BR>
 	<BR>
 	<BR>
+	<!-- Information Panel -->
+	<div class="col-md-3 panel panel-info">
+		<div class="panel-heading" style="text-align:center"><strong>Information</strong></div>
+		<div>
+			<p>info test</p>
+		</div>
+	</div>
 	<!-- Cupboard Table -->
-	<div class="col-md-3"></div>
 	<div id="id01" class="col-md-4">
-		<table width="300px" height="400px" cellpadding="0" cellspacing="0" border="3px" bordercolor="#4fd7f4">
-		<tr height="25%">
+		<table width="300px" height="400px" cellpadding="0" cellspacing="0" border="3px" bordercolor="#4fd7f4" style="text-align:center">
+		<tr height="10%">
+			<td colspan="3"><strong>Shelf</strong></td>
+		</tr>
+		<tr height="22.5%">
 			<td id="bin_A" width="33%"></td>
 			<td id="bin_B" width="34%"></td>
 			<td id="bin_C" width="33%"></td>
 		</tr>
-		<tr height="25%">
+		<tr height="22.5%">
 			<td id="bin_D" width="20%"></td>
 			<td id="bin_E" width="20%"></td>
 			<td id="bin_F" width="20%"></td>
 		</tr>
-		<tr height="25%">
+		<tr height="22.5%">
 			<td id="bin_G" width="20%"></td>
 			<td id="bin_H" width="20%"></td>
 			<td id="bin_I" width="20%"></td>
 		</tr>
-		<tr height="25%">
+		<tr height="22.5%">
 			<td id="bin_J" width="20%"></td>
 			<td id="bin_K" width="20%"></td>
 			<td id="bin_L" width="20%"></td>
 		</tr>
 		</table>
 	</div>
-	<div class="col-md-3"></div>
+	<!-- Tote Panel -->
+	<div class="col-md-3">
+		<div width="100px" height="400px" cellpadding="0" cellspacing="0" style="border:3px solid #4fd7f4">
+		<div width="100%" height="10%" style="text-align:center; border-bottom:1px solid #4fd7f4"><strong>Tote</strong></div>
+		<div width="100%" height="90%">
+			<ul>
+			<li>item1</li>
+			<li>item2</li>
+			</ul>
+		</div>
+		</div>
+	</div>
 	<!-- Dialog -->
 	<div class="row"></div>
 	<input type="file" id="files" name="files[]" multiple />
@@ -91,9 +109,11 @@
 			</div>
 		</div>
 	</div>
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.navgoco.js"></script>
+<script src="js/roslib/eventemitter2.min.js"></script>
+<script src="js/roslib/roslib.min.js"></script>
+<script src="js/jquery/jquery.min.js"></script>
+<script src="js/jquery/jquery.navgoco.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/main.js"></script>
 
 <script src="jquery-ui-1.11.4/external/jquery/jquery.js"></script>
@@ -103,12 +123,10 @@
 	var dialog_openBool;
 	//Read JSON file
 	var xmlhttp = new XMLHttpRequest();
-	var url = "apc_test.json";
+	var url = "json/apc.json";
 
 	xmlhttp.onreadystatechange = function(){
 		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
-			//var myArr = JSON.parse(xmlhttp.responseText);
-			//show_APC_json(myArr);
 			parse_APC_json(xmlhttp.responseText);
 		}
 	};
@@ -118,8 +136,9 @@
 	function parse_APC_json(data){
 		var myArr = JSON.parse(data);
 		show_APC_json(myArr);
+		console.log(myArr.bin_contents.bin_A[0]);
 	}
-
+	//show json elements to cupboard
 	function show_APC_json(arr){
 		var outA="";var outB="";var outC="";
 		var outD="";var outE="";var outF="";
@@ -238,7 +257,7 @@
 			f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
 			'</li>');
 
-			url = f.name;
+			url = "json/"+f.name;//open the json file in folder '/json'
 			xmlhttp.open("GET",url,true);
 			xmlhttp.send();
 		}
