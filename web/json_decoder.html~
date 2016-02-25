@@ -164,9 +164,19 @@
 		});
 		goal.send();
 	});
+	$("#stowRun").on('click',function(e){
+		var goal = new ROSLIB.Goal({
+			actionClient : jsonClient,
+			goalMessage : {
+				cmd : "Stow_Run", //Readfile, Pick_Run, Stow_Run
+				data : ""
+			}
+		});
+		goal.send();
+	});
 	//Read JSON file & Send JSON String to strategy by action
 	var xmlhttp = new XMLHttpRequest();
-	var url = "json/apc.json";
+	var url = "";//json/apc.json
 	xmlhttp.onreadystatechange = function(){
 		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
 			parse_APC_json(xmlhttp.responseText);
