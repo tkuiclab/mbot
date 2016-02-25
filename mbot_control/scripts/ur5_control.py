@@ -139,24 +139,33 @@ class ur_control(object):
 
             elif cmd.cmd == 'Shift_RX':
                 ang = cmd.pose.angular.x
-                pose = [0.0,0.0,0.0,0.0,0.0,0.0]
-                pose[3] += ang
-                rob.movel(pose,acc,vel,wait=True,relative=True)
-                #rospy.sleep(2)
+                t = rob.get_pose()
+                print "Shift_RX"
+                print "cmd.x = %f" % ang
+                print "t = "
+                print t
+                t.orient.rotate_xb(ang)
+                rob.set_pose(t, vel=vel, acc=acc)
 
             elif cmd.cmd == 'Shift_RY':
                 ang = cmd.pose.angular.y
-                pose = [0.0,0.0,0.0,0.0,0.0,0.0]
-                pose[4] += ang
-                rob.movel(pose,acc,vel,wait=True,relative=True)
-                #rospy.sleep(2)
+                t = rob.get_pose()
+                print "Shift_RY"
+                print "cmd.y = %f" % ang
+                print "t = "
+                print t
+                t.orient.rotate_yb(ang)
+                rob.set_pose(t, vel=vel, acc=acc)
 
             elif cmd.cmd == 'Shift_RZ':
                 ang = cmd.pose.angular.z
-                pose = [0.0,0.0,0.0,0.0,0.0,0.0]
-                pose[5] += ang
-                rob.movel(pose,acc,vel,wait=True,relative=True)
-                #rospy.sleep(2)
+                t = rob.get_pose()
+                print "Shift_RZ"
+                print "cmd.z = %f" % ang
+                print "t = "
+                print t
+                t.orient.rotate_zb(ang)
+                rob.set_pose(t, vel=vel, acc=acc)
 
             elif cmd.cmd == 'Base_Vel':
                 x_vel = cmd.pose.linear.x
@@ -289,7 +298,7 @@ if __name__ == "__main__":
 
     rob = urx.Robot("192.168.5.5")
     #rob = urx.Robot("localhost")
-    rob.set_tcp((0, 0, 0, 0, 0, 0))
+    rob.set_tcp((0, 0.12, 0.245, 0, 0, 0))
     rob.set_payload(0.5, (0, 0, 0))
 
 

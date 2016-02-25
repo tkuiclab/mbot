@@ -4,7 +4,7 @@ Author: Chien-Ming Lin <jianming1481@gmail.com>
 Created on:       2016/02/18 --------------------> Creating file & read json file
 Modified on:      2016/02/21 --------------------> Adding Action Server for UIFO & Action Client for Vision
                   2016/02/22 --------------------> Adding mbot_control server
-                  2016/02/25 --------------------> Adding move2standby function
+                  2016/02/25 --------------------> Adding move2standby function & Modify ur5_control.py for rotate TCP
 
 Description: Strategy for Amazon Picking Challenge 2016
     Action_Server: UI_INFO
@@ -34,9 +34,9 @@ class strategy_class(object):
             data_file.close()
 
         self.uifo_action_name = "%s_uifo" % node_name
-        #self._as = actionlib.SimpleActionServer(self.uifo_action_name,mbot_control.msg.UIFOAction,execute_cb=self.ui_info_cb,auto_start=False)
+        self._as = actionlib.SimpleActionServer(self.uifo_action_name,mbot_control.msg.UIFOAction,execute_cb=self.ui_info_cb,auto_start=False)
 
-        #self._as.start()
+        self._as.start()
 
     ##################################################### move 2 standby ####################################################
     def move2standby(self,bin_ID):
@@ -105,6 +105,25 @@ class strategy_class(object):
 
         return TeachCMD_list
 
+    ################################################### move 2 watch_pose ##################################################
+    def move2watch(self):
+        rospy.loginfo("Moving to watch position...")
+        TeachCMD_list = mbot_control.msg.TeachCommandListGoal()
+        cmd = mbot_control.msg.TeachCommand()
+        TeachCMD_list.cmd_list = []
+
+        cmd.cmd = 'Shift_RY'
+        cmd.joint_position = []
+        cmd.pose.linear.x = 0
+        cmd.pose.linear.y = 0
+        cmd.pose.linear.z = 0
+        cmd.pose.angular.x = 0
+        cmd.pose.angular.y = -3.14/8
+        cmd.pose.angular.z = 0
+
+        TeachCMD_list.cmd_list.append(cmd)
+        return TeachCMD_list
+
     ##################################################### Control Mbot ####################################################
     def control_mbot(self,bin_ID,json_data):
         rospy.loginfo("Controlling mbot")
@@ -115,7 +134,7 @@ class strategy_class(object):
         TeachCMD_list.cmd_list = []
 
         ##------------------ Standby ------------------ ##
-        if bin_ID==1 or bin_ID==4 or bin_ID==7 or bin_ID==10:
+        '''if bin_ID==1 or bin_ID==4 or bin_ID==7 or bin_ID==10:
             rospy.loginfo("Controlling the Mbot move to section LEFT")
         elif bin_ID==2 or bin_ID==5 or bin_ID==8 or bin_ID==11:
             rospy.loginfo("Controlling the Mbot move to section CENTER")
@@ -123,10 +142,11 @@ class strategy_class(object):
         elif bin_ID==3 or bin_ID==6 or bin_ID==9 or bin_ID==12:
             rospy.loginfo("Controlling the Mbot move to section RIGHT")
         else:
-            rospy.loginfo("BIN_ID ERROR!")
+            rospy.loginfo("BIN_ID ERROR!")'''
+
+        TeachCMD_list = self.move2watch()
 
         goal = mbot_control.msg.TeachCommandListGoal(TeachCMD_list.cmd_list)
-
         client.send_goal(goal)
         client.wait_for_result()
         result = client.get_result()
@@ -163,16 +183,18 @@ class strategy_class(object):
             json_data = json.load(data_file)
             data_file.close()
 
-        for x in range(1,4,1):
+        '''for x in range(1,4,1):
             for y in range(0,4,1):
                 bin_ID = y*3+x
                 obj = self.control_mbot(bin_ID,json_data)
                 self._feedback.tag = "Jianming is Super hot %d!" % bin_ID
                 self._feedback.msg = "Jianming is Super cool %d!" % bin_ID
-                self._as.publish_feedback(self._feedback)
+                self._as.publish_feedback(self._feedback)'''
+
+        obj = self.control_mbot(2,json_data)
 
         if success:
-            rospy.loginfo('------Jianming is Super hot!------')
+            rospy.loginfo('------Jianming done!------')
             self._result.result = "Hello moto"
             self._as.set_succeeded(self._result)
 
@@ -208,7 +230,7 @@ if __name__ == '__main__':
         file_name = 'apc.json'
         rospy.init_node(node_name,anonymous=False)
         strategy = strategy_class(rospy.get_name(),file_name)
-        strategy.test_read_json()
+        #strategy.test_read_json()
         #strategy.vision_client(5)
 
 
