@@ -4,6 +4,7 @@ Author: Chien-Ming Lin <jianming1481@gmail.com>
 Created on:       2016/02/18 --------------------> Creating file & read json file
 Modified on:      2016/02/21 --------------------> Adding Action Server for UIFO & Action Client for Vision
                   2016/02/22 --------------------> Adding mbot_control server
+                  2016/02/25 --------------------> Adding move2standby function
 
 Description: Strategy for Amazon Picking Challenge 2016
     Action_Server: UI_INFO
@@ -33,43 +34,98 @@ class strategy_class(object):
             data_file.close()
 
         self.uifo_action_name = "%s_uifo" % node_name
-        self._as = actionlib.SimpleActionServer(self.uifo_action_name,mbot_control.msg.UIFOAction,execute_cb=self.uifo_cb,auto_start=False)
+        #self._as = actionlib.SimpleActionServer(self.uifo_action_name,mbot_control.msg.UIFOAction,execute_cb=self.ui_info_cb,auto_start=False)
 
-        self._as.start()
+        #self._as.start()
+
+    ##################################################### move 2 standby ####################################################
+    def move2standby(self,bin_ID):
+        rospy.loginfo("Moving to standby position...")
+        TeachCMD_list = mbot_control.msg.TeachCommandListGoal()
+        cmd = mbot_control.msg.TeachCommand()
+        TeachCMD_list.cmd_list = []
+
+        if bin_ID < 6.5:
+            updown = True
+            rospy.loginfo("Moving to up level...")
+        else:
+            updown = False
+            rospy.loginfo("Moving to down level...")
+
+        if updown:
+            cmd.cmd = 'Joint'
+            cmd.joint_position = [1.273, -2.016, 2.301, -3.407, -1.2, 0.0]
+            cmd.pose.linear.x = 0.0
+            cmd.pose.linear.y = 0.0
+            cmd.pose.linear.z = 0.0
+            cmd.pose.angular.x = 0.0
+            cmd.pose.angular.y = 0.0
+            cmd.pose.angular.z = 0.0
+            TeachCMD_list.cmd_list.append(cmd)
+        else:
+            cmd.cmd = 'Joint'
+            cmd.joint_position = [1.133, -1.863, 2.365, -0.517, 1.104, -3.13]
+            cmd.pose.linear.x = 0.0
+            cmd.pose.linear.y = 0.0
+            cmd.pose.linear.z = 0.0
+            cmd.pose.angular.x = 0.0
+            cmd.pose.angular.y = 0.0
+            cmd.pose.angular.z = 0.0
+            TeachCMD_list.cmd_list.append(cmd)
+
+        cmd = mbot_control.msg.TeachCommand()
+
+        if bin_ID==1 or bin_ID==2 or bin_ID==3:
+            cmd.cmd = 'Shift_Z'
+            cmd.joint_position = []
+            cmd.pose.linear.x = 0.0
+            cmd.pose.linear.y = 0.0
+            cmd.pose.linear.z = 0.26
+            cmd.pose.angular.x = 0.0
+            cmd.pose.angular.y = 0.0
+            cmd.pose.angular.z = 0.0
+            rospy.loginfo("Bin_%s in position!", bin_ID)
+        elif bin_ID==4 or bin_ID==5 or bin_ID==6:
+            rospy.loginfo("Bin_%s in position!", bin_ID)
+        elif bin_ID==7 or bin_ID==8 or bin_ID==9:
+            rospy.loginfo("Bin_%s in position!", bin_ID)
+        elif bin_ID==10 or bin_ID==11 or bin_ID==12:
+            cmd.cmd = 'Shift_Z'
+            cmd.joint_position = []
+            cmd.pose.linear.x = 0.0
+            cmd.pose.linear.y = 0.0
+            cmd.pose.linear.z = -0.26
+            cmd.pose.angular.x = 0.0
+            cmd.pose.angular.y = 0.0
+            cmd.pose.angular.z = 0.0
+            rospy.loginfo("Bin_%s in position!",bin_ID)
+        else:
+            rospy.loginfo("Bin_ID error in move2standby!")
+        TeachCMD_list.cmd_list.append(cmd)
+
+        return TeachCMD_list
 
     ##################################################### Control Mbot ####################################################
     def control_mbot(self,bin_ID,json_data):
+        rospy.loginfo("Controlling mbot")
         client = actionlib.SimpleActionClient('mbot_control', mbot_control.msg.TeachCommandListAction)
         client.wait_for_server()
+
         TeachCMD_list = mbot_control.msg.TeachCommandListGoal()
-        cmd = mbot_control.msg.TeachCommand()
+        TeachCMD_list.cmd_list = []
+
+        ##------------------ Standby ------------------ ##
         if bin_ID==1 or bin_ID==4 or bin_ID==7 or bin_ID==10:
             rospy.loginfo("Controlling the Mbot move to section LEFT")
-            if bin_ID==1:
-                cmd.cmd = 'Joint'
-                cmd.joint_position = [0, -1.57, 0, -1.57, 0, 0]
-                tmp_twist = Twist()
-                tmp_twist.linear.x = 0
-                tmp_twist.linear.y = 0
-                tmp_twist.linear.z = 0
-                tmp_twist.angular.x = 0
-                tmp_twist.angular.y = 0
-                tmp_twist.angular.z = 0
-                cmd.pose = tmp_twist
-
-                #cmd.pose.linear.x = 0;
-                TeachCMD_list.cmd_list = []
-                TeachCMD_list.cmd_list.append(cmd)
-                #print TeachCMD_list.cmd_list[0].cmd
-                #print TeachCMD_list[0].cmd_list.cmd
-                goal = mbot_control.msg.TeachCommandListGoal(TeachCMD_list.cmd_list)
-
         elif bin_ID==2 or bin_ID==5 or bin_ID==8 or bin_ID==11:
             rospy.loginfo("Controlling the Mbot move to section CENTER")
+            TeachCMD_list = self.move2standby(bin_ID)
         elif bin_ID==3 or bin_ID==6 or bin_ID==9 or bin_ID==12:
             rospy.loginfo("Controlling the Mbot move to section RIGHT")
         else:
-            rospy.loginfo("BIN_ID ERROR")
+            rospy.loginfo("BIN_ID ERROR!")
+
+        goal = mbot_control.msg.TeachCommandListGoal(TeachCMD_list.cmd_list)
 
         client.send_goal(goal)
         client.wait_for_result()
@@ -96,7 +152,7 @@ class strategy_class(object):
         return obj
 
     ############################################## UI_INFO Execute Callback ##############################################
-    def uifo_cb(self,goal):
+    def ui_info_cb(self,goal):
         rospy.loginfo("uifo_cb_execute")
         success = True
 
@@ -152,7 +208,7 @@ if __name__ == '__main__':
         file_name = 'apc.json'
         rospy.init_node(node_name,anonymous=False)
         strategy = strategy_class(rospy.get_name(),file_name)
-        #strategy.test_read_json()
+        strategy.test_read_json()
         #strategy.vision_client(5)
 
 
