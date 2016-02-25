@@ -42,8 +42,19 @@
 	<BR>
 	<BR>
 	<BR>
+	<!-- Motion Button -->
+	<table>
+	<tr>
+		<td><input type="file" id="files" name="files[]" multiple /></td>
+		<td><button>RUN</button></td>
+
+	</tr>
+	<tr>
+		<td><output id="list"></output></td>
+	</tr>
+	</table>
 	<!-- Information Panel -->
-	<div class="col-md-3 panel panel-info">
+	<div class="col-md-4 panel panel-info">
 		<div class="panel-heading" style="text-align:center"><strong>Information</strong></div>
 		<div>
 			<p>info test</p>
@@ -78,7 +89,7 @@
 		</table>
 	</div>
 	<!-- Tote Panel -->
-	<div class="col-md-3">
+	<div class="col-md-4">
 		<div width="100px" height="400px" cellpadding="0" cellspacing="0" style="border:3px solid #4fd7f4">
 		<div width="100%" height="10%" style="text-align:center; border-bottom:1px solid #4fd7f4"><strong>Tote</strong></div>
 		<div width="100%" height="90%">
@@ -91,9 +102,6 @@
 	</div>
 	<!-- Dialog -->
 	<div class="row"></div>
-	<input type="file" id="files" name="files[]" multiple />
-	<output id="list"></output>
-
 	<div class="modal fade" id="setting_Dialog" role="dialog">
 		<div class="modal-dialog">
 		<!--content-->
@@ -109,6 +117,8 @@
 			</div>
 		</div>
 	</div>
+<script src="js/roslib/eventemitter2.min.js"></script>
+<script src="js/roslib/roslib.min.js"></script>
 <script src="js/jquery/jquery.min.js"></script>
 <script src="js/jquery/jquery.navgoco.js"></script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
@@ -117,6 +127,40 @@
 <script src="jquery-ui-1.11.4/external/jquery/jquery.js"></script>
 <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" type="text/javascript">
+	//ROS
+	var ros = new ROSLIB.Ros({
+		url : 'ws://localhost:9090'
+	});
+	ros.on('connection', function() {
+		console.log('Connected to websocket server.');
+	});
+	ros.on('error', function(error) {
+		console.log('Error connecting to websocket server: ', error);
+	});
+	ros.on('close', function() {
+		console.log('Connection to websocket server closed.');
+	});
+
+	var jsonClient = new ROSLIB.ActionClient({
+		ros : ros,
+		serverName : '/action_server',
+		actionName : 'action/Action'
+	});
+	var goal = new ROSLIB.Goal({
+		actionClient : jsonClient,
+		goalMessage : {
+			cmd : "", //Readfile, Pick_Run, Stow_Run
+			data : "" //Json string
+		}
+	});
+	goal.on('feedback', function(feedback) {
+		console.log('Feedback: ' + feedback.sequence);
+	});
+	goal.on('result', function(result) {
+		console.log('Final Result: ' + result.sequence);
+	});
+	goal.send();
+
 	var dialog_localFiles;
 	var dialog_openBool;
 	//Read JSON file
@@ -134,7 +178,7 @@
 	function parse_APC_json(data){
 		var myArr = JSON.parse(data);
 		show_APC_json(myArr);
-		console.log(myArr.bin_contents.bin_A[0]);
+		//console.log(myArr.bin_contents.bin_A[0]);
 	}
 	//show json elements to cupboard
 	function show_APC_json(arr){
