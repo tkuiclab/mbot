@@ -99,11 +99,7 @@
 	<div class="col-md-4">
 		<div width="100px" height="400px" cellpadding="0" cellspacing="0" style="border:3px solid #4fd7f4">
 		<div width="100%" height="10%" style="text-align:center; border-bottom:1px solid #4fd7f4"><strong>Tote</strong></div>
-		<div width="100%" height="90%">
-			<ul>
-			<li>item1</li>
-			<li>item2</li>
-			</ul>
+		<div width="100%" height="90%" id="show_Tote">
 		</div>
 		</div>
 	</div>
@@ -196,9 +192,26 @@
 	function parse_APC_json(data){
 		var myArr = JSON.parse(data);
 		if(document.getElementById('pickCheck').checked == true){
+			//erase Tote's elements
+			$("#show_Tote").html('');
+			//show on Shelf table
 			show_Shelf_json(myArr);
 		}else if(document.getElementById('stowCheck').checked == true){
-			console.log("Doing Stow");
+			//erase Shelf's elements
+			$("#bin_A").html('');
+			$("#bin_B").html('');
+			$("#bin_C").html('');
+			$("#bin_D").html('');
+			$("#bin_E").html('');
+			$("#bin_F").html('');
+			$("#bin_G").html('');
+			$("#bin_H").html('');
+			$("#bin_I").html('');
+			$("#bin_J").html('');
+			$("#bin_K").html('');
+			$("#bin_L").html('');
+			//show on Tote table
+			show_Tote_json(myArr);
 		}
 	}
 	//show json elements to shelf
@@ -307,6 +320,26 @@
 		document.getElementById("bin_J").innerHTML = outJ;
 		document.getElementById("bin_K").innerHTML = outK;
 		document.getElementById("bin_L").innerHTML = outL;
+	}
+	//show json elements to tote
+	function show_Tote_json(arr){
+		var out="";
+		var i;
+		var sw = 0;
+		for(i=0; i<arr.stow_contents.length; i++){
+			sw = 0;
+			for(j=0; j<arr.work_order.length; j++){
+				if(arr.stow_contents[i] === arr.work_order[j].item){
+					sw = 1;
+				}
+			}
+			if(sw == 1){
+				out+='<li><strong style="color:red">'+arr.stow_contents[i]+'</strong></li>';
+			}else{
+				out+='<li>'+arr.stow_contents[i]+"</li>";
+			}
+		}
+		document.getElementById("show_Tote").innerHTML = '<ul>'+out+'</ul>';
 	}
 	//Open Local Files Dialog
 	function handleFileSelect(evt) {
