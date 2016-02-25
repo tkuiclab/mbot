@@ -1,13 +1,9 @@
-<!-- 2016/01/26 Modify -->
-<!-- id:"NEET" email:"zxc455233@gmail.com"-->
-
 <!DOCTYPE html>
 <html>
-<head>
 	<!-- mm_web -->
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   	<meta charset="utf-8">
-	<title>ROS_BRIDGE</title>
+	<title>JSON Decoder</title>
   	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
   	<!-- Styles -->
@@ -19,265 +15,96 @@
    	<!-- jQuery UI-->
 	<link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css">
 	<!------------------------------------------------------------------------------>
-</head>
+<body>
+	<nav>
+		<ul class="list-unstyled main-menu">  
+			<!--Include your navigation here-->
+			<li class="text-left"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#" id="nav-close">x</a></li>
+			<li><a href="index.html">Remote Control <span class="icon"></span></a></li>
+			<li><a href="teach_mode.html">Teach Mode <span class="icon"></span></a></li>
+			<li><a href="http://www.iarc.tku.edu.tw/">TKU IARC <span class="icon"></span></a></li>
+		</ul>
+	</nav>
+	<div id="fixedTop">
+		<ul>
+			<li class="left">
+				<a id="nav-expander" class="nav-expander fixed">
+				<i class="fa fa-bars fa-lg white"></i>
+				</a>
+			</li>
+			<li class="center">
+				<strong>Mobile Manipulator</strong>
+			</li>
+			<li  class="right">				
+			</li>
+		</ul>
+	</div>
+	<BR>
+	<BR>
+	<BR>
+	<!-- Motion Button -->
+	<table>
+	<tr>
+		<td colspan="3"><form>
+			<input type="radio" name="colors" id="pickCheck" checked>Pick
+			<input type="radio" name="colors" id="stowCheck">Stow
+		</form></td>
+	</tr>
+	<tr>
+		<td><input type="file" id="files" name="files[]" multiple /></td>
+		<td><button id="pickRun">Pick RUN</button></td>
+		<td><button id="stowRun">Stow RUN</button></td>
 
-<body class="">
-<nav>
-	<ul class="list-unstyled main-menu">  
-		<!--Include your navigation here-->
-		<li class="text-left"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#" id="nav-close">x</a></li>
-		<li><a href="teach_mode.html">Teach Mode <span class="icon"></span></a></li>
-		<li><a href="json_decoder.html">JSON Decoder <span class="icon"></span></a></li>
-		<li><a href="http://www.iarc.tku.edu.tw/APC">TKU IARC <span class="icon"></span></a></li>
-	</ul>
-</nav>
-<div id="fixedTop">
-	<ul>
-		<li class="left">
-			<a id="nav-expander" class="nav-expander fixed">
-			<i class="fa fa-bars fa-lg white"></i>
-			</a>
-		</li>
-		<li class="center">
-			<strong>Mobile Manipulator</strong>
-		</li>
-		<li  class="right">				
-		</li>
-	</ul>
-</div>
-<BR>
-<BR>
-<BR>
-<div class="paddingContainer">
-	<!--Direction_Panel-->
-	<div id="directionPanel" class="col-lg-1 col-md-1" style="border:3px #4fd7f4 double">
-		<table width="100%" height="100%" cellpadding="0" cellspacing="0">
-		<tr colspan="3"><strong>Manipulator Control</strong></tr>
-		<tr height="10%">
-			<td width="20%"><a id="direction_up" class="control"><i class="fa fa fa-angle-double-up  fa-3x"></i></a></td>
-			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_down" class="control"><i class="fa fa fa-angle-double-down fa-3x"></i></a></td>
-		</tr>
-		<tr height="10%">
-			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_front" class="control"><i class="fa fa-arrow-up  fa-3x"></i></a></td>
-			<td width="20%">&nbsp;</td>
-		</tr>
-		<tr height="10%">
-			<td width="20%"><a id="direction_left" class="control"><i class="fa fa-arrow-left fa-3x"></i></a></td>
-			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_right" class="control"><i class="fa fa-arrow-right fa-3x"></i></a></td>
-		</tr>
-		<tr height="10%">
-			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_back" class="control"><i class="fa fa-arrow-down fa-3x"></i></a></td>
-			<td width="20%">&nbsp;</td>
-		</tr>
-		<tr height="10%">
-			<td width="20%"><a id="direction_yaw_left" class="control"><i class="fa fa fa-angle-double-left  fa-3x"></i></a></td>
-			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_yaw_right" class="control"><i class="fa fa fa-angle-double-right fa-3x"></i></a></td>
-		</tr>
-		<tr height="10%">
-			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_pitch_up" class="control"><i class="fa fa-arrow-up  fa-3x"></i></a></td>
-			<td width="20%">&nbsp;</td>
-		</tr>
-		<tr height="10%">
-			<td width="20%"><a id="direction_roll_left" class="control"><i class="fa fa-arrow-left fa-3x"></i></a></td>
-			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_roll_right" class="control"><i class="fa fa-arrow-right fa-3x"></i></a></td>
-		</tr>
-		<tr height="10%">
-			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_pitch_down" class="control"><i class="fa fa-arrow-down fa-3x"></i></a></td>
-			<td width="20%">&nbsp;</td>
-		</tr>
-		<tr height="10%">
-			<td width="20%">Speed&nbsp;</td>
-			<td width="20%"><input id="direction_speed_value" style="width:100px" placeholder="50"></input></td>
-			<td width="20%">%&nbsp;&nbsp;<a id="direction_speed_send" class="control"><i class="fa fa-paper-plane fa-lg"></i></a></td>
-		</tr>
-		</table>
-	</div>
-	<!--Base Control Panel-->
-	<div id="basePanel" class="col-lg-1 col-md-1" style="border:3px #4fd7f4 double" height="400px">
-		<table width="100%" height="100%" cellpadding="0" cellspacing="0">
-		<tr colspan="3">
-			<a id="control_edit_base" class="control"><i class="fa fa-pencil-square-o fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a>
-			<strong>Base Control</strong>
-		</tr>
-		<tr height="20%">
-			<td width="20%"><a id="direction_base_enable" class="control"><i class="fa fa-cog fa-spin fa-3x"></i></a></td>
-			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_base_disable" class="control"><i class="fa fa-stop fa-3x"></i></a></td>
-		</tr>
-		<tr height="10%"></tr>
-		<tr height="10%">
-			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_base_front" class="control"><i class="fa fa-arrow-up  fa-3x"></i></a></td>
-			<td width="20%">&nbsp;</td>
-		</tr>
-		<tr height="10%">
-			<td width="20%"><a id="direction_base_left" class="control"><i class="fa fa-arrow-left fa-3x"></i></a></td>
-			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_base_right" class="control"><i class="fa fa-arrow-right  fa-3x"></i></a></td>
-		</tr>
-		<tr height="10%">
-			<td width="20%">&nbsp;</td>
-			<td width="20%"><a id="direction_base_back" class="control"><i class="fa fa-arrow-down  fa-3x"></i></a></td>
-			<td width="20%">&nbsp;</td>
-		</tr>
-		<tr height="50%">
-			<td width="20%">Speed&nbsp;</td>
-			<td width="20%"><input id="direction_base_speed_value" style="width:100px" placeholder="50"></input></td>
-			<td width="20%">%&nbsp;<a id="direction_speed_send" class="control"><i class="fa fa-paper-plane fa-lg"></i></a></td>
-		</tr>
-		</table>
-	</div>
-	<!-- Center Image Panel -->
-	<div class="imgPanel col-lg-4 col-md-2" border="2px" style="border:6px #c0fff4 double" width="400px" height="400px">
-		<img src="img/ur5_img.png"></img>
-	</div>
-	<!--EEF_Panel-->
-	<div class="panel panel-info col-lg-4 col-md-4" style="height:415px">
-		<!-- Default panel contents -->
-		<div class="panel-heading">
-			<a id="control_edit_eef" class="control"><i class="fa fa-pencil-square-o fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a>
-			<strong style="font-size:16px">&nbsp;&nbsp;EEF_Info</strong>
+	</tr>
+	<tr>
+		<td><output id="list"></output></td>
+	</tr>
+	</table>
+	<!-- Information Panel -->
+	<div class="col-md-4 panel panel-info">
+		<div class="panel-heading" style="text-align:center"><strong>Information</strong></div>
+		<div>
+			<p>info test</p>
 		</div>
-		<!-- Table -->
-		<table class="table" width="100%" height="70%">
-			<tbody>
-			<tr>
-				<td width="40%">X</td>
-				<td width="40%"><h4 id="output_lx" style="color:red"></td>
-				<td width="10%"><a id="plus_lx" class="control"><i class="fa fa-plus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-				<td width="10%"><a id="minus_lx" class="control"><i class="fa fa-minus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-			</tr>
-			<tr>
-				<td>Y</td>
-				<td><h4 id="output_ly" style="color:red"></td>
-				<td><a id="plus_ly" class="control"><i class="fa fa-plus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-				<td><a id="minus_ly" class="control"><i class="fa fa-minus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-			</tr>
-			<tr>
-				<td>Z</td>
-				<td><h4 id="output_lz" style="color:red"></td>
-				<td><a id="plus_lz" class="control"><i class="fa fa-plus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-				<td><a id="minus_lz" class="control"><i class="fa fa-minus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-			</tr>
-			<tr>
-				<td>RX</td>
-				<td><h4 id="output_ax" style="color:red"></td>
-				<td><a id="plus_ax" class="control"><i class="fa fa-plus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-				<td><a id="minus_ax" class="control"><i class="fa fa-minus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-			</tr>
-			<tr>
-				<td>RY</td>
-				<td><h4 id="output_ay" style="color:red"></td>
-				<td><a id="plus_ay" class="control"><i class="fa fa-plus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-				<td><a id="minus_ay" class="control"><i class="fa fa-minus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-			</tr>
-			<tr>
-				<td>RZ</td>
-				<td><h4 id="output_az" style="color:red"></td>
-				<td><a id="plus_az" class="control"><i class="fa fa-plus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-				<td><a id="minus_az" class="control"><i class="fa fa-minus-circle fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a></td>
-			</tr>
-			</tbody>
-		</table>
-		<div class="panel-footer" height="10%">
-		<button id="control_send_home" type="button" class="btn btn-info" style="width:200px"><i class="fa fa-home fa-2x"></i></button></td>		</div>
 	</div>
+	<!-- Shelf Table -->
+	<div id="id01" class="col-md-4">
+		<table width="300px" height="400px" cellpadding="0" cellspacing="0" border="3px" bordercolor="#4fd7f4" style="text-align:center">
+		<tr height="10%">
+			<td colspan="3"><strong>Shelf</strong></td>
+		</tr>
+		<tr height="22.5%">
+			<td id="bin_A" width="33%"></td>
+			<td id="bin_B" width="34%"></td>
+			<td id="bin_C" width="33%"></td>
+		</tr>
+		<tr height="22.5%">
+			<td id="bin_D" width="20%"></td>
+			<td id="bin_E" width="20%"></td>
+			<td id="bin_F" width="20%"></td>
+		</tr>
+		<tr height="22.5%">
+			<td id="bin_G" width="20%"></td>
+			<td id="bin_H" width="20%"></td>
+			<td id="bin_I" width="20%"></td>
+		</tr>
+		<tr height="22.5%">
+			<td id="bin_J" width="20%"></td>
+			<td id="bin_K" width="20%"></td>
+			<td id="bin_L" width="20%"></td>
+		</tr>
+		</table>
+	</div>
+	<!-- Tote Panel -->
+	<div class="col-md-4">
+		<div width="100px" height="400px" cellpadding="0" cellspacing="0" style="border:3px solid #4fd7f4">
+		<div width="100%" height="10%" style="text-align:center; border-bottom:1px solid #4fd7f4"><strong>Tote</strong></div>
+		<div width="100%" height="90%" id="show_Tote">
+		</div>
+		</div>
+	</div>
+	<!-- Dialog -->
 	<div class="row"></div>
-	<HR color="#00FF00" size="20px">
-	<!--IO_Input-->
-	<div class="panel panel-info col-lg-1" id="ioPanel" style="width:80px height:200px">
-		<div class="panel-heading" height="20%">
-			<strong>IO_Input</strong>
-		</div>
-		<table width="100%" height="80%">
-		<tbody>
-		<tr>
-			<td width="50%"><a id="control_io" class="control"><i class="fa fa-magnet fa-2x"></i></a></td>
-			<td width="50%" style="color:red" id="output_io">Off</td>
-		</tr>
-		</tbody>
-		</table>
-	</div>
-	<!--Joint_Panel-->
-	<div class="panel panel-info col-lg-5" style="width:600px height:180px">
-		<div class="panel-heading" height="30%">
-			<a id="control_edit_joint" class="control"><i class="fa fa-pencil-square-o fa-2x" data-toggle="modal" data-target="#setting_Dialog"></i></a>
-			<strong style="font-size:20px">&nbsp;&nbsp;Joint_Info</strong>
-		</div>
-		<table class="table" width="100%" height="70%">
-			<tbody>
-			<tr height="15%">
-				<td width="20%" style="text-align:center"><strong>Base</strong></td>
-				<td width="10%"><a id="control_base_L" class="control"><i class="fa fa-caret-left fa-3x"></i></a></td>
-				<td width="60%" class="progress">
-					<div id="progress-bar_j1" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-					<h4 id="output_j1p"></h4></div>
-				</td>
-				<td width="10%" align="right"><a id="control_base_R" class="control"><i class="fa fa-caret-right fa-3x"></i></a></td>
-			</tr>
-			<tr height="15%">
-				<td style="text-align:center"><strong>Shoulder</strong></td>
-				<td><a class="control"><i class="fa fa-caret-left fa-3x"></i></a></td>
-				<td class="progress">
-					<div id="progress-bar_j2" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-					<h4 id="output_j2p"></h4></div>
-				</td>
-				<td align="right"><a class="control"><i class="fa fa-caret-right fa-3x"></i></a></td>
-			</tr>
-			<tr height="15%">
-				<td style="text-align:center"><strong>Elbow</strong></td>
-				<td><a class="control"><i class="fa fa-caret-left fa-3x"></i></a></td>
-				<td class="progress">
-					<div id="progress-bar_j3" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-					<h4 id="output_j3p"></h4></div>
-				</td>
-				<td align="right"><a class="control"><i class="fa fa-caret-right fa-3x"></i></a></td>
-			</tr>
-			<tr height="15%">
-				<td style="text-align:center"><strong>Wrist1</strong></td>
-				<td><a class="control"><i class="fa fa-caret-left fa-3x"></i></a></td>
-				<td class="progress">
-					<div id="progress-bar_j4" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-					<h4 id="output_j4p"></h4></div>
-				</td>
-				<td align="right"><a class="control"><i class="fa fa-caret-right fa-3x"></i></a></td>
-			</tr>
-			<tr height="15%">
-				<td style="text-align:center"><strong>Wrist2</strong></td>
-				<td><a class="control"><i class="fa fa-caret-left fa-3x"></i></a></td>
-				<td class="progress">
-					<div id="progress-bar_j5" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-					<h4 id="output_j5p"></h4></div>
-				</td>
-				<td align="right"><a class="control"><i class="fa fa-caret-right fa-3x"></i></a></td>
-			</tr>
-			<tr height="15%">
-				<td style="text-align:center"><strong>Wrist3</strong></td>
-				<td><a class="control"><i class="fa fa-caret-left fa-3x"></i></a></td>
-				<td class="progress">
-					<div id="progress-bar_j6" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="360">
-					<h4 id="output_j6p"></h4></div>
-				</td>
-				<td align="right"><a class="control"><i class="fa fa-caret-right fa-3x"></i></a></td>
-			</tr>
-			</tbody>
-		</table>
-	</div>
-	<!--Infomation panel-->
-	<div class="row"></div>
-	<div id="infoPanel" class="ui-widget-content">
-		<div id="panelTop">Information</div>
-		<div id="infoContent" class="panelContent"></div>
-	</div>
-	<!-- Dialog : popup when the button is clicked -->
 	<div class="modal fade" id="setting_Dialog" role="dialog">
 		<div class="modal-dialog">
 		<!--content-->
@@ -287,148 +114,253 @@
 				<h4>Dialog Setting</h4>
 			</div>
 			<div class="modal-body">
-				<!-- Joint Setting Table-->
-				<table id="dialog_table_joint">
-				<tbody>
-				<tr height="15%">
-					<td>Base</td>
-					<td><input type="text" class="form-control" id="input_j1_d"data-fv-field="number"></td>
-				</tr>
-				<tr height="15%">
-					<td>Shoulder</td>
-					<td><input class="form-control input-sm" id="input_j2_d" type="text"></td>
-				</tr>
-				<tr height="15%">
-					<td>Elbow</td>
-					<td><input class="form-control input-sm" id="input_j3_d" type="text"></td>
-				</tr>
-				<tr height="15%">
-					<td>Wrist1</td>
-					<td><input class="form-control input-sm" id="input_j4_d" type="text"></td>
-				</tr>
-				<tr height="15%">
-					<td>Wrist2</td>
-					<td><input class="form-control input-sm" id="input_j5_d" type="text"></td>
-				</tr>
-				<tr height="15%">
-					<td>Wrist3</td>
-					<td><input class="form-control input-sm" id="input_j6_d" type="text"></td>
-				</tr>
-				<tr height="10%">
-					<td>Send</td>
-					<td><a id="control_send_joint_d" class="control"><i class="fa fa-paper-plane  fa-2x"></i></a></td>
-				</tr>
-				</tbody>
-			<BR>
-				</table>
-				<!-- EEF Setting Table-->
-				<table id="dialog_table_eef">
-				<tbody>
-				<tr height="15%">
-					<td>X</td>
-					<td><input type="text" class="form-control" id="input_lx_d"data-fv-field="number"></td>
-				</tr>
-				<tr height="15%">
-					<td>Y</td>
-					<td><input class="form-control input-sm" id="input_ly_d" type="text"></td>
-				</tr>
-				<tr height="15%">
-					<td>Z</td>
-					<td><input class="form-control input-sm" id="input_lz_d" type="text"></td>
-				</tr>
-				<tr height="15%">
-					<td>RX</td>
-					<td><input class="form-control input-sm" id="input_ax_d" type="text"></td>
-				</tr>
-				<tr height="15%">
-					<td>RY</td>
-					<td><input class="form-control input-sm" id="input_ay_d" type="text"></td>
-				</tr>
-				<tr height="15%">
-					<td>RZ</td>
-					<td><input class="form-control input-sm" id="input_az_d" type="text"></td>
-				</tr>
-				<tr height="10%">
-					<td>Send</td>
-					<td><a id="control_send_eef_d" class="control"><i class="fa fa-paper-plane  fa-2x"></i></a></td>
-				</tr>
-				</tbody>
-				</table>
-			<BR>
-				</table>
-				<!-- +/- Setting Table-->
-				<table id="dialog_table_plus">
-				<tbody>
-				<tr height="15%">
-					<td><h4 id="dialog_show_plus" class="plus_lx minus_lx plus_ly minus_ly plus_lz minus_lz
-										plus_ax minus_ax plus_ay minus_ay plus_az minus_az"></h4>
-					</td>
-					<td><input type="text" class="form-control" id="input_plus_d" data-fv-field="number" autofocus></td>
-					<td><h4>mm</h4></td>
-				</tr>
-				<tr height="10%">
-					<td>Send</td>
-					<td><a id="control_send_plus_d" class="control"><i class="fa fa-paper-plane  fa-2x"></i></a></td>
-				</tr>
-				</tbody>
-				</table>
-
-			<BR>
-				</table>
-				<!-- Base Setting Table-->
-				<table id="dialog_table_base">
-				<tbody>
-				<tr height="15%">
-					<td>Speed X&nbsp;</td>
-					<td><input id="input_base_lx_d" type="text" class="form-control" id=""data-fv-field="number"></input></td>
-					<td>&nbsp;%</td>
-				</tr>
-				<tr height="15%">
-					<td>Speed Y&nbsp;</td>
-					<td><input id="input_base_ly_d" type="text" class="form-control" id=""data-fv-field="number"></input></td>
-					<td>&nbsp;%</td>
-				</tr>
-				<tr height="15%">
-					<td>Speed yaw&nbsp;</td>
-					<td><input id="input_base_az_d" type="text" class="form-control" id=""data-fv-field="number"></input></td>
-					<td>&nbsp;%</td>
-				</tr>
-				<tr height="10%">
-					<td>Send&nbsp;</td>
-					<td><a id="control_send_base_d" class="control"><i class="fa fa-paper-plane fa-2x"></i></a></td>
-				</tr>
-				</tbody>
-				</table>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
-<!-- /container -->
-</div>
-<!-- Javascript
-================================================== -->
-<script src="js/eventemitter2.min.js"></script>
-<script src="js/roslib.min.js"></script>
-<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/roslib/eventemitter2.min.js"></script>
+<script src="js/roslib/roslib.min.js"></script>
 <script src="js/jquery/jquery.min.js"></script>
 <script src="js/jquery/jquery.navgoco.js"></script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
 
 <script src="jquery-ui-1.11.4/external/jquery/jquery.js"></script>
 <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
-
-<script src="js/index.js"></script>
-<script src="js/index_eef_panel.js"></script>
-<script src="js/index_joint_panel.js"></script>
-<script src="js/index_direct_panel.js"></script>
-<script src="js/index_base_panel.js"></script>
 <script type="text/javascript" type="text/javascript">
-	var mlist = [];
-	var io_default = false;
-	var mouseStillDown = false;
-	var eef_Sub_lx=0,eef_Sub_ly=0,eef_Sub_lz=0,eef_Sub_ax=0,eef_Sub_ay=0,eef_Sub_az=0;
+	//ROS
+	var ros = new ROSLIB.Ros({
+		url : 'ws://localhost:9090'
+	});
+	ros.on('connection', function() {
+		console.log('Connected to websocket server.');
+	});
+	ros.on('error', function(error) {
+		console.log('Error connecting to websocket server: ', error);
+	});
+	ros.on('close', function() {
+		console.log('Connection to websocket server closed.');
+	});
+	//Action Client
+	var jsonClient = new ROSLIB.ActionClient({
+		ros : ros,
+		serverName : '/strategy',
+		actionName : 'mbot_control/UIFOAction'
+	});
+	//Pick Run || Stow Run. send motion command to strategy by action.
+	$("#pickRun").on('click',function(e){
+		var goal = new ROSLIB.Goal({
+			actionClient : jsonClient,
+			goalMessage : {
+				cmd : "Pick_Run", //Readfile, Pick_Run, Stow_Run
+				data : ""
+			}
+		});
+		goal.send();
+	});
+	$("#stowRun").on('click',function(e){
+		var goal = new ROSLIB.Goal({
+			actionClient : jsonClient,
+			goalMessage : {
+				cmd : "Stow_Run", //Readfile, Pick_Run, Stow_Run
+				data : ""
+			}
+		});
+		goal.send();
+	});
+	//Read JSON file & Send JSON String to strategy by action
+	var xmlhttp = new XMLHttpRequest();
+	var url = "";//file's url
+	xmlhttp.onreadystatechange = function(){
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			parse_APC_json(xmlhttp.responseText);
+			var goal = new ROSLIB.Goal({
+				actionClient : jsonClient,
+				goalMessage : {
+					cmd : "Read_File", //Read_File, Pick_Run, Stow_Run
+					data : xmlhttp.responseText //Json string
+				}
+			});
+			goal.send();			
+		}
+	};
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+
+	function parse_APC_json(data){
+		var myArr = JSON.parse(data);
+		if(document.getElementById('pickCheck').checked == true){
+			//erase Tote's elements
+			$("#show_Tote").html('');
+			//show on Shelf table
+			show_Shelf_json(myArr);
+		}else if(document.getElementById('stowCheck').checked == true){
+			//erase Shelf's elements
+			$("#bin_A").html('');
+			$("#bin_B").html('');
+			$("#bin_C").html('');
+			$("#bin_D").html('');
+			$("#bin_E").html('');
+			$("#bin_F").html('');
+			$("#bin_G").html('');
+			$("#bin_H").html('');
+			$("#bin_I").html('');
+			$("#bin_J").html('');
+			$("#bin_K").html('');
+			$("#bin_L").html('');
+			//show on Tote table
+			show_Tote_json(myArr);
+		}
+	}
+	//show json elements to shelf
+	function show_Shelf_json(arr){
+		var outA="";var outB="";var outC="";
+		var outD="";var outE="";var outF="";
+		var outG="";var outH="";var outI="";
+		var outJ="";var outK="";var outL="";
+		var i;
+		for(i=0;i<arr.bin_contents.bin_A.length;i++){
+			if(arr.bin_contents.bin_A[i] === arr.work_order[0].item){
+				outA+='<strong style="color:red">'+arr.bin_contents.bin_A[i]+'</strong>'+"<br>";
+			}else{
+				outA+=arr.bin_contents.bin_A[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_B.length;i++){
+			if(arr.bin_contents.bin_B[i] === arr.work_order[1].item){
+				outB+='<strong style="color:red">'+arr.bin_contents.bin_B[i]+'</strong>'+"<br>";
+			}else{
+				outB+=arr.bin_contents.bin_B[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_C.length;i++){
+			if(arr.bin_contents.bin_C[i] === arr.work_order[2].item){
+				outC+='<strong style="color:red">'+arr.bin_contents.bin_C[i]+'</strong>'+"<br>";
+			}else{
+				outC+=arr.bin_contents.bin_C[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_D.length;i++){
+			if(arr.bin_contents.bin_D[i] === arr.work_order[3].item){
+				outD+='<strong style="color:red">'+arr.bin_contents.bin_D[i]+'</strong>'+"<br>";
+			}else{
+				outD+=arr.bin_contents.bin_D[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_E.length;i++){
+			if(arr.bin_contents.bin_E[i] === arr.work_order[4].item){
+				outE+='<strong style="color:red">'+arr.bin_contents.bin_E[i]+'</strong>'+"<br>";
+			}else{
+				outE+=arr.bin_contents.bin_E[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_F.length;i++){
+			if(arr.bin_contents.bin_F[i] === arr.work_order[5].item){
+				outF+='<strong style="color:red">'+arr.bin_contents.bin_F[i]+'</strong>'+"<br>";
+			}else{
+				outF+=arr.bin_contents.bin_F[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_G.length;i++){
+			if(arr.bin_contents.bin_G[i] === arr.work_order[6].item){
+				outG+='<strong style="color:red">'+arr.bin_contents.bin_G[i]+'</strong>'+"<br>";
+			}else{
+				outG+=arr.bin_contents.bin_G[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_H.length;i++){
+			if(arr.bin_contents.bin_H[i] === arr.work_order[7].item){
+				outH+='<strong style="color:red">'+arr.bin_contents.bin_H[i]+'</strong>'+"<br>";
+			}else{
+				outH+=arr.bin_contents.bin_H[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_I.length;i++){
+			if(arr.bin_contents.bin_I[i] === arr.work_order[8].item){
+				outI+='<strong style="color:red">'+arr.bin_contents.bin_I[i]+'</strong>'+"<br>";
+			}else{
+				outI+=arr.bin_contents.bin_I[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_J.length;i++){
+			if(arr.bin_contents.bin_J[i] === arr.work_order[9].item){
+				outJ+='<strong style="color:red">'+arr.bin_contents.bin_J[i]+'</strong>'+"<br>";
+			}else{
+				outJ+=arr.bin_contents.bin_J[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_K.length;i++){
+			if(arr.bin_contents.bin_K[i] === arr.work_order[10].item){
+				outK+='<strong style="color:red">'+arr.bin_contents.bin_K[i]+'</strong>'+"<br>";
+			}else{
+				outK+=arr.bin_contents.bin_K[i]+"<br>";
+			}
+		}
+		for(i=0;i<arr.bin_contents.bin_L.length;i++){
+			if(arr.bin_contents.bin_L[i] === arr.work_order[11].item){
+				outL+='<strong style="color:red">'+arr.bin_contents.bin_L[i]+'</strong>'+"<br>";
+			}else{
+				outL+=arr.bin_contents.bin_L[i]+"<br>";
+			}
+		}
+		/*for(i=0;i<arr.length;i++){
+			out+='<a href="'+arr[i].url+'">'+arr[i].display+'</a><br>';
+		}*/
+		document.getElementById("bin_A").innerHTML = outA;
+		document.getElementById("bin_B").innerHTML = outB;
+		document.getElementById("bin_C").innerHTML = outC;
+		document.getElementById("bin_D").innerHTML = outD;
+		document.getElementById("bin_E").innerHTML = outE;
+		document.getElementById("bin_F").innerHTML = outF;
+		document.getElementById("bin_G").innerHTML = outG;
+		document.getElementById("bin_H").innerHTML = outH;
+		document.getElementById("bin_I").innerHTML = outI;
+		document.getElementById("bin_J").innerHTML = outJ;
+		document.getElementById("bin_K").innerHTML = outK;
+		document.getElementById("bin_L").innerHTML = outL;
+	}
+	//show json elements to tote
+	function show_Tote_json(arr){
+		var out="";
+		var i;
+		var sw = 0;
+		for(i=0; i<arr.stow_contents.length; i++){
+			sw = 0;
+			for(j=0; j<arr.work_order.length; j++){
+				if(arr.stow_contents[i] === arr.work_order[j].item){
+					sw = 1;
+				}
+			}
+			if(sw == 1){
+				out+='<li><strong style="color:red">'+arr.stow_contents[i]+'</strong></li>';
+			}else{
+				out+='<li>'+arr.stow_contents[i]+"</li>";
+			}
+		}
+		document.getElementById("show_Tote").innerHTML = '<ul>'+out+'</ul>';
+	}
+	//Open Local Files Dialog
+	function handleFileSelect(evt) {
+		var files = evt.target.files; // FileList object
+
+		// files is a FileList of File objects. List some properties.
+		var output = [];
+		for (var i = 0, f; f = files[i]; i++) {
+			output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+			f.size, ' bytes, last modified: ',
+			f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+			'</li>');
+
+			url = "json/"+f.name;//open the json file in folder '/json'
+			xmlhttp.open("GET",url,true);
+			xmlhttp.send();
+		}
+		document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+	}
+	document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
 	//Navigation Menu Slider
 	$('#nav-expander').on('click',function(e){
 		e.preventDefault();
@@ -438,11 +370,6 @@
 		e.preventDefault();
 		$('body').removeClass('nav-expanded');
 	});
-	//Global function
-	function returnArray6(val1,val2,val3,val4,val5,val6){
-		var tmpArr = [val1,val2,val3,val4,val5,val6];
-		return tmpArr;
-	}
 </script>
 </body>
 </html>

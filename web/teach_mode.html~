@@ -112,8 +112,8 @@
 		</textarea>
 		<button id="show_btn" >S h o w</button>
 	</div>
-	<script src="js/eventemitter2.min.js"></script>
-	<script src="js/roslib.min.js"></script>
+	<script src="js/roslib/eventemitter2.min.js"></script>
+	<script src="js/roslib/roslib.min.js"></script>
 	<script src="js/jquery/jquery.min.js"></script>
 	<script src="js/jquery/jquery.navgoco.js"></script>
 	<script src="js/bootstrap/bootstrap.min.js"></script>
