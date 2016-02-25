@@ -41,7 +41,7 @@ class Service(object):
         global msg
         msg = Twist()
 	# Topic ur_speed -> base_vel
-        pub = rospy.Publisher('base_vel', Twist, queue_size=1)
+        pub = rospy.Publisher('ur_speed', Twist, queue_size=1)
 
     def init_joystick(self):
         pygame.init()
@@ -109,12 +109,12 @@ class Service(object):
                 print("WHAT????????")
             else:
 		# *100
-                msg.linear.x = speeds[0]*-700
-                msg.linear.y = speeds[1]*-700
+                msg.linear.x = speeds[0]
+                msg.linear.y = speeds[1]
                 msg.linear.z = speeds[2]
                 msg.angular.x = speeds[3]
                 msg.angular.y = speeds[4]
-                msg.angular.z = speeds[5]*10
+                msg.angular.z = speeds[5]
                 pub.publish(msg)
             rate.sleep()
 

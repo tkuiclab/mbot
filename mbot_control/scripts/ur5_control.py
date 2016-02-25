@@ -73,6 +73,8 @@ class ur_control(object):
                 target_joints = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
                 for j in range(len(cmd.joint_position)):
                     target_joints[j] = cmd.joint_position[j]
+                print "(shoulder_pan={0}, shoulder_lift={1}, elbow={2}, wrist1={3}, wrist2={4}, wrist3={5},);".\
+                    format(target_joints[0],target_joints[1],target_joints[2],target_joints[3],target_joints[4],target_joints[5])
 
                 rob.movej(target_joints,acc,vel,wait=True,relative=False,threshold=None)
                 #rospy.sleep(2)
@@ -125,12 +127,12 @@ class ur_control(object):
             elif cmd.cmd == 'Shift_Z':
                 int_Z = cmd.pose.linear.z
                 pose = [0.0,0.0,0.0,0.0,0.0,0.0]
-                '''
+
                 print("int_Z:")
                 print(int_Z)
-                print("pose:")
-                print(pose)
-                '''
+                #print("pose:")
+                #print(pose)
+
                 pose[2] += int_Z
                 rob.movel(pose,acc,vel,wait=True,relative=True)
                 #rospy.sleep(2)

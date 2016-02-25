@@ -52,3 +52,12 @@ angular:
   x: 1.0
   y: 0.0
   z: 0.0"
+---Point Test---
+rostopic pub /base_vel geometry_msgs/Twist "linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 3.0
+  y: 2.0
+  z: 0.0"
