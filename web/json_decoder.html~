@@ -45,8 +45,15 @@
 	<!-- Motion Button -->
 	<table>
 	<tr>
+		<td colspan="3"><form>
+			<input type="radio" name="colors" id="pickCheck" checked>Pick
+			<input type="radio" name="colors" id="stowCheck">Stow
+		</form></td>
+	</tr>
+	<tr>
 		<td><input type="file" id="files" name="files[]" multiple /></td>
-		<td><button>RUN</button></td>
+		<td><button id="pickRun">Pick RUN</button></td>
+		<td><button id="stowRun">Stow RUN</button></td>
 
 	</tr>
 	<tr>
@@ -60,7 +67,7 @@
 			<p>info test</p>
 		</div>
 	</div>
-	<!-- Cupboard Table -->
+	<!-- Shelf Table -->
 	<div id="id01" class="col-md-4">
 		<table width="300px" height="400px" cellpadding="0" cellspacing="0" border="3px" bordercolor="#4fd7f4" style="text-align:center">
 		<tr height="10%">
@@ -146,24 +153,31 @@
 		serverName : '/strategy',
 		actionName : 'mbot_control/UIFOAction'
 	});
-	var goal = new ROSLIB.Goal({
-		actionClient : jsonClient,
-		goalMessage : {
-			cmd : "", //Readfile, Pick_Run, Stow_Run
-			//data : "" //Json string
-		}
+	//Pick Run || Stow Run. send motion command to strategy by action.
+	$("#pickRun").on('click',function(e){
+		var goal = new ROSLIB.Goal({
+			actionClient : jsonClient,
+			goalMessage : {
+				cmd : "Pick_Run", //Readfile, Pick_Run, Stow_Run
+				data : ""
+			}
+		});
+		goal.send();
 	});
-	goal.send();
-
-	var dialog_localFiles;
-	var dialog_openBool;
-	//Read JSON file
+	//Read JSON file & Send JSON String to strategy by action
 	var xmlhttp = new XMLHttpRequest();
 	var url = "json/apc.json";
-
 	xmlhttp.onreadystatechange = function(){
 		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
 			parse_APC_json(xmlhttp.responseText);
+			var goal = new ROSLIB.Goal({
+				actionClient : jsonClient,
+				goalMessage : {
+					cmd : "Read_File", //Read_File, Pick_Run, Stow_Run
+					data : xmlhttp.responseText //Json string
+				}
+			});
+			goal.send();			
 		}
 	};
 	xmlhttp.open("GET",url,true);
@@ -171,11 +185,14 @@
 
 	function parse_APC_json(data){
 		var myArr = JSON.parse(data);
-		show_APC_json(myArr);
-		console.log(myArr[0]);
+		if(document.getElementById('pickCheck').checked == true){
+			show_Shelf_json(myArr);
+		}else if(document.getElementById('stowCheck').checked == true){
+			console.log("Doing Stow");
+		}
 	}
-	//show json elements to cupboard
-	function show_APC_json(arr){
+	//show json elements to shelf
+	function show_Shelf_json(arr){
 		var outA="";var outB="";var outC="";
 		var outD="";var outE="";var outF="";
 		var outG="";var outH="";var outI="";
