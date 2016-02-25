@@ -140,24 +140,18 @@
 	ros.on('close', function() {
 		console.log('Connection to websocket server closed.');
 	});
-
+	//Action Client
 	var jsonClient = new ROSLIB.ActionClient({
 		ros : ros,
-		serverName : '/action_server',
-		actionName : 'action/Action'
+		serverName : '/strategy',
+		actionName : 'mbot_control/UIFOAction'
 	});
 	var goal = new ROSLIB.Goal({
 		actionClient : jsonClient,
 		goalMessage : {
 			cmd : "", //Readfile, Pick_Run, Stow_Run
-			data : "" //Json string
+			//data : "" //Json string
 		}
-	});
-	goal.on('feedback', function(feedback) {
-		console.log('Feedback: ' + feedback.sequence);
-	});
-	goal.on('result', function(result) {
-		console.log('Final Result: ' + result.sequence);
 	});
 	goal.send();
 
@@ -178,7 +172,7 @@
 	function parse_APC_json(data){
 		var myArr = JSON.parse(data);
 		show_APC_json(myArr);
-		//console.log(myArr.bin_contents.bin_A[0]);
+		console.log(myArr[0]);
 	}
 	//show json elements to cupboard
 	function show_APC_json(arr){

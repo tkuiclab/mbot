@@ -155,7 +155,7 @@ select.options_cmd_none{
 	-webkit-appearance: none; /* Safari and Chrome */
 }
 
-#block,#shift_block input{
+#block,#shift_block,#base_vel_block input{
 	font-size: 24px;
 	height: 80%;
 	size:5;

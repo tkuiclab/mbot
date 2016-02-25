@@ -67,7 +67,7 @@ class ur_control(object):
                 for j in range(len(cmd.joint_position)):
                     target_joints[j] = cmd.joint_position[j]
 
-                rob.movej(target_joints,acc,vel)
+                rob.movej(target_joints,acc,vel,wait=True,relative=False,threshold=None)
                 #rospy.sleep(2)
 
             elif cmd.cmd == 'PTP':
@@ -83,10 +83,10 @@ class ur_control(object):
                 p_target_pose[4] = cmd.pose.angular.y
                 p_target_pose[5] = cmd.pose.angular.z
 
-                print "x={0}, y={1}, z={2}, rx={3}, ry={4}, rz={5} ...);".\
+                print "(x={0}, y={1}, z={2}, rx={3}, ry={4}, rz={5} ...);".\
                     format(p_target_pose[0],p_target_pose[1],p_target_pose[2],p_target_pose[3],p_target_pose[4],p_target_pose[5])
 
-                rob.movep(p_target_pose,acc,vel)
+                rob.movep(p_target_pose,acc,vel,wait=True,relative=False)
                 #rospy.sleep(2)
 
             elif cmd.cmd == 'Line':
@@ -178,7 +178,7 @@ class joint_states_publisher(threading.Thread):
         speeds[4] = data.angular.y
         speeds[5] = data.angular.z
 
-        rob.speedl(speeds, acc=0.1, min_time=2)
+        rob.speedl(speeds, acc=0.1, min_time=20)
 
     def run(self):
         joint_states_pub = rospy.Publisher('joint_states', JointState, queue_size=10)
@@ -240,8 +240,8 @@ if __name__ == "__main__":
     try:
         js_p = joint_states_publisher()
         js_p.start()
-        ur_commander = ur_control(rospy.get_name(),0.01,0.05)
-        ur_commander.set_speed(0.05,0.05)
+        ur_commander = ur_control(rospy.get_name(),0.1,0.04)
+        ur_commander.set_speed(0.15,0.1)
         #ur_commander.set_speed(0.60,0.10)
         #ur_commander.set_speed(0.80,0.20)
         rospy.spin()

@@ -65,8 +65,8 @@ int mcssl_init()
         //puts("\n--->RS232 OPEN FAIL (cssl_open error) <---");
         fflush(stdout);
 
-	//-------try to open /dev/ttyACM2 -------
-	char *dev_ACM1="/dev/ttyACM2";
+	//-------try to open /dev/ttyACM3 -------
+	char *dev_ACM1="/dev/ttyACM3";
 	printf("(Base Node) Open RS232(%s)\n",dev_ACM1);
 	serial=cssl_open(dev_ACM1, mcssl_callback, 0, serial_speed, 8, 0, 1);
 	
@@ -104,7 +104,7 @@ void mcssl_motor_init(){
 
 //sennd speed to arduino
 void mcssl_base_spped(int x_speed, int y_speed,int yaw_speed){
-    printf("(Base Node) x_speed=%d,y_speed=%d,yaw_speed=yaw_speed\n",x_speed, y_speed,yaw_speed);
+    printf("(Base Node) x_speed=%d,y_speed=%d,yaw_speed=%d\n",x_speed, y_speed,yaw_speed);
  
     cssl_putchar(serial,'x');
     cssl_putchar(serial,x_speed);
@@ -113,4 +113,12 @@ void mcssl_base_spped(int x_speed, int y_speed,int yaw_speed){
     cssl_putchar(serial,'w');
     cssl_putchar(serial,yaw_speed);
     cssl_putchar(serial,'r');
+}
+
+void mcssl_base_position_index(int point_index){
+    printf("(Base Node) point=%d\n",point_index);
+    cssl_putchar(serial,'a');
+    cssl_putchar(serial,point_index);
+    cssl_putchar(serial,'b');
+
 }

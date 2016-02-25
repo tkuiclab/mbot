@@ -150,7 +150,7 @@
 		actionClient : jsonClient,
 		goalMessage : {
 			cmd : "", //Readfile, Pick_Run, Stow_Run
-			data : "" //Json string
+			//data : "" //Json string
 		}
 	});
 	goal.send();
@@ -172,7 +172,7 @@
 	function parse_APC_json(data){
 		var myArr = JSON.parse(data);
 		show_APC_json(myArr);
-		//console.log(myArr.bin_contents.bin_A[0]);
+		console.log(myArr.bin_contents.bin_A[0]);
 	}
 	//show json elements to cupboard
 	function show_APC_json(arr){

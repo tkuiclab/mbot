@@ -2,7 +2,7 @@
 // -----------------
 
 var ros = new ROSLIB.Ros({
-	url : 'ws://localhost:9090'
+	url : 'ws://192.168.5.80:9090'
 });
 
 ros.on('connection', function() {
@@ -27,7 +27,7 @@ var teachModeClient = new ROSLIB.ActionClient({
 // ----------------------
 var direct_Pub = new ROSLIB.Topic({
 	ros:ros,
-	name:'ur_speed',
+	name:'base_vel',
 	messageType : 'geometry_msgs/Twist'
 });
 // Subscribing to a Topic
