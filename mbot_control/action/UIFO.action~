@@ -1,8 +1,9 @@
 #goal definition
-TeachCommand cmd
+string cmd		# Read file, pick, stow
 ---
 #result definition
-string notify
+string result
 ---
 #feedback
-string status
+string tag		# Info, Shelf, Tote
+string msg

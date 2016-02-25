@@ -1,5 +1,6 @@
 #goal definition
 string cmd		# Read file, pick, stow
+string data
 ---
 #result definition
 string result
