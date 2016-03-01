@@ -5,6 +5,7 @@ Created on:       2016/02/18 --------------------> Creating file & read json fil
 Modified on:      2016/02/21 --------------------> Adding Action Server for UIFO & Action Client for Vision
                   2016/02/22 --------------------> Adding mbot_control server
                   2016/02/25 --------------------> Adding move2standby function & Modify ur5_control.py for rotate TCP
+                  2016/03/01 -------------------->
 
 Description: Strategy for Amazon Picking Challenge 2016
     Action_Server: UI_INFO
@@ -112,18 +113,35 @@ class strategy_class(object):
         cmd = mbot_control.msg.TeachCommand()
         TeachCMD_list.cmd_list = []
 
-        cmd.cmd = 'Shift_RY'
+        cmd.cmd = 'Shift_RX'
         cmd.joint_position = []
         cmd.pose.linear.x = 0
         cmd.pose.linear.y = 0
         cmd.pose.linear.z = 0
-        cmd.pose.angular.x = 0
-        cmd.pose.angular.y = -3.14/8
+        cmd.pose.angular.x = 0.262
+        cmd.pose.angular.y = 0
         cmd.pose.angular.z = 0
 
         TeachCMD_list.cmd_list.append(cmd)
         return TeachCMD_list
+    ################################################### move 2 watch_pose ##################################################
+    def read2pick(self):
+        rospy.loginfo("Moving to watch position...")
+        TeachCMD_list = mbot_control.msg.TeachCommandListGoal()
+        cmd = mbot_control.msg.TeachCommand()
+        TeachCMD_list.cmd_list = []
 
+        cmd.cmd = 'Shift_RX'
+        cmd.joint_position = []
+        cmd.pose.linear.x = 0
+        cmd.pose.linear.y = 0
+        cmd.pose.linear.z = 0
+        cmd.pose.angular.x = -0.262
+        cmd.pose.angular.y = 0
+        cmd.pose.angular.z = 0
+
+        TeachCMD_list.cmd_list.append(cmd)
+        return TeachCMD_list
     ##################################################### Control Mbot ####################################################
     def control_mbot(self,bin_ID,json_data):
         rospy.loginfo("Controlling mbot")
@@ -134,7 +152,7 @@ class strategy_class(object):
         TeachCMD_list.cmd_list = []
 
         ##------------------ Standby ------------------ ##
-        '''if bin_ID==1 or bin_ID==4 or bin_ID==7 or bin_ID==10:
+        if bin_ID==1 or bin_ID==4 or bin_ID==7 or bin_ID==10:
             rospy.loginfo("Controlling the Mbot move to section LEFT")
         elif bin_ID==2 or bin_ID==5 or bin_ID==8 or bin_ID==11:
             rospy.loginfo("Controlling the Mbot move to section CENTER")
@@ -142,9 +160,7 @@ class strategy_class(object):
         elif bin_ID==3 or bin_ID==6 or bin_ID==9 or bin_ID==12:
             rospy.loginfo("Controlling the Mbot move to section RIGHT")
         else:
-            rospy.loginfo("BIN_ID ERROR!")'''
-
-        TeachCMD_list = self.move2watch()
+            rospy.loginfo("BIN_ID ERROR!")
 
         goal = mbot_control.msg.TeachCommandListGoal(TeachCMD_list.cmd_list)
         client.send_goal(goal)
@@ -152,7 +168,14 @@ class strategy_class(object):
         result = client.get_result()
         rospy.loginfo("Mbot_control Result:%s"%result.notify)
 
-        rospy.loginfo("Controlling the Mbot move to bin %d" % bin_ID)
+        ##------------------ Watch inside bin ------------------ ##
+        TeachCMD_list = self.move2watch()
+        goal = mbot_control.msg.TeachCommandListGoal(TeachCMD_list.cmd_list)
+        client.send_goal(goal)
+        client.wait_for_result()
+        result = client.get_result()
+        rospy.loginfo("Mbot_control Result:%s"%result.notify)
+
         switch = {
             1:self.vision_client,
             2:self.vision_client,
@@ -168,6 +191,14 @@ class strategy_class(object):
             12:self.vision_client
         }
         obj = switch[bin_ID](bin_ID)
+        ##------------------ Ready 2 Pick ------------------ ##
+        TeachCMD_list = self.read2pick()
+        goal = mbot_control.msg.TeachCommandListGoal(TeachCMD_list.cmd_list)
+        client.send_goal(goal)
+        client.wait_for_result()
+        result = client.get_result()
+        rospy.loginfo("Mbot_control Result:%s"%result.notify)
+
         rospy.loginfo("Grapping items in bin_%d" % bin_ID)
         return obj
 
