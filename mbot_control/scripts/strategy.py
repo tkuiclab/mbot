@@ -208,12 +208,7 @@ class strategy_class(object):
         rospy.loginfo("uifo_cb_execute")
         success = True
 
-        with open('apc_echo.json', 'w') as f:
-            f.write(goal.cmd)
-            f.close()
-        with open('apc_echo.json') as data_file:
-            json_data = json.load(data_file)
-            data_file.close()
+
 
         '''for x in range(1,4,1):
             for y in range(0,4,1):
@@ -223,7 +218,20 @@ class strategy_class(object):
                 self._feedback.msg = "Jianming is Super cool %d!" % bin_ID
                 self._as.publish_feedback(self._feedback)'''
 
-        print json_data
+        if goal.cmd=='Read_File':
+            rospy.loginfo("Read_File")
+            with open('apc_echo.json', 'w') as f:
+                f.write(goal.data)
+                f.close()
+            with open('apc_echo.json') as data_file:
+                json_data = json.load(data_file)
+                data_file.close()
+        elif goal.cmd=='Pick_Run':
+            rospy.loginfo("Pick_Run")
+        elif goal.cmd=='Stow_Run':
+            rospy.loginfo("Stow_Run")
+        else:
+            rospy.loginfo("HAHAHA!")
         #obj = self.control_mbot(8,json_data)
 
         if success:

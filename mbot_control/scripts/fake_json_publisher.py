@@ -22,7 +22,8 @@ def UI_client(file_path):
         f.close()
     client = actionlib.SimpleActionClient('strategy_ui_info',mbot_control.msg.UI_InfoAction)
     client.wait_for_server()
-    goal = mbot_control.msg.UI_InfoGoal(cmd = data)
+
+    goal = mbot_control.msg.UI_InfoGoal(cmd='Read_File',data=data)
     client.send_goal(goal)
     client.wait_for_result()
     rospy.loginfo(client.get_result())
@@ -36,7 +37,7 @@ if __name__ == '__main__':
         rospack = rospkg.RosPack()
 
         pkg_name = 'mbot_control'
-        file_name = 'apc.json'
+        file_name = 'apc_test.json'
         file_path = rospack.get_path(pkg_name) + '/scripts/' + file_name
 
         UI_client(file_path)

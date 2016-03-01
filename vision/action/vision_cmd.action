@@ -1,5 +1,5 @@
 #goal definition
-int32 binID
+string goal_obj
 string bin_content
 ---
 #result definition
