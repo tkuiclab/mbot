@@ -3,27 +3,27 @@
   {
     "bin_A":
     [
-	  ""
+	""
     ],
     "bin_B":
     [
-	  "potato_chips","crayola_64_ct"
+	""
     ],
     "bin_C":
     [
-	  ""
+	""
     ],
     "bin_D":
     [
-	  ""
+	""
     ],
     "bin_E":
     [
-      "pumpkin_seeds","bottle","chortbread"
+      "potato_chips","chocopie","crayola_64_ct"
     ],
     "bin_F":
     [
-      ""
+      "pumpkin_seeds","bottle","chortbread"
     ],
     "bin_G":
     [
@@ -43,7 +43,7 @@
     ],
     "bin_K":
     [
-	"chocopie"
+	""
     ],
     "bin_L":
     [
@@ -58,7 +58,7 @@
     },
     {
       "bin": "bin_B",
-      "item": "crayola_64_ct"
+      "item": ""
     },
     {
       "bin": "bin_C",
@@ -70,11 +70,11 @@
     },
     {
       "bin": "bin_E",
-      "item": "chortbread"
+      "item": "crayola_64_ct"
     },
     {
       "bin": "bin_F",
-      "item": ""
+      "item": "chortbread"
     },
     {
       "bin": "bin_G",
@@ -94,7 +94,7 @@
     },
     {
       "bin": "bin_K",
-      "item": "chocopie"
+      "item": ""
     },
     {
       "bin": "bin_L",

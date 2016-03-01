@@ -7,7 +7,7 @@
     ],
     "bin_B":
     [
-	  "potato_chips","crayola_64_ct"
+	  "potato_chips","chocopie","crayola_64_ct"
     ],
     "bin_C":
     [
@@ -43,7 +43,7 @@
     ],
     "bin_K":
     [
-	"chocopie"
+	""
     ],
     "bin_L":
     [
@@ -94,7 +94,7 @@
     },
     {
       "bin": "bin_K",
-      "item": "chocopie"
+      "item": ""
     },
     {
       "bin": "bin_L",
