@@ -5,7 +5,7 @@ Created on:       2016/02/18 --------------------> Creating file & read json fil
 Modified on:      2016/02/21 --------------------> Adding Action Server for UIFO & Action Client for Vision
                   2016/02/22 --------------------> Adding mbot_control server
                   2016/02/25 --------------------> Adding move2standby function & Modify ur5_control.py for rotate TCP
-                  2016/03/01 -------------------->
+                  2016/03/01 --------------------> Change the name of action file "UIFO" -> "UI_Info"
 
 Description: Strategy for Amazon Picking Challenge 2016
     Action_Server: UI_INFO
@@ -25,8 +25,8 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import String
 
 class strategy_class(object):
-    _feedback = mbot_control.msg.UIFOFeedback()
-    _result = mbot_control.msg.UIFOResult()
+    _feedback = mbot_control.msg.UI_InfoFeedback()
+    _result = mbot_control.msg.UI_InfoResult()
 
     ################################################## Class Initialize ##################################################
     def __init__(self,node_name,file_name):
@@ -34,8 +34,8 @@ class strategy_class(object):
             self.data = json.load(data_file)
             data_file.close()
 
-        self.uifo_action_name = "%s_uifo" % node_name
-        self._as = actionlib.SimpleActionServer(self.uifo_action_name,mbot_control.msg.UIFOAction,execute_cb=self.ui_info_cb,auto_start=False)
+        self.uifo_action_name = "%s_ui_info" % node_name
+        self._as = actionlib.SimpleActionServer(self.uifo_action_name,mbot_control.msg.UI_InfoAction,execute_cb=self.ui_info_cb,auto_start=False)
 
         self._as.start()
 
@@ -124,8 +124,8 @@ class strategy_class(object):
 
         TeachCMD_list.cmd_list.append(cmd)
         return TeachCMD_list
-    ################################################### move 2 watch_pose ##################################################
-    def read2pick(self):
+    ################################################### ready 2 pick ##################################################
+    def ready2pick(self):
         rospy.loginfo("Moving to watch position...")
         TeachCMD_list = mbot_control.msg.TeachCommandListGoal()
         cmd = mbot_control.msg.TeachCommand()
@@ -192,7 +192,7 @@ class strategy_class(object):
         }
         obj = switch[bin_ID](bin_ID)
         ##------------------ Ready 2 Pick ------------------ ##
-        TeachCMD_list = self.read2pick()
+        TeachCMD_list = self.ready2pick()
         goal = mbot_control.msg.TeachCommandListGoal(TeachCMD_list.cmd_list)
         client.send_goal(goal)
         client.wait_for_result()
@@ -200,6 +200,7 @@ class strategy_class(object):
         rospy.loginfo("Mbot_control Result:%s"%result.notify)
 
         rospy.loginfo("Grapping items in bin_%d" % bin_ID)
+
         return obj
 
     ############################################## UI_INFO Execute Callback ##############################################
@@ -222,7 +223,8 @@ class strategy_class(object):
                 self._feedback.msg = "Jianming is Super cool %d!" % bin_ID
                 self._as.publish_feedback(self._feedback)'''
 
-        obj = self.control_mbot(2,json_data)
+        print json_data
+        #obj = self.control_mbot(8,json_data)
 
         if success:
             rospy.loginfo('------Jianming done!------')

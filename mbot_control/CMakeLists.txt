@@ -39,7 +39,7 @@ add_action_files(
   DIRECTORY action
   FILES 
   TeachCommandList.action
-  UIFO.action
+  UI_Info.action
 )
 
 ## Generate added messages and services with any dependencies listed here
