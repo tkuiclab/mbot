@@ -18,7 +18,7 @@ int main (int argc, char **argv)
   ROS_INFO("Action server started, sending goal.");
   // send a goal to the action
   vision::vision_cmdGoal goal;
-  goal.objID = 5;
+  goal.binID = 5;
   ac.sendGoal(goal);
 
   //wait for the action to return

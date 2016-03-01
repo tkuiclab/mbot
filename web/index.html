@@ -146,8 +146,8 @@
 	//Action Client
 	var jsonClient = new ROSLIB.ActionClient({
 		ros : ros,
-		serverName : '/strategy',
-		actionName : 'mbot_control/UIFOAction'
+		serverName : '/strategy_ui_info',
+		actionName : 'mbot_control/UI_InfoAction'
 	});
 	//Pick Run || Stow Run. send motion command to strategy by action.
 	$("#pickRun").on('click',function(e){

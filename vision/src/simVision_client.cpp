@@ -19,6 +19,7 @@ int main (int argc, char **argv)
   // send a goal to the action
   vision::vision_cmdGoal goal;
   goal.binID = 5;
+  goal.bin_content = "orea_mega";
   ac.sendGoal(goal);
 
   //wait for the action to return

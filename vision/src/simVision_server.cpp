@@ -36,14 +36,14 @@ public:
     bool success = true;
 
     // push_back the status for the feedback_ status
-	feedback_.status = "Neet is be ready.";
+	feedback_.status = "Vision is be ready.";
 
     // publish info to the console for the user
 	ROS_INFO("%s : status is '%s'",action_name_.c_str(),feedback_.status.c_str());
 
     // start executing the action
 
-      feedback_.status = "Neet's status";
+      feedback_.status = "Vision's status";
       // publish the feedback
       as_.publishFeedback(feedback_);
       // this sleep is not necessary, the sequence is computed at 1 Hz for demonstration purposes
@@ -58,7 +58,7 @@ public:
 	twist.angular.x = 3;
 	twist.angular.y = 4;
 	twist.angular.z = 5;
-      result_.objPose = twist;
+        result_.objPose = twist;
 	result_.objID = "milk tea";
 	ROS_INFO("%s : Succeeded",action_name_.c_str());
       // set the action state to succeeded
