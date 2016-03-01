@@ -20,9 +20,9 @@ def UI_client(file_path):
     with open(file_path, 'r') as f:
         data = f.read()
         f.close()
-    client = actionlib.SimpleActionClient('strategy_uifo',mbot_control.msg.UIFOAction)
+    client = actionlib.SimpleActionClient('strategy_ui_info',mbot_control.msg.UI_InfoAction)
     client.wait_for_server()
-    goal = mbot_control.msg.UIFOGoal(cmd = data)
+    goal = mbot_control.msg.UI_InfoGoal(cmd = data)
     client.send_goal(goal)
     client.wait_for_result()
     rospy.loginfo(client.get_result())
