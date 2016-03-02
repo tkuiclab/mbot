@@ -24,6 +24,8 @@ from geometry_msgs.msg import Twist
 
 from std_msgs.msg import String
 
+json_data = []
+
 class strategy_class(object):
     _feedback = mbot_control.msg.UI_InfoFeedback()
     _result = mbot_control.msg.UI_InfoResult()
@@ -126,7 +128,7 @@ class strategy_class(object):
         return TeachCMD_list
     ################################################### ready 2 pick ##################################################
     def ready2pick(self):
-        rospy.loginfo("Moving to watch position...")
+        rospy.loginfo("PICKING...")
         TeachCMD_list = mbot_control.msg.TeachCommandListGoal()
         cmd = mbot_control.msg.TeachCommand()
         TeachCMD_list.cmd_list = []
@@ -143,7 +145,7 @@ class strategy_class(object):
         TeachCMD_list.cmd_list.append(cmd)
         return TeachCMD_list
     ##################################################### Control Mbot ####################################################
-    def control_mbot(self,bin_ID,json_data):
+    def Pick_task(self,bin_ID,json_data):
         rospy.loginfo("Controlling mbot")
         client = actionlib.SimpleActionClient('mbot_control', mbot_control.msg.TeachCommandListAction)
         client.wait_for_server()
@@ -176,7 +178,7 @@ class strategy_class(object):
         result = client.get_result()
         rospy.loginfo("Mbot_control Result:%s"%result.notify)
 
-        switch = {
+        '''switch = {
             1:self.vision_client,
             2:self.vision_client,
             3:self.vision_client,
@@ -190,7 +192,17 @@ class strategy_class(object):
             11:self.vision_client,
             12:self.vision_client
         }
-        obj = switch[bin_ID](bin_ID)
+        obj = switch[bin_ID](bin_ID)'''
+
+        '''if bin_ID==1:
+        elif bin_ID==2:
+        elif bin_ID==3:
+        elif bin_ID==4:
+        elif bin_ID==5:
+        elif bin_ID==6:
+        elif bin_ID==7:
+        else:'''
+
         ##------------------ Ready 2 Pick ------------------ ##
         TeachCMD_list = self.ready2pick()
         goal = mbot_control.msg.TeachCommandListGoal(TeachCMD_list.cmd_list)
@@ -200,14 +212,14 @@ class strategy_class(object):
         rospy.loginfo("Mbot_control Result:%s"%result.notify)
 
         rospy.loginfo("Grapping items in bin_%d" % bin_ID)
-
+        obj=0
         return obj
 
     ############################################## UI_INFO Execute Callback ##############################################
     def ui_info_cb(self,goal):
         rospy.loginfo("uifo_cb_execute")
         success = True
-
+        global json_data
 
 
         '''for x in range(1,4,1):
@@ -228,12 +240,18 @@ class strategy_class(object):
                 data_file.close()
         elif goal.cmd=='Pick_Run':
             rospy.loginfo("Pick_Run")
+            #print json_data
+            #obj = self.Pick_task(8,json_data)
         elif goal.cmd=='Stow_Run':
             rospy.loginfo("Stow_Run")
+            #print json_data
         else:
-            rospy.loginfo("HAHAHA!")
-        #obj = self.control_mbot(8,json_data)
-
+            rospy.loginfo("WTF!CMD WRONG!!!")
+        #obj = self.Pick_task(8,json_data)
+        #obj = json.dumps(json_data)
+        #print repr(obj)
+        print len(json_data['bin_contents']['bin_B'])
+                    #data['work_order'][0]['bin']
         if success:
             rospy.loginfo('------Jianming done!------')
             self._result.result = "Hello moto"
@@ -241,12 +259,13 @@ class strategy_class(object):
 
 
     #################################################### Vision Client ###################################################
-    def vision_client(self,bin_ID):
+    def vision_client(self,goal_obj,bin_contents):
         #rospy.loginfo("vision_client_execute")
-        rospy.loginfo("Vision processing bin_%d"%bin_ID)
+        rospy.loginfo("Vision processing ...")
+        rospy.loginfo("Searching goal_obj:%s",goal_obj)
         client = actionlib.SimpleActionClient('simVision_server', vision.msg.vision_cmdAction)
         client.wait_for_server()
-        goal = vision.msg.vision_cmdGoal(binID=bin_ID)
+        goal = vision.msg.vision_cmdGoal(goal_obj='test',bin_content=bin_contents)
         client.send_goal(goal)
         client.wait_for_result()
         obj = client.get_result()
