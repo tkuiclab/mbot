@@ -45,16 +45,8 @@
 	<!-- Motion Button -->
 	<table>
 	<tr>
-		<td colspan="3"><form>
-			<input type="radio" name="colors" id="pickCheck" checked>Pick
-			<input type="radio" name="colors" id="stowCheck">Stow
-		</form></td>
-	</tr>
-	<tr>
 		<td><input type="file" id="files" name="files[]" multiple /></td>
-		<td><button id="pickRun">Pick RUN</button></td>
-		<td><button id="stowRun">Stow RUN</button></td>
-
+		<td><button id="RunBtn">RUN</button></td>
 	</tr>
 	<tr>
 		<td><output id="list"></output></td>
@@ -146,25 +138,15 @@
 	//Action Client
 	var jsonClient = new ROSLIB.ActionClient({
 		ros : ros,
-		serverName : '/strategy',
-		actionName : 'mbot_control/UIFOAction'
+		serverName : '/strategy_ui_info',
+		actionName : 'mbot_control/UI_InfoAction'
 	});
-	//Pick Run || Stow Run. send motion command to strategy by action.
+	//Click button Pick Run || Stow Run, then send motion command to strategy by action.
 	$("#pickRun").on('click',function(e){
 		var goal = new ROSLIB.Goal({
 			actionClient : jsonClient,
 			goalMessage : {
 				cmd : "Pick_Run", //Readfile, Pick_Run, Stow_Run
-				data : ""
-			}
-		});
-		goal.send();
-	});
-	$("#stowRun").on('click',function(e){
-		var goal = new ROSLIB.Goal({
-			actionClient : jsonClient,
-			goalMessage : {
-				cmd : "Stow_Run", //Readfile, Pick_Run, Stow_Run
 				data : ""
 			}
 		});
@@ -189,14 +171,15 @@
 	xmlhttp.open("GET",url,true);
 	xmlhttp.send();
 
-	function parse_APC_json(data){
+	function parse_APC_json(data)
+	{
 		var myArr = JSON.parse(data);
-		if(document.getElementById('pickCheck').checked == true){
+		if(myArr.bin_contents != undefined && myArr.stow_contents == undefined){
 			//erase Tote's elements
 			$("#show_Tote").html('');
 			//show on Shelf table
 			show_Shelf_json(myArr);
-		}else if(document.getElementById('stowCheck').checked == true){
+		}else if(myArr.bin_contents == undefined && myArr.stow_contents != undefined){
 			//erase Shelf's elements
 			$("#bin_A").html('');
 			$("#bin_B").html('');
@@ -212,10 +195,13 @@
 			$("#bin_L").html('');
 			//show on Tote table
 			show_Tote_json(myArr);
+		}else{
+			alert("APC Json Format ERROR");
 		}
 	}
 	//show json elements to shelf
-	function show_Shelf_json(arr){
+	function show_Shelf_json(arr)
+	{
 		var outA="";var outB="";var outC="";
 		var outD="";var outE="";var outF="";
 		var outG="";var outH="";var outI="";
@@ -322,7 +308,8 @@
 		document.getElementById("bin_L").innerHTML = outL;
 	}
 	//show json elements to tote
-	function show_Tote_json(arr){
+	function show_Tote_json(arr)
+	{
 		var out="";
 		var i;
 		var sw = 0;
@@ -342,7 +329,8 @@
 		document.getElementById("show_Tote").innerHTML = '<ul>'+out+'</ul>';
 	}
 	//Open Local Files Dialog
-	function handleFileSelect(evt) {
+	function handleFileSelect(evt)
+	{
 		var files = evt.target.files; // FileList object
 
 		// files is a FileList of File objects. List some properties.
