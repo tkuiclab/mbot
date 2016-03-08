@@ -28,14 +28,13 @@
 	<div id="fixedTop">
 		<ul>
 			<li class="left">
-				<a id="nav-expander" class="nav-expander fixed">
-				<i class="fa fa-bars fa-lg white"></i>
-				</a>
+				<a id="nav-expander" class="nav-expander fixed"><i class="fa fa-bars fa-lg white"></i></a>
 			</li>
 			<li class="center">
 				<strong>Mobile Manipulator</strong>
 			</li>
-			<li  class="right">				
+			<li  class="right">
+				<a id="rosConnect"><i class="fa fa-wifi fa-2x white" id="ipNum" title=""></i></a>
 			</li>
 		</ul>
 	</div>
@@ -118,29 +117,10 @@
 <script src="js/jquery/jquery.navgoco.js"></script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/main.js"></script>
-
+<script src="js/ros_init.js"></script>
 <script src="jquery-ui-1.11.4/external/jquery/jquery.js"></script>
 <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" type="text/javascript">
-	//ROS
-	var ros = new ROSLIB.Ros({
-		url : 'ws://localhost:9090'
-	});
-	ros.on('connection', function() {
-		console.log('Connected to websocket server.');
-	});
-	ros.on('error', function(error) {
-		console.log('Error connecting to websocket server: ', error);
-	});
-	ros.on('close', function() {
-		console.log('Connection to websocket server closed.');
-	});
-	//Action Client
-	var jsonClient = new ROSLIB.ActionClient({
-		ros : ros,
-		serverName : '/strategy_ui_info',
-		actionName : 'mbot_control/UI_InfoAction'
-	});
 	//Read JSON file & Send JSON String to strategy by action
 	var xmlhttp = new XMLHttpRequest();
 	var url = "";//file's url
@@ -359,16 +339,6 @@
 		document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
 	}
 	document.getElementById('files').addEventListener('change', handleFileSelect, false);
-
-	//Navigation Menu Slider
-	$('#nav-expander').on('click',function(e){
-		e.preventDefault();
-		$('body').toggleClass('nav-expanded');
-	});
-	$('#nav-close').on('click',function(e){
-		e.preventDefault();
-		$('body').removeClass('nav-expanded');
-	});
 </script>
 </body>
 </html>

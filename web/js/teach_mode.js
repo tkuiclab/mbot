@@ -776,55 +776,6 @@ function teach_click(t){
 	}	
 }
 
-//----------------------------------------ROS----------------------------------------//
-// Connecting to ROS
-var ros = new ROSLIB.Ros({
-	url : 'ws://localhost:9090'
-});
-
-// If there is an error on the backend, an 'error' emit will be emitted.
-ros.on('error', function(error) {var request = new ROSLIB.ServiceRequest({
-		    cmd : "Teach:EEF_Pose",
-		});
-		
-		ui_client.callService(request, function(res) {
-			var l = res.pose.linear;
-			var a = res.pose.angular;
-			
-			console.log( 'Result : '   + res.result);
-			console.log( 'Pose : '   + l.x + "," + l.y + "," + l.z + "," + a.x + "," + a.y + "," + a.z );
-		  	
-		  	
-		  	var refer = $('#'+m_cmd_id).children("td.SubCmd");
-		  	refer.children("input:nth-child(1)").val(l.x.toFixed(2));
-		  	refer.children("input:nth-child(2)").val(l.y.toFixed(2));
-		  	refer.children("input:nth-child(3)").val(l.z.toFixed(2));
-		  	refer.children("input:nth-child(4)").val(a.x.toFixed(2));
-		  	refer.children("input:nth-child(5)").val(a.y.toFixed(2));
-		  	refer.children("input:nth-child(6)").val(a.z.toFixed(2));
-		  	
-		  	
-		});
-	console.log(error);
-});
-
-// Find out exactly when we made a connection.
-ros.on('connection', function() {
-	console.log('ROS Connection made!');
-});
-
-ros.on('close', function() {
-    console.log('ROS Connection closed.');
-});
-
-//-----------ActionClient-------------//
-var teachModeClient = new ROSLIB.ActionClient({
-	ros : ros,
-	serverName : '/teach_mode_server',
-	actionName : 'mbot_control/TeachCommandListAction'
-});
-
-
 var now_exe_id = 0;
 var teach_result_trigger = false;
 
@@ -883,33 +834,13 @@ function teach_result(result){
 // Subscribing to a "joint_states" Topic
 // -----------------------------------//
 
-var joint_ary = new Float32Array(6);;
-
-var joint_sub = new ROSLIB.Topic({
-	ros:ros,
-	name: '/joint_states',
-	messageType : 'sensor_msgs/JointState'
-});
-
+var joint_ary = new Float32Array(6);
 
 joint_sub.subscribe(function(msg){
 	for(var i =0 ;i < 6;i++){
 		joint_ary[i] = msg.position[i];
 	}
-});	
-
-
-
-// ------------------------------------//
-// Client for a "ui_server" Service
-// -----------------------------------//
-
-
-var ui_client = new ROSLIB.Service({
-    ros : ros,
-    name : '/ui_server',
-    serviceType : 'mbot_control/UI_Server'
-  });
+});
 
 
 /*  Teach:SaveFile test

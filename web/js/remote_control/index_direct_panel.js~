@@ -12,7 +12,7 @@ $('#direction_speed_send').on('click',function(e){
 	}
 });
 function direct(dirID,spArr){
-	$(dirID).on('mousedown',function(e){
+	$(dirID).bind('mousedown touchstart',function(e){
 //		var float64 = returnArray6(spArr[0],spArr[1],spArr[2],spArr[3],spArr[4],spArr[5]);
 		var twist = new ROSLIB.Message({
 			linear : {
@@ -30,10 +30,10 @@ function direct(dirID,spArr){
 		$("#infoContent").html('Topic was send twist'
 					+"<BR>linear:<BR>"+ twist.linear.x +"<BR>"+ twist.linear.y +"<BR>"+ twist.linear.z
 					+"<BR>angular<BR>"+ twist.angular.x +"<BR>"+ twist.angular.y +"<BR>"+ twist.angular.z
-		);console.log(twist.linear.x+":"+twist.linear.y+":"+twist.linear.z);
+		);
 	});
 	//when mouseUp stop the motion
-	$(dirID).on('mouseup',function(e){
+	$(dirID).bind('mouseup touchend',function(e){
 		var twist = new ROSLIB.Message({
 			linear : {x : 0,y : 0,z : 0},
 			angular : {x : 0,y : 0,z : 0}
