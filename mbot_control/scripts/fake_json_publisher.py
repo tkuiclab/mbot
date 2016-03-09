@@ -22,8 +22,9 @@ def UI_client(file_path):
         f.close()
     client = actionlib.SimpleActionClient('strategy_ui_info',mbot_control.msg.UI_InfoAction)
     client.wait_for_server()
-
-    goal = mbot_control.msg.UI_InfoGoal(cmd='Read_File',data=data)
+    #                                        Read_File
+    #                                        Pick_Run
+    goal = mbot_control.msg.UI_InfoGoal(cmd='Pick_Run',data=data)
     client.send_goal(goal)
     client.wait_for_result()
     rospy.loginfo(client.get_result())

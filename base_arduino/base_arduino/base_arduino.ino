@@ -23,15 +23,16 @@ int ptemp = 2;
 double pi = 3.14159265359;
 double sita = 0;
 double alfa = 0.25 * pi;
-double l = 388.91;
+double l = 38.891;
 double beta1 = 0.25 * pi;
 double beta2 = 0.75 * pi;
 double beta3 = 1.25 * pi;
 double beta4 = 1.75 * pi;
 double r = 25.4;
 float v1, v2, v3, v4;
+float t1, t2, t3, t4;
 float dtemp1 = 0, dtemp2 = 0, dtemp3 = 0, dtemp4 = 0;
-int max_speed =700;
+int max_speed =500;
 
  
 unsigned char buf[8] = {0, 1, 2, 3, 4, 5, 6, 7};
@@ -99,7 +100,14 @@ void get_encoder(){
   CAN.sendMsgBuf(id_3, 0, 8, tpos);
   get_receive();
   CAN.sendMsgBuf(id_4, 0, 8, tpos);
-  get_receive();     
+  get_receive();
+      if((encoder_1 == 0)||(encoder_2 == 0)||(encoder_3 == 0)||(encoder_4 == 0)){
+        get_encoder();
+//            Serial.print("re_getencoder");
+//            Serial.print("\t");
+//            Serial.print(encodertemp,DEC);
+//            Serial.print("\n");
+    }     
   }
 void get_receive (){
       if(CAN_MSGAVAIL == CAN.checkReceive())            // check if data coming
@@ -110,9 +118,9 @@ void get_receive (){
                 
         if((canId == 0x581) || (canId == 0x582) || (canId == 0x583) || (canId == 0x584))
         {        
-          Serial.println("-----------------------------");
-          Serial.print("get data from ID: ");
-          Serial.println(canId,HEX);
+//          Serial.println("-----------------------------");
+//          Serial.print("get data from ID: ");
+//          Serial.println(canId,HEX);
           
           for(int i = 7; i>=4; i--){
             encodertemp = (encodertemp << 8);
@@ -122,35 +130,34 @@ void get_receive (){
 //                        Serial.print(encodertemp,HEX);
 //                                      Serial.print("\t");
             }
-
           switch(canId)
           {
             case 0x581:
             encoder_1 = encodertemp;
-            Serial.print(encoder_1,DEC);       
+//            Serial.print(encoder_1,DEC);       
             break;
             case 0x582:
             encoder_2 = encodertemp;
-            Serial.print(encoder_2,DEC);       
+//            Serial.print(encoder_2,DEC);       
             break;
             case 0x583:
             encoder_3 = encodertemp;
-            Serial.print(encoder_3,DEC);       
+//            Serial.print(encoder_3,DEC);       
             break;
             case 0x584:
             encoder_4 = encodertemp;
-            Serial.print(encoder_4,DEC);       
+//            Serial.print(encoder_4,DEC);       
             break;            
            }
             encodertemp = 0;
-        
+
 //          for(int i = 0; i<len; i++)    // print the data
 //          {                
 //              Serial.print(buf[i],HEX);
 //              Serial.print("\t");
 //              
 //          }        
-          Serial.println();
+//          Serial.println();
         }
     }  
   }
@@ -207,7 +214,7 @@ void set_base_speed(int x, int y, int yaw) {
 //  if (x == 0 && y == 0 && yaw == 0) {
 //    stop_all();
 //  }
-
+  Serial.print("run speed");
   v1 = (cos(sita + alfa) / sin(-alfa)) * x + (sin(sita + alfa) / sin(-alfa)) * y + (l * sin(sita + alfa - beta2) / sin(-alfa)) * yaw;
   v2 = (cos(sita - alfa) / sin(alfa)) * x + (sin(sita - alfa) / sin(alfa)) * y + (l * sin(sita - alfa - beta1) / sin(alfa)) * yaw;
   v3 = (cos(sita - alfa) / sin(alfa)) * x + (sin(sita - alfa) / sin(alfa)) * y + (l * sin(sita - alfa - beta3) / sin(alfa)) * yaw;
@@ -217,7 +224,6 @@ void set_base_speed(int x, int y, int yaw) {
   v2 *= -1 / r;
   v3 *= 1 / r;
   v4 *= -1 / r;
- 
     if( v1*max_speed/2>=max_speed || v1*max_speed/2<=-max_speed){
       v1=(v1/abs(v1))*max_speed;
     }else{
@@ -240,12 +246,8 @@ void set_base_speed(int x, int y, int yaw) {
       v4=(v4/abs(v4))*max_speed;  
     }else{
       v4*=max_speed/2;
-    }  
-      set_motor_rpm(id_1, v1);
-      set_motor_rpm(id_2, v2);
-      set_motor_rpm(id_3, v3);
-      set_motor_rpm(id_4, v4);
-      
+    } 
+          
   Serial.print("v1=");
   Serial.println(v1);
   Serial.print("v2=");
@@ -253,8 +255,8 @@ void set_base_speed(int x, int y, int yaw) {
   Serial.print("v3=");
   Serial.println(v3);
   Serial.print("v4=");
-  Serial.println(v4);//*/
- 
+  Serial.println(v4);//*/ 
+  //-------------------------------------A---------------------
 float a1 = (v1-dtemp1)/10;
 float a2 = (v2-dtemp2)/10;
 float a3 = (v3-dtemp3)/10;
@@ -270,9 +272,9 @@ float a4 = (v4-dtemp4)/10;
       set_motor_rpm(id_2, dtemp2);
       set_motor_rpm(id_3, dtemp3);
       set_motor_rpm(id_4, dtemp4);
-      delay (20);
+      delay (30);
       
-   /* Serial.print("dtemp1=");
+    /*Serial.print("dtemp1=");
       Serial.println(dtemp1);
       Serial.print("dtemp2=");
       Serial.println(dtemp2);
@@ -284,45 +286,123 @@ float a4 = (v4-dtemp4)/10;
   }
 }
 void set_base_move(int x, int y, int yaw) {
-  
+  int sw = 1;
   v1 = (cos(sita + alfa) / sin(-alfa)) * x + (sin(sita + alfa) / sin(-alfa)) * y + (l * sin(sita + alfa - beta2) / sin(-alfa)) * yaw;
   v2 = (cos(sita - alfa) / sin(alfa)) * x + (sin(sita - alfa) / sin(alfa)) * y + (l * sin(sita - alfa - beta1) / sin(alfa)) * yaw;
   v3 = (cos(sita - alfa) / sin(alfa)) * x + (sin(sita - alfa) / sin(alfa)) * y + (l * sin(sita - alfa - beta3) / sin(alfa)) * yaw;
   v4 = (cos(sita + alfa) / sin(-alfa)) * x + (sin(sita + alfa) / sin(-alfa)) * y + (l * sin(sita + alfa - beta4) / sin(-alfa)) * yaw;
 
-  v1 *= 1 / r;
-  v2 *= -1 / r;
-  v3 *= 1 / r;
-  v4 *= -1 / r;
+  v1 *= 1 / (r*pi);
+  v2 *= -1 / (r*pi);
+  v3 *= 1 / (r*pi);
+  v4 *= -1 / (r*pi);
+  t1 = v1;
+  t2 = v2;
+  t3 = v3;
+  t4 = v4;
   last_encoder_1 = encoder_1;
   last_encoder_2 = encoder_2;
   last_encoder_3 = encoder_3;
   last_encoder_4 = encoder_4;  
-  
-  set_motor_rpm(id_1, v1);
-  set_motor_rpm(id_2, v2);
-  set_motor_rpm(id_3, v3);
-  set_motor_rpm(id_4, v4);
+//          Serial.print("last_encoder_1 = ");
+//          Serial.print(last_encoder_1,DEC);
+//          Serial.print("\n");
+//          Serial.print("last_encoder_2 = ");
+//          Serial.print(last_encoder_2,DEC);
+//          Serial.print("\n");
+//          Serial.print("last_encoder_3 = ");
+//          Serial.print(last_encoder_3,DEC);
+//          Serial.print("\n");
+//          Serial.print("last_encoder_4 = ");
+//          Serial.print(last_encoder_4,DEC);
+//          Serial.print("\n");
+  while(sw){
 
+    get_encoder();
+      if(labs(last_encoder_1-encoder_1) >= labs(t1*400000)){ 
+          sw = 0;
+          set_motor_rpm(id_1, v1*0);     
+        }else{
+          sw = 1;
+        }
+      if(labs(last_encoder_2-encoder_2) >= labs(t2*400000)){ 
+          sw = 0;
+          set_motor_rpm(id_2, v2*0);      
+        }else{
+          sw = 1;
+        }
+      if(labs(last_encoder_3-encoder_3) >= labs(t3*400000)){ 
+          sw = 0;
+          set_motor_rpm(id_1, v1*0);    
+        }else{
+          sw = 1;
+        }
+      if(labs(last_encoder_4-encoder_4) >= labs(t4*400000)){ 
+          sw = 0;
+          set_motor_rpm(id_4, v1*0);    
+        }else{
+          sw = 1;
+        } 
+    if( v1*max_speed/2>=max_speed || v1*max_speed/2<=-max_speed){
+      v1=(v1/abs(v1))*max_speed;
+    }else{
+      v1*=max_speed/2;
+    }
       
-  Serial.print("v1=");
-  Serial.println(v1);
-  Serial.print("v2=");
-  Serial.println(v2);
-  Serial.print("v3=");
-  Serial.println(v3);
-  Serial.print("v4=");
-  Serial.println(v4);//*/
+    if( v2*max_speed/2>=max_speed || v2*max_speed/2<=-max_speed){
+      v2=(v2/abs(v2))*max_speed;
+    }else{
+      v2*=max_speed/2;
+    }
+      
+    if( v3*max_speed/2>=max_speed || v3*max_speed/2<=-max_speed){
+      v3=(v3/abs(v3))*max_speed;
+    }else{
+      v3*=max_speed/2;
+    }
+      
+    if( v4*max_speed/2>=max_speed || v4*max_speed/2<=-max_speed){
+      v4=(v4/abs(v4))*max_speed;  
+    }else{
+      v4*=max_speed/2;
+    }
+        
+       set_motor_rpm(id_1, v1);
+       set_motor_rpm(id_2, v2);
+       set_motor_rpm(id_3, v3);
+       set_motor_rpm(id_4, v4);       
+                        
+    }
+//
+//          Serial.print("encoder_1 = ");
+//          Serial.print(encoder_1,DEC);
+//          Serial.print("\n");
+//          Serial.print("encoder_2 = ");
+//          Serial.print(encoder_2,DEC);
+//          Serial.print("\n");
+//          Serial.print("encoder_3 = ");
+//          Serial.print(encoder_3,DEC);
+//          Serial.print("\n");
+//          Serial.print("encoder_4 = ");
+//          Serial.print(encoder_4,DEC);   
+//          Serial.print("\n");
+      
+  /*Serial.print("t1=");
+  Serial.println(t1*pi*25.4);
+  Serial.print("t2=");
+  Serial.println(t2*pi*25.4);
+  Serial.print("t3=");
+  Serial.println(t3*pi*25.4);
+  Serial.print("t4=");
+  Serial.println(t4*pi*25.4);//*/
  
 }
 void run_point(int point) {
     if((ptemp-point)<0){
-        set_base_move((point-ptemp)*33, 0, 0);
-        set_base_speed(0, 0, 0);
+        set_base_move(0, (point-ptemp)*33, 0);
         ptemp=point;
       }else if((ptemp-point)>0){
-        set_base_move((point-ptemp)*-33, 0, 0);
-        set_base_speed(0, 0, 0);
+        set_base_move(0, (point-ptemp)*33, 0);
         ptemp=point;
       }else{
         set_base_speed(0, 0, 0);     
@@ -431,7 +511,6 @@ void loop()
             Serial.print("RUN_POINT=");
             Serial.println(point_index);
             get_encoder();           
-            get_encoder();
             run_point(point_index); 
           case 's':
             stop_all();

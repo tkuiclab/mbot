@@ -141,17 +141,6 @@
 		serverName : '/strategy_ui_info',
 		actionName : 'mbot_control/UI_InfoAction'
 	});
-	//Click button Pick Run || Stow Run, then send motion command to strategy by action.
-	$("#pickRun").on('click',function(e){
-		var goal = new ROSLIB.Goal({
-			actionClient : jsonClient,
-			goalMessage : {
-				cmd : "Pick_Run", //Readfile, Pick_Run, Stow_Run
-				data : ""
-			}
-		});
-		goal.send();
-	});
 	//Read JSON file & Send JSON String to strategy by action
 	var xmlhttp = new XMLHttpRequest();
 	var url = "";//file's url
@@ -179,6 +168,17 @@
 			$("#show_Tote").html('');
 			//show on Shelf table
 			show_Shelf_json(myArr);
+			//Click RUN button, then send motion command to strategy by action.
+			$("#RunBtn").on('click',function(e){
+				var goal = new ROSLIB.Goal({
+					actionClient : jsonClient,
+					goalMessage : {
+						cmd : "Pick_Run", //Readfile, Pick_Run, Stow_Run
+						data : ""
+					}
+				});
+				goal.send();
+			});
 		}else if(myArr.bin_contents == undefined && myArr.stow_contents != undefined){
 			//erase Shelf's elements
 			$("#bin_A").html('');
@@ -195,6 +195,17 @@
 			$("#bin_L").html('');
 			//show on Tote table
 			show_Tote_json(myArr);
+			//Click RUN button, then send motion command to strategy by action.
+			$("#RunBtn").on('click',function(e){
+				var goal = new ROSLIB.Goal({
+					actionClient : jsonClient,
+					goalMessage : {
+						cmd : "Stow_Run", //Readfile, Pick_Run, Stow_Run
+						data : ""
+					}
+				});
+				goal.send();
+			});
 		}else{
 			alert("APC Json Format ERROR");
 		}

@@ -1,19 +1,19 @@
-//Direct Control Button
+//Base Control Button
 //cause there has a lot of button need to send the value each other,so move this js code stand out the index.js
 var speedArr;
-var default_speed = 50;
-$('#direction_speed_send').on('click',function(e){
-	if(document.getElementById('direction_speed_value').value >=0 && document.getElementById('direction_speed_value').value<=100){
-		default_speed = document.getElementById('direction_speed_value').value / 1;
-		document.getElementById('direction_speed_value').value = '';
-		document.getElementById('direction_speed_value').placeholder = default_speed * 1;
+var default_speed = 0.5;
+$('#direction_base_speed_send').on('click',function(e){
+	if(document.getElementById('direction_base_speed_value').value >=0 && document.getElementById('direction_base_speed_value').value<=100){
+		default_speed = document.getElementById('direction_base_speed_value').value / 100;
+		document.getElementById('direction_base_speed_value').value = '';
+		document.getElementById('direction_base_speed_value').placeholder = default_speed * 100;
 	}else{
 		alert("Speed only allow 0~100%");
 	}
 });
 function direct(dirID,spArr){
 	$(dirID).on('mousedown',function(e){
-//		var float64 = returnArray6(spArr[0],spArr[1],spArr[2],spArr[3],spArr[4],spArr[5]);
+		var milst = [];
 		var twist = new ROSLIB.Message({
 			linear : {
 			x : spArr[0]*default_speed,
@@ -26,47 +26,109 @@ function direct(dirID,spArr){
 			z : spArr[5]*default_speed
 			}
 		});
-		direct_Pub.publish(twist);
-		$("#infoContent").html('Topic was send twist'
-					+"<BR>linear:<BR>"+ twist.linear.x +"<BR>"+ twist.linear.y +"<BR>"+ twist.linear.z
-					+"<BR>angular<BR>"+ twist.angular.x +"<BR>"+ twist.angular.y +"<BR>"+ twist.angular.z
-		);console.log(twist.linear.x+":"+twist.linear.y+":"+twist.linear.z);
+		var send = new ROSLIB.Message({
+			cmd : 'Base',
+			pose : twist
+		});
+		mlist.push(send);
+		var goal = new ROSLIB.Goal({
+			actionClient : teachModeClient,
+			goalMessage : {
+				cmd_list : mlist
+			}
+		});
+		$("#infoContent").html('Goal was send cmdlist'
+					+'<BR>Cmd : ' + send.cmd
+					+"<BR>Pose : "
+					+"<BR>linear:<BR>"+ send.pose.linear.x +"<BR>"+ send.pose.linear.y +"<BR>"+ send.pose.linear.z
+					+"<BR>angular<BR>"+ send.pose.angular.x +"<BR>"+ send.pose.angular.y +"<BR>"+ send.pose.angular.z
+		);
+		goal.send();
+		mlist = [];
+
 	});
 	//when mouseUp stop the motion
 	$(dirID).on('mouseup',function(e){
+		var milst = [];
 		var twist = new ROSLIB.Message({
 			linear : {x : 0,y : 0,z : 0},
 			angular : {x : 0,y : 0,z : 0}
 		});
-		direct_Pub.publish(twist);
+		var send = new ROSLIB.Message({cmd : 'Base', pose : twist});
+		mlist.push(send);
+		var goal = new ROSLIB.Goal({
+			actionClient : teachModeClient,
+			goalMessage : {
+				cmd_list : mlist
+			}
+		});
 		$("#infoContent").html('Topic was send twist'
 					+"<BR>linear:<BR>"+ twist.linear.x +"<BR>"+ twist.linear.y +"<BR>"+ twist.linear.z
 					+"<BR>angular<BR>"+ twist.angular.x +"<BR>"+ twist.angular.y +"<BR>"+ twist.angular.z
 		);
+		goal.send();
+		mlist = [];
 	});
-}
-speedArr = [ 0, 0, 1, 0, 0, 0];
-direct("#direction_up",speedArr);
-speedArr = [ 0, 0,-1, 0, 0, 0];
-direct("#direction_down",speedArr);
-speedArr = [ 0, 1, 0, 0, 0, 0];
-direct("#direction_front",speedArr);
-speedArr = [ 0,-1, 0, 0, 0, 0];
-direct("#direction_back",speedArr);
-speedArr = [ 1, 0, 0, 0, 0, 0];
-direct("#direction_right",speedArr);
-speedArr = [-1, 0, 0, 0, 0, 0];
-direct("#direction_left",speedArr);
-
-speedArr = [ 0, 0, 0, 0, 0,-1];
-direct("#direction_yaw_left",speedArr);
-speedArr = [ 0, 0, 0, 0, 0, 1];
-direct("#direction_yaw_right",speedArr);
+};
+function action(cmdName,valArr){
+	var mlist=[];
+	var twist = new ROSLIB.Message({
+		linear : {
+		x : valArr[0],
+		y : valArr[1],
+		z : valArr[2]
+		},
+		angular : {
+		x : valArr[3],
+		y : valArr[4],
+		z : valArr[5]
+		}
+	});
+	var send = new ROSLIB.Message({
+		cmd : cmdName,
+		pose : twist
+	});
+	mlist.push(send);
+	var goal = new ROSLIB.Goal({
+		actionClient : teachModeClient,
+		goalMessage : {
+			cmd_list : mlist
+		}
+	});
+	$("#infoContent").html('Goal was send cmdlist'
+				+'<BR>Cmd : ' + send.cmd
+				+"<BR>Pose : "
+				+"<BR>linear:<BR>"+ send.pose.linear.x +"<BR>"+ send.pose.linear.y +"<BR>"+ send.pose.linear.z
+				+"<BR>angular<BR>"+ send.pose.angular.x +"<BR>"+ send.pose.angular.y +"<BR>"+ send.pose.angular.z
+	);
+	goal.send();
+	mlist = [];
+};
+//enable the controller
+//angular.x : 0:speed mode, 1:enable, 2:stop
 speedArr = [ 0, 0, 0, 1, 0, 0];
-direct("#direction_pitch_up",speedArr);
-speedArr = [ 0, 0, 0,-1, 0, 0];
-direct("#direction_pitch_down",speedArr);
-speedArr = [ 0, 0, 0, 0, 1, 0];
-direct("#direction_roll_right",speedArr);
-speedArr = [ 0, 0, 0, 0,-1, 0];
-direct("#direction_roll_left",speedArr);
+direct("#direction_base_enable",speedArr);
+//disable the controller
+speedArr = [ 0, 0, 0, 2, 0, 0];
+direct("#direction_base_disable",speedArr);
+//Speed Mode
+speedArr = [ 0, 1, 0, 0, 0, 0];
+direct("#direction_base_front",speedArr);
+speedArr = [ 0,-1, 0, 0, 0, 0];
+direct("#direction_base_back",speedArr);
+speedArr = [-1, 0, 0, 0, 0, 0];
+direct("#direction_base_left",speedArr);
+speedArr = [ 1, 0, 0, 0, 0, 0];
+direct("#direction_base_right",speedArr);
+//Base Dialog Setting
+$("#control_send_base_d").on('click',function(e){console.log(0);
+	var lx = $("#input_base_lx_d").val()/100;
+	var ly = $("#input_base_ly_d").val()/100;
+	var az = $("#input_base_az_d").val()/100;
+	if(lx >= 0 && lx <=1 && ly >= 0 && ly <=1 && az >= 0 && az <=1){
+		speedArr = [ lx, ly, 0, 0, 0, az];
+		action("Base",speedArr);
+	}else{
+		alert("Value needs to be 0~100%");
+	}
+});

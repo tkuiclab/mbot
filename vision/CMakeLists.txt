@@ -155,6 +155,16 @@ add_dependencies(
   ${vision_EXPORTED_TARGETS}
 )
 
+add_executable(fake_stow_vision src/fake_stow_vision.cpp)
+target_link_libraries(
+  fake_stow_vision
+  ${catkin_LIBRARIES}
+)
+add_dependencies(
+  fake_stow_vision
+  ${vision_EXPORTED_TARGETS}
+)
+
 ## Declare a C++ executable
 # add_executable(vision_node src/vision_node.cpp)
 

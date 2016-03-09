@@ -107,7 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
+  INCLUDE_DIRS
   LIBRARIES vision
   CATKIN_DEPENDS actionlib actionlib_msgs cv_bridge image_transport roscpp rospy std_msgs geometry_msgs
   DEPENDS system_lib
@@ -152,6 +152,16 @@ target_link_libraries(
 )
 add_dependencies(
   simVision_client
+  ${vision_EXPORTED_TARGETS}
+)
+
+add_executable(simVision_client src/fake_stow_vision.cpp)
+target_link_libraries(
+  fake_stow_vision
+  ${catkin_LIBRARIES}
+)
+add_dependencies(
+  fake_stow_vision
   ${vision_EXPORTED_TARGETS}
 )
 
