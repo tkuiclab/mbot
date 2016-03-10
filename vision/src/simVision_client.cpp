@@ -3,7 +3,7 @@
 #include <actionlib/client/terminal_state.h>
 #include <vision/vision_cmdAction.h>
 
-std::string testID[4] = {"crayola_64_ct","chortbread","oreo_mega_stuf","chocopie"};
+std::string testID[5] = {"crayola_64_ct","chortbread","oreo_mega_stuf","chocopie","failed"};
 
 int main (int argc, char **argv)
 {
@@ -20,7 +20,7 @@ int main (int argc, char **argv)
   ROS_INFO("Action server started, sending goal.");
   // send a goal to the action
   vision::vision_cmdGoal goal;
-  goal.goal_obj = testID[3];
+  goal.goal_obj = testID[4];
   goal.bin_content = "crayola_64_ct";//bin_B's contents : "potato_chips","crayola_64_ct"
   ac.sendGoal(goal);
 

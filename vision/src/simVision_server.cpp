@@ -109,6 +109,14 @@ public:
 		// set the action state to succeeded
 		as_.setSucceeded(result_);
 	}else{
+		twist.linear.x = 0.00;
+		twist.linear.y = 0.00;
+		twist.linear.z = 0.00;
+		twist.angular.x = 0;
+		twist.angular.y = 0;
+		twist.angular.z = 0;
+		result_.objPose = twist;
+		result_.objID = goal_;
 		ROS_INFO("%s: Aborted", action_name_.c_str());
 		//set the action state to aborted
 		as_.setAborted(result_);

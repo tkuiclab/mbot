@@ -70,6 +70,8 @@ public:
 		result_.objPose = twist;
 		result_.objID = goal_;
 		ROS_INFO("%s : Succeeded",action_name_.c_str());
+		// set the action state to succeeded
+		as_.setSucceeded(result_);
 	}else if(goal_ == "chortbread"){//bin_E
 		twist.linear.x = 0.04;
 		twist.linear.y = 0.29;
@@ -80,6 +82,8 @@ public:
 		result_.objPose = twist;
 		result_.objID = goal_;
 		ROS_INFO("%s : Succeeded",action_name_.c_str());
+		// set the action state to succeeded
+		as_.setSucceeded(result_);
 	}else if(goal_ == "oreo_mega_stuf"){//bin_H
 		twist.linear.x = 0.00;
 		twist.linear.y = 0.24;
@@ -90,6 +94,8 @@ public:
 		result_.objPose = twist;
 		result_.objID = goal_;
 		ROS_INFO("%s : Succeeded",action_name_.c_str());
+		// set the action state to succeeded
+		as_.setSucceeded(result_);
 	}else if(goal_ == "chocopie"){//bin_K
 		twist.linear.x = 0.00;
 		twist.linear.y = 0.23;
@@ -100,9 +106,13 @@ public:
 		result_.objPose = twist;
 		result_.objID = goal_;
 		ROS_INFO("%s : Succeeded",action_name_.c_str());
+		// set the action state to succeeded
+		as_.setSucceeded(result_);
+	}else{
+		ROS_INFO("%s: Aborted", action_name_.c_str());
+		//set the action state to aborted
+		as_.setAborted(result_);
 	}
-	// set the action state to succeeded
-	as_.setSucceeded(result_);
   }
 
   void preemptCB()
