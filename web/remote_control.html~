@@ -27,21 +27,20 @@
 		<!--Include your navigation here-->
 		<li class="text-left"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#" id="nav-close">x</a></li>
 		<li><a href="teach_mode.html">Teach Mode <span class="icon"></span></a></li>
-		<li><a href="json_decoder.html">JSON Decoder <span class="icon"></span></a></li>
+		<li><a href="index.html">JSON Decoder <span class="icon"></span></a></li>
 		<li><a href="http://www.iarc.tku.edu.tw/APC">TKU IARC <span class="icon"></span></a></li>
 	</ul>
 </nav>
 <div id="fixedTop">
 	<ul>
 		<li class="left">
-			<a id="nav-expander" class="nav-expander fixed">
-			<i class="fa fa-bars fa-lg white"></i>
-			</a>
+			<a id="nav-expander" class="nav-expander fixed"><i class="fa fa-bars fa-lg white"></i></a>
 		</li>
 		<li class="center">
 			<strong>Mobile Manipulator</strong>
 		</li>
-		<li  class="right">				
+		<li  class="right">
+			<a id="rosConnect"><i class="fa fa-wifi fa-2x white" id="ipNum" title=""></i></a>
 		</li>
 	</ul>
 </div>
@@ -419,30 +418,22 @@
 <script src="jquery-ui-1.11.4/external/jquery/jquery.js"></script>
 <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
 
-<script src="js/index.js"></script>
-<script src="js/index_eef_panel.js"></script>
-<script src="js/index_joint_panel.js"></script>
-<script src="js/index_direct_panel.js"></script>
-<script src="js/index_base_panel.js"></script>
+<script src="js/ros_init.js"></script>
+<script src="js/remote_control/index.js"></script>
+<script src="js/remote_control/index_eef_panel.js"></script>
+<script src="js/remote_control/index_joint_panel.js"></script>
+<script src="js/remote_control/index_direct_panel.js"></script>
+<script src="js/remote_control/index_base_panel.js"></script>
 <script type="text/javascript" type="text/javascript">
+	rosIP.get(function(value){
+		ipAddr = value;
+		console.log("IP: "+value);
+	});
+
 	var mlist = [];
 	var io_default = false;
 	var mouseStillDown = false;
 	var eef_Sub_lx=0,eef_Sub_ly=0,eef_Sub_lz=0,eef_Sub_ax=0,eef_Sub_ay=0,eef_Sub_az=0;
-	//Navigation Menu Slider
-	$('#nav-expander').on('click',function(e){
-		e.preventDefault();
-		$('body').toggleClass('nav-expanded');
-	});
-	$('#nav-close').on('click',function(e){
-		e.preventDefault();
-		$('body').removeClass('nav-expanded');
-	});
-	//Global function
-	function returnArray6(val1,val2,val3,val4,val5,val6){
-		var tmpArr = [val1,val2,val3,val4,val5,val6];
-		return tmpArr;
-	}
 </script>
 </body>
 </html>

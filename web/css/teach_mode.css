@@ -6,17 +6,6 @@ body,tr,th,td{
 	background-size: cover;
 }
 
-#teach{
-	background-color: rgba(0, 107, 179, 0.8);
-	border-radius: 20px;
-	border-style: ridge;
-	overflow:auto;
-	margin-top: 20px;
-	margin-left: 30px;
-	margin-bottom: 10px;
-	margin-right: 30px;
-}
-
 nav{
 	background-color: rgba(0, 107, 179, 0.8);
 	border-radius: 20px;
@@ -155,7 +144,7 @@ select.options_cmd_none{
 	-webkit-appearance: none; /* Safari and Chrome */
 }
 
-#block,#shift_block input{
+#block,#shift_block,#base_vel_block input{
 	font-size: 24px;
 	height: 80%;
 	size:5;

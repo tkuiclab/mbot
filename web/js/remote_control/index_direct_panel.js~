@@ -12,8 +12,13 @@ $('#direction_base_speed_send').on('click',function(e){
 	}
 });
 function direct(dirID,spArr){
+<<<<<<< HEAD:web/js/index_direct_panel.js
 	$(dirID).on('mousedown',function(e){
 		var milst = [];
+=======
+	$(dirID).bind('mousedown touchstart',function(e){
+//		var float64 = returnArray6(spArr[0],spArr[1],spArr[2],spArr[3],spArr[4],spArr[5]);
+>>>>>>> 70d8c2447f8efa08130868e616dadeba5e37f2da:web/js/remote_control/index_direct_panel.js~
 		var twist = new ROSLIB.Message({
 			linear : {
 			x : spArr[0]*default_speed,
@@ -26,6 +31,7 @@ function direct(dirID,spArr){
 			z : spArr[5]*default_speed
 			}
 		});
+<<<<<<< HEAD:web/js/index_direct_panel.js
 		var send = new ROSLIB.Message({
 			cmd : 'Base',
 			pose : twist
@@ -50,6 +56,16 @@ function direct(dirID,spArr){
 	//when mouseUp stop the motion
 	$(dirID).on('mouseup',function(e){
 		var milst = [];
+=======
+		direct_Pub.publish(twist);
+		$("#infoContent").html('Topic was send twist'
+					+"<BR>linear:<BR>"+ twist.linear.x +"<BR>"+ twist.linear.y +"<BR>"+ twist.linear.z
+					+"<BR>angular<BR>"+ twist.angular.x +"<BR>"+ twist.angular.y +"<BR>"+ twist.angular.z
+		);
+	});
+	//when mouseUp stop the motion
+	$(dirID).bind('mouseup touchend',function(e){
+>>>>>>> 70d8c2447f8efa08130868e616dadeba5e37f2da:web/js/remote_control/index_direct_panel.js~
 		var twist = new ROSLIB.Message({
 			linear : {x : 0,y : 0,z : 0},
 			angular : {x : 0,y : 0,z : 0}

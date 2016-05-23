@@ -1002,7 +1002,7 @@ class strategy_class(object):
         elif goal.cmd=='Pick_Run':
             rospy.loginfo("Pick_Run")
 
-            for x in range(1,4,1):
+            '''for x in range(1,4,1):
                 for y in range(0,4,1):
                     bin_ID = y*3+x
                     if bin_ID==1:
@@ -1033,7 +1033,8 @@ class strategy_class(object):
                         rospy("Bin_ID Wrong!")
                     self._feedback.tag = "Jianming is Super hot %d!" % bin_ID
                     self._feedback.msg = "Jianming is Super cool %d!" % bin_ID
-                    self._as.publish_feedback(self._feedback)
+                    self._as.publish_feedback(self._feedback)'''
+            obj = self.Pick_task(9,json_data['bin_contents']['bin_A'],json_data['work_order'][0]['item'])
 
         elif goal.cmd=='Stow_Run':
             rospy.loginfo("Stow_Run")

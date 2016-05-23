@@ -24,8 +24,12 @@ double pre_v_r=0;
 char *echo ="\r";
 cssl_t *serial=0;
 
-
-
+/*
+typedef void (*FloatFunc)(float);
+FloatFunc rs232_temperature_callback;
+void set_temperature_callback(FloatFunc i_func){
+	rs232_temperature_callback = i_func;
+}*/
 
 //====================//
 //   cssl callback    //
@@ -39,6 +43,8 @@ static void mcssl_callback(int id, uint8_t *buf, int length)
     for(i=0;i<length;i++) {
         putchar(buf[i]);
     }
+    
+    //rs232_temperature_callback(26.5f);
 
     fflush(stdout);
     
@@ -66,7 +72,7 @@ int mcssl_init()
         fflush(stdout);
 
 	//-------try to open /dev/ttyACM3 -------
-	char *dev_ACM1="/dev/ttyACM3";
+	char *dev_ACM1="/dev/ttyACM1";
 	printf("(Base Node) Open RS232(%s)\n",dev_ACM1);
 	serial=cssl_open(dev_ACM1, mcssl_callback, 0, serial_speed, 8, 0, 1);
 	
@@ -104,7 +110,7 @@ void mcssl_motor_init(){
 
 //sennd speed to arduino
 void mcssl_base_spped(int x_speed, int y_speed,int yaw_speed){
-    printf("(Base Node) x_speed=%d,y_speed=%d,yaw_speed=%d\n",x_speed, y_speed,yaw_speed);
+   // printf("(Base Node) x_speed=%d,y_speed=%d,yaw_speed=%d\n",x_speed, y_speed,yaw_speed);
  
     cssl_putchar(serial,'x');
     cssl_putchar(serial,x_speed);
@@ -122,3 +128,24 @@ void mcssl_base_position_index(int point_index){
     cssl_putchar(serial,'b');
 
 }
+
+void mcssl_vaccum(bool yn){
+    if(yn){
+    	cssl_putchar(serial,'O');
+    }else{
+	cssl_putchar(serial,'X');
+    }
+
+}
+
+
+void mcssl_base_move(int north_len){
+   printf("(Base Node) north_len = %d\n",north_len);
+   cssl_putchar(serial,'G');
+   cssl_putchar(serial,north_len);
+   cssl_putchar(serial,'F');
+   
+
+
+}
+

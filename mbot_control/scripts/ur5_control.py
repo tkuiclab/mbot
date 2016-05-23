@@ -62,9 +62,9 @@ class ur_control(object):
 
             if cmd.cmd == 'Vaccum':
                 if cmd.vaccum:
-                    rob.set_digital_out(1,True)
+                    rob.set_digital_out(0,True)
                 else:
-                    rob.set_digital_out(1,False)
+                    rob.set_digital_out(0,False)
                 rospy.sleep(1)
 
 
@@ -308,7 +308,9 @@ if __name__ == "__main__":
         js_p = joint_states_publisher()
         js_p.start()
         ur_commander = ur_control(rospy.get_name(),0.1,0.04)
-        ur_commander.set_speed(0.15,0.1)
+        ur_commander.set_speed(0.23,0.1)
+
+
         #ur_commander.set_speed(0.60,0.10)
         #ur_commander.set_speed(0.80,0.20)
         rospy.spin()

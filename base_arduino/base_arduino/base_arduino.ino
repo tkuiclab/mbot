@@ -69,6 +69,11 @@ unsigned char speed0[8] = {0x23, 0xff, 0x60, 0, 0, 0, 0, 0};
 unsigned char tpos[8] = {0x40, 0x62, 0x60, 0, 0, 0, 0, 0};
 
 
+//about VACCUM
+#define VACCUM_PIN 7
+const char ON = 'O';    //get command
+const char OFF = 'X';    //get value
+
 
 //init motor for motor(id)
 void init_motor(int id) {
@@ -304,18 +309,18 @@ void set_base_move(int x, int y, int yaw) {
   last_encoder_2 = encoder_2;
   last_encoder_3 = encoder_3;
   last_encoder_4 = encoder_4;  
-//          Serial.print("last_encoder_1 = ");
-//          Serial.print(last_encoder_1,DEC);
-//          Serial.print("\n");
-//          Serial.print("last_encoder_2 = ");
-//          Serial.print(last_encoder_2,DEC);
-//          Serial.print("\n");
-//          Serial.print("last_encoder_3 = ");
-//          Serial.print(last_encoder_3,DEC);
-//          Serial.print("\n");
-//          Serial.print("last_encoder_4 = ");
-//          Serial.print(last_encoder_4,DEC);
-//          Serial.print("\n");
+          Serial.print("last_encoder_1 = ");
+          Serial.print(last_encoder_1,DEC);
+          Serial.print("\n");
+          Serial.print("last_encoder_2 = ");
+          Serial.print(last_encoder_2,DEC);
+          Serial.print("\n");
+          Serial.print("last_encoder_3 = ");
+          Serial.print(last_encoder_3,DEC);
+          Serial.print("\n");
+          Serial.print("last_encoder_4 = ");
+          Serial.print(last_encoder_4,DEC);
+          Serial.print("\n");
   while(sw){
 
     get_encoder();
@@ -343,6 +348,7 @@ void set_base_move(int x, int y, int yaw) {
         }else{
           sw = 1;
         } 
+        //SPEED 
     if( v1*max_speed/2>=max_speed || v1*max_speed/2<=-max_speed){
       v1=(v1/abs(v1))*max_speed;
     }else{
@@ -373,7 +379,11 @@ void set_base_move(int x, int y, int yaw) {
        set_motor_rpm(id_4, v4);       
                         
     }
-//
+       set_motor_rpm(id_1, 0);
+       set_motor_rpm(id_2, 0);
+       set_motor_rpm(id_3, 0);
+       set_motor_rpm(id_4, 0);   
+
 //          Serial.print("encoder_1 = ");
 //          Serial.print(encoder_1,DEC);
 //          Serial.print("\n");
@@ -388,21 +398,25 @@ void set_base_move(int x, int y, int yaw) {
 //          Serial.print("\n");
       
   /*Serial.print("t1=");
-  Serial.println(t1*pi*25.4);
+  Serial.println(t1*400000);
   Serial.print("t2=");
-  Serial.println(t2*pi*25.4);
+  Serial.println(t2*400000);
   Serial.print("t3=");
-  Serial.println(t3*pi*25.4);
+  Serial.println(t3*400000);
   Serial.print("t4=");
-  Serial.println(t4*pi*25.4);//*/
+  Serial.println(t4*400000);//*/
  
 }
 void run_point(int point) {
+    //set_base_move(0, -30, 0);//south
+    //set_base_move(0, 30, 0);//north
+    //set_base_move(0, 10, 0);
+    
     if((ptemp-point)<0){
-        set_base_move(0, (point-ptemp)*33, 0);
+        set_base_move(0, (point-ptemp)*31.5, 0);
         ptemp=point;
       }else if((ptemp-point)>0){
-        set_base_move(0, (point-ptemp)*33, 0);
+        set_base_move(0, (point-ptemp)*31.5, 0);
         ptemp=point;
       }else{
         set_base_speed(0, 0, 0);     
@@ -416,6 +430,7 @@ void run_point(int point) {
 //arduino setup function, run at begin
 void setup()
 {
+  pinMode(VACCUM_PIN, OUTPUT);
   Serial.begin(9600);
 
 START_INIT:
@@ -433,6 +448,7 @@ START_INIT:
   }
 
   init_all();
+
 }
 
 
@@ -440,7 +456,9 @@ int8_t x_speed;
 int8_t y_speed;
 int8_t yaw_speed;
 int8_t point_index;
+int8_t move_len;
 int8_t *ref_val;
+
 
 char *loop_show_str = new char[64];
 
@@ -506,15 +524,42 @@ void loop()
             ref_val = &point_index;
             step = VAL;
             break;
+        
           case 'b':
             //--------------------run_point--------------------------//
             Serial.print("RUN_POINT=");
             Serial.println(point_index);
             get_encoder();           
             run_point(point_index); 
+          case 'T':
+            //------------------------Test Run----------------------//
+            get_encoder();
+//            set_base_move(0, 10, 0);
+            Serial.println("(Arduino) Move 10cm North");
+            break;
+          case 'G':
+            //------------------------move len----------------------//
+            ref_val = &move_len;
+            step = VAL;
+            break;
+          case 'F':
+            get_encoder();           
+            set_base_move(0, move_len, 0);
+            Serial.println("(Arduino) Move Length");
+            break;
           case 's':
+          case 'S':
             stop_all();
             break;
+          case 'O':
+            digitalWrite(VACCUM_PIN, HIGH);   // turns the LED on, output 5V
+            //Serial.println("IN ON");
+    
+            break;
+          case 'X':
+            digitalWrite(VACCUM_PIN, LOW);   // turns the LED on, output 5V
+            //Serial.println("IN OFF");
+    
 
 
           default:

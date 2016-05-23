@@ -53,11 +53,17 @@ angular:
   y: 0.0
   z: 0.0"
 ---Point Test---
+angular
+x=3 -> run point
+y = 2 -> index (middle= 2, left =1 ,right=3)
+ 
+rosrun mbot_control base base_arduino
+
 rostopic pub /base_vel geometry_msgs/Twist "linear:
   x: 0.0
   y: 0.0
   z: 0.0
 angular:
   x: 3.0
-  y: 2.0
+  y: 1.0
   z: 0.0"

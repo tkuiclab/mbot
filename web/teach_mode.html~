@@ -1,46 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-	<title>Teach Mode</title>
-	<!-- Styles -->
-	<link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-   	<!-- jQuery UI-->
-	<link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css">
-	<!-- Bootstrap -->
-	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/teach_mode.css" rel="stylesheet">
-	<link href="css/teach.css" rel="stylesheet">
-	<link rel="stylesheet" href="css/starter-template.css">
+  <head>
+    <title>Teach Mode</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/teach_mode.css" rel="stylesheet">
+		
 	</head>
-<body class="">
-	<div id="fixedTop">
-		<ul>
-			<li class="left">
-				<a id="nav-expander" class="nav-expander fixed">
-				<i class="fa fa-bars fa-lg white"></i>
-				</a>
-			</li>
-			<li class="center">
-				<strong>Mobile Manipulator</strong>
-			</li>
-			<li  class="right">				
-			</li>
-		</ul>
-	</div>
-	<div id="top">
-		<ul class="list-unstyled main-menu">  
-			<!--Include your navigation here-->
-			<li class="text-left"><a id="nav-close">x</a></li>
-			<li><a href="index.html">Remote Control <span class="icon"></span></a></li>
-			<li><a href="json_decoder.html">JSON Decoder <span class="icon"></span></a></li>
-			<li><a href="http://www.iarc.tku.edu.tw/APC">TKU IARC <span class="icon"></span></a></li>
-		</ul>
-	</div>
-	<BR>
-	<BR>
-	<BR>
-	<nav id="teach">
+<body>
+	<nav>
 		<button type="button" id="addbtn" class="add">
 			<span class="glyphicon glyphicon-plus"></span>
 		</button>
@@ -56,7 +25,14 @@
 			<option value="Rotate_X">Rotate_X</option>
 			<option value="Rotate_Y">Rotate_Y</option>
 			<option value="Rotate_Z">Rotate_Z</option>
-		     	<option value="Vaccum">Vaccum</option>
+     			<option value="Vaccum">Vaccum</option>
+			<option value="-----------------------">----------------------</option>
+			<option value="Base_Vel">Base_Vel</option>
+			<option value="Base_Stop">Base_Stop</option>
+			<option value="Base_Init">Base_Init</option>
+			<option value="Base_Pos_Index_1">Base_Pos_Index_1</option>
+			<option value="Base_Pos_Index_2">Base_Pos_Index_2</option>
+			<option value="Base_Pos_Index_3">Base_Pos_Index_3</option>
 		</select>
 		
 		<div id="block" style= "display:none;">
@@ -77,6 +53,12 @@
 		
 		<div id="shift_block" style= "display:none;">
 			<input value="0" id="shift_val" class="block_sty" type="number"/>
+		</div>
+		
+		<div id="base_vel_block" style= "display:none;">
+			<input value="0" id="base_vel_block_1" class="block_sty" type="number"/>
+			<input value="0" id="base_vel_block_2" class="block_sty" type="number"/>
+			<input value="0" id="base_vel_block_3" class="block_sty" type="number"/>
 		</div>
 		
 		<button name="teach_btn" class="teach_btn" style="width:10%; float:right;" onclick="teach_click(this)">
@@ -112,23 +94,12 @@
 		</textarea>
 		<button id="show_btn" >S h o w</button>
 	</div>
-	<script src="js/roslib/eventemitter2.min.js"></script>
-	<script src="js/roslib/roslib.min.js"></script>
 	<script src="js/jquery/jquery.min.js"></script>
-	<script src="js/jquery/jquery.navgoco.js"></script>
-	<script src="js/bootstrap/bootstrap.min.js"></script>
-
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+	
+	<script src="js/eventemitter2.min.js"></script>
+	<script src="js/roslib.js"></script>
 	<script src="js/teach_mode.js"></script>
-	<script type="text/javascript" type="text/javascript">
-		$('#top').hide();
-		//Navigation Menu Slider
-		$('#nav-expander').on('click',function(e){
-			$('#top').slideToggle();
-		});
-		$('#nav-close').on('click',function(e){
-			$('#top').slideToggle();
-		});
-	</script>
-
+		
   </body>
 </html>

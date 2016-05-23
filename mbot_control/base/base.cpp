@@ -15,6 +15,13 @@
 const char *motion_topic_name = "/base_vel";
 
 
+
+void temperature_callback(float i_tempture){
+	 printf("(Base Node) temperature = %lf\n",i_tempture);
+   
+}
+
+
 //====================//
 //ROS motion callback //
 //====================//
@@ -39,6 +46,15 @@ void motionCallback(const geometry_msgs::Twist::ConstPtr& msg)
 	mcssl_base_position_index(index);
 		
 	return;
+    }else if(msg->angular.x==4){
+	mcssl_vaccum(true);
+	return;
+    }else if(msg->angular.x==5){
+	mcssl_vaccum(false);
+	return;
+    }else if(msg->angular.x==6){
+	mcssl_base_move((int)msg->linear.y);
+	return;
     }else{
 	mcssl_base_spped(msg->linear.x, msg->linear.y,msg->angular.z);
     }
@@ -53,6 +69,8 @@ int main(int argc, char **argv)
     if(mcssl_init()<=0){
         return 0;
     }
+
+    //set_temperature_callback(temperature_callback);
     
     mcssl_motor_init();
 
