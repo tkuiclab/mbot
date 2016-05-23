@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- mm_web -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  	<meta charset="utf-8">
+	<title>ROS_BRIDGE</title>
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  	<!-- Styles -->
+	<link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/starter-template.css">
+   
+   	<!-- jQuery UI-->
+	<link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css">
+	<!------------------------------------------------------------------------------>
+</head>
+
+<body class="">
+<div class="container">
+	<!--Direction_Panel-->
+	<div id="directionPanel" class="col-md-5"  style="border:3px black double">
+		<table width="100%" height="100%" cellpadding="0" cellspacing="0">
+		<tr height="10%">
+			<td width="20%"><a id="direction_up" class="control"><i class="fa fa fa-angle-double-up  fa-5x"></i></a></td>
+			<td width="20%">&nbsp;</td>
+			<td width="20%"><a id="direction_down" class="control"><i class="fa fa fa-angle-double-down fa-5x"></i></a></td>
+		</tr>
+		<tr height="10%">
+			<td width="20%">&nbsp;</td>
+			<td width="20%"><a id="direction_front" class="control"><i class="fa fa-arrow-up  fa-4x"></i></a></td>
+			<td width="20%">&nbsp;</td>
+		</tr>
+		<tr height="10%">
+			<td width="20%"><a id="direction_left" class="control"><i class="fa fa-arrow-left fa-4x"></i></a></td>
+			<td width="20%">&nbsp;</td>
+			<td width="20%"><a id="direction_right" class="control"><i class="fa fa-arrow-right fa-4x"></i></a></td>
+		</tr>
+		<tr height="10%">
+			<td width="20%">&nbsp;</td>
+			<td width="20%"><a id="direction_back" class="control"><i class="fa fa-arrow-down fa-4x"></i></a></td>
+			<td width="20%">&nbsp;</td>
+		</tr>
+		<tr height="60%">
+			<td width="20%">&nbsp;</td>
+			<td width="20%">&nbsp;</td>
+			<td width="20%">&nbsp;</td>
+		</tr>
+		</table>
+	</div>
+	<div class="col-md-6" border="2px">
+		<img src="ur5_img.png" style="border:6px #c0fff4 double" width="500px" height="500px"></img>
+	</div>
+	<!--ROS_Output-->
+	<div class="col-md-1">
+		<table id="ros_Output" width="100%" height="100%">
+			<thead>
+			<th colspan="4" style="border:1px black solid">ROS_Info</th>
+			</thead>
+			<tbody>
+			<tr height="15%" style="border:1px black solid">
+				<td style="border:1px black solid" width="20%">Base</td>
+				<td style="border:1px black solid" width="30%"><h4 id="output_m1" style="color:red"></td>
+				<td style="border:1px black solid" width="20%">X</td>
+				<td style="border:1px black solid" width="30%"><h4 id="output_lx" style="color:red"></td>
+			</tr>
+			<tr height="15%" style="border:1px black solid">
+				<td style="border:1px black solid">Shoulder</td>
+				<td style="border:1px black solid color:red"><h4 id="output_m2" style="color:red"></td>
+				<td style="border:1px black solid">Y</td>
+				<td style="border:1px black solid color:red"><h4 id="output_ly" style="color:red"></td>
+			</tr>
+			<tr height="15%" style="border:1px black solid">
+				<td style="border:1px black solid">Elbow</td>
+				<td style="border:1px black solid color:red"><h4 id="output_m3" style="color:red"></td>
+				<td style="border:1px black solid">Z</td>
+				<td style="border:1px black solid color:red"><h4 id="output_lz" style="color:red"></td>
+			</tr>
+			<tr height="15%" style="border:1px black solid">
+				<td style="border:1px black solid">Wrist1</td>
+				<td style="border:1px black solid color:red"><h4 id="output_m4" style="color:red"></td>
+				<td style="border:1px black solid">RX</td>
+				<td style="border:1px black solid color:red"><h4 id="output_ax" style="color:red"></td>
+			</tr>
+			<tr height="15%" style="border:1px black solid">
+				<td style="border:1px black solid">Wrist2</td>
+				<td style="border:1px black solid color:red"><h4 id="output_m5" style="color:red"></td>
+				<td style="border:1px black solid">RY</td>
+				<td style="border:1px black solid color:red"><h4 id="output_ay" style="color:red"></td>
+			</tr>
+			<tr height="15%" style="border:1px black solid">
+				<td style="border:1px black solid">Wrist3</td>
+				<td style="border:1px black solid color:red"><h4 id="output_m6" style="color:red"></td>
+				<td style="border:1px black solid">RZ</td>
+				<td style="border:1px black solid color:red"><h4 id="output_az" style="color:red"></td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row"></div>
+	<HR color="#00FF00" size="20px">
+	<!--ROS_Input-->
+	<div class="col-md-2" padding-right="10px">
+		<table id="ros_Input" width="100%" height="100%" border="1px">
+		<thead>
+		<th colspan="2" width="30%">Motor_Input</th>
+		<th colspan="2" width="30%">Pos_Input</th>
+		<th colspan="2" width="40%">IO_Input</th>
+		</thead>
+		<tbody>
+		<tr height="15%">
+			<td>Base</td>
+			<td><input type="text" class="form-control" id="input_m1"data-fv-field="number"></td>
+			<td>X</td>
+			<td><input type="text" class="form-control" id="input_lx"data-fv-field="number"></td>
+			<td width="20%" rowspan="2"><a id="control_io" class="control"><i class="fa fa-magnet fa-2x"></i></a></td>
+			<td width="20%" rowspan="2" style="color:red" id="output_io"></td>
+		</tr>
+		<tr height="15%">
+			<td>Shoulder</td>
+			<td><input class="form-control input-sm" id="input_m2" type="text"></td>
+			<td>Y</td>
+			<td><input class="form-control input-sm" id="input_ly" type="text"></td>
+		</tr>
+		<tr height="15%">
+			<td>Elbow</td>
+			<td><input class="form-control input-sm" id="input_m3" type="text"></td>
+			<td>Z</td>
+			<td><input class="form-control input-sm" id="input_lz" type="text"></td>
+		</tr>
+		<tr height="15%">
+			<td>Wrist1</td>
+			<td><input class="form-control input-sm" id="input_m4" type="text"></td>
+			<td>RX</td>
+			<td><input class="form-control input-sm" id="input_ax" type="text"></td>
+		</tr>
+		<tr height="15%">
+			<td>Wrist2</td>
+			<td><input class="form-control input-sm" id="input_m5" type="text"></td>
+			<td>RY</td>
+			<td><input class="form-control input-sm" id="input_ay" type="text"></td>
+		</tr>
+		<tr height="15%">
+			<td>Wrist3</td>
+			<td><input class="form-control input-sm" id="input_m6" type="text"></td>
+			<td>RZ</td>
+			<td><input class="form-control input-sm" id="input_az" type="text"></td>
+		</tr>
+		<tr height="10%">
+			<td>Send</td>
+			<td><a id="control_send_motor" class="control"><i class="fa fa-paper-plane  fa-2x"></i></a></td>
+			<td>Send</td>
+			<td><a id="control_send_pos" class="control"><i class="fa fa-paper-plane  fa-2x"></i></a></td>
+		</tr>
+		</tbody>
+		</table>
+	</div>
+	<div class="col-md-1"></div>
+	<!-- /container -->
+	<!--Infomation panel-->
+	<div id="infoPanel" class="ui-widget-content">
+		<div id="panelTop">Information</div>
+		<div id="infoContent" class="panelContent"></div>
+	</div>
+</div>
+<!-- Javascript
+================================================== -->
+<script type="text/javascript" src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+<script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.navgoco.js"></script>
+<script src="js/main.js"></script>
+
+<script src="jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+<script src="jquery-ui-1.11.4/jquery-ui.js"></script>
+
+<script type="text/javascript" type="text/javascript">
+// Connecting to ROS
+// -----------------
+
+var ros = new ROSLIB.Ros({
+	url : 'ws://localhost:9090'
+});
+
+ros.on('connection', function() {
+	console.log('Connected to websocket server.');
+});
+
+ros.on('error', function(error) {
+	console.log('Error connecting to websocket server: ', error);
+});
+
+ros.on('close', function() {
+	console.log('Connection to websocket server closed.');
+});
+
+// Publishing a Topic
+// ------------------
+var motorInput_Topic = new ROSLIB.Topic({
+	ros : ros,
+	name : '/chatter/motorInput',
+	messageType : 'geometry_msgs/Twist'
+});
+var posInput_Topic = new ROSLIB.Topic({
+	ros : ros,
+	name : '/chatter/posInput',
+	messageType : 'geometry_msgs/Twist'
+});
+
+var ioInput_Topic = new ROSLIB.Topic({
+	ros : ros,
+	name : '/chatter/ioInput',
+	messageType : 'std_msgs/Int32'
+});
+var controljoint_Client = new ROSLIB.Service({
+    ros : ros,
+    name : '/ui/control_joint',
+    serviceType : 'mm_bot/joint_cmd'
+  });
+// Subscribing to a Topic
+// ----------------------
+var motor_Sub = new ROSLIB.Topic({
+	ros:ros,
+	name: '/joint_states',
+	messageType : 'sensor_msgs/JointState'
+});
+var pos_Sub = new ROSLIB.Topic({
+	ros:ros,
+	name: '/chatter/posInput',
+	messageType : 'geometry_msgs/Twist'
+});
+var io_Sub = new ROSLIB.Topic({
+	ros:ros,
+	name: '/chatter/ioInput',
+	messageType : 'std_msgs/Int32'
+});
+function saveBtn(){
+	console.log("save Btn click");
+}
+
+$(document).ready(function(){
+	var io_default = 0;
+	var mouseStillDown = false;
+
+	$("#infoPanel").draggable();
+	//Detect mouse still down
+	$('#direction_front').mousedown(function(e){
+		mouseStillDown = true;
+		doSomething();
+	});
+	var temp=1;
+	function doSomething(){
+		if (!mouseStillDown) {return;}
+		else if (mouseStillDown) {
+			console.log(temp++);
+			setInterval(doSomething, 1000);
+		}
+	}
+	$('#direction_front').mouseup(function(e){
+		mouseStillDown = false;
+		clearInterval(doSomething);
+		temp=1;
+	});
+	//ROS_Bridge
+	$('#control_send_motor').on('click',function(e){
+		var float64 = new Float64Array(6);
+		float64[0] = $('#input_m1').val();
+		float64[1] = $('#input_m2').val();
+		float64[2] = $('#input_m3').val();
+		float64[3] = $('#input_m4').val();
+		float64[4] = $('#input_m5').val();
+		float64[5] = $('#input_m6').val();
+		//for(i=0;i<6;i++) console.log(float64[i]);
+		var send_input = new ROSLIB.Message({
+			linear : {
+			x : float64[0],
+			y : float64[1],
+			z : float64[2]
+			},
+			angular : {
+			x : float64[3],
+			y : float64[4],
+			z : float64[5]
+			}
+		});
+		motorInput_Topic.publish(send_input);
+	});
+	$('#control_send_pos').on('click',function(e){
+		var request = new ROSLIB.ServiceRequest({
+		var float64 = new Float64Array(6);
+		float64[0] = $('#input_lx').val();
+		float64[1] = $('#input_ly').val();
+		float64[2] = $('#input_lz').val();
+		float64[3] = $('#input_ax').val();
+		float64[4] = $('#input_ay').val();
+		float64[5] = $('#input_az').val();
+		should_pan : float64[0],
+		should_lift : float64[0],
+		elbow : float64[0],
+		wrist1 : float64[0],
+		wrist2 : float64[0],
+		wrist3 : float64[0]
+		});
+
+		controljoint_Client.callService(request, function(result) {
+		console.log('Result for service call on '
+			+ controljoint_Client.name
+			+ ': '
+			+ result.ok);
+		});
+	});
+	$('#control_io').on('click',function(e){
+		if(io_default===0){
+			io_default=1;
+			var send_io = new ROSLIB.Message({
+				data : io_default
+			});
+			ioInput_Topic.publish(send_io);
+		}else{
+			io_default=0;
+			var send_io = new ROSLIB.Message({
+				data : io_default
+			});
+			ioInput_Topic.publish(send_io);
+		}
+
+	});
+	motor_Sub.subscribe(function(message){
+//		console.log('Received message on ' + motor_Sub.name + ':' + message.linear.x);
+		var oriText = $("#infoContent").html();
+		$("#infoContent").html('Received message on ' + motor_Sub.name
+		+"<BR>linear:<BR>"+ message.position[0].toFixed(2)
+		+"<BR>"+ message.position[1].toFixed(2)
+		+"<BR>"+ message.position[2].toFixed(2)
+		+"<BR>angular<BR>"+ message.position[3].toFixed(2)
+		+"<BR>"+ message.position[4].toFixed(2)
+		+"<BR>"+ message.position[5].toFixed(2)
+		);
+		$("#output_m1").html(((message.position[0]/Math.PI)*180).toFixed(2));
+		$("#output_m2").html(((message.position[1]/Math.PI)*180).toFixed(2));
+		$("#output_m3").html(((message.position[2]/Math.PI)*180).toFixed(2));
+		$("#output_m4").html(((message.position[3]/Math.PI)*180).toFixed(2));
+		$("#output_m5").html(((message.position[4]/Math.PI)*180).toFixed(2));
+		$("#output_m6").html(((message.position[5]/Math.PI)*180).toFixed(2));
+		$("#progress-bar_m1").css({'style':'20%'});//ERROR
+	});
+	pos_Sub.subscribe(function(message){
+		var oriText = $("#infoContent").html();
+		$("#infoContent").html('Received message on ' + pos_Sub.name
+		+"<BR>linear:<BR>"+ message.linear.x
+		+"<BR>"+ message.linear.y
+		+"<BR>"+ message.linear.z
+		+"<BR>angular<BR>"+ message.angular.x
+		+"<BR>"+ message.angular.y
+		+"<BR>"+ message.angular.z
+		);
+		$("#output_lx").html(message.linear.x);
+		$("#output_ly").html(message.linear.y);
+		$("#output_lz").html(message.linear.z);
+		$("#output_ax").html(message.angular.x);
+		$("#output_ay").html(message.angular.y);
+		$("#output_az").html(message.angular.z);
+	});
+	io_Sub.subscribe(function(message){
+		if(message.data === 1){
+			$("#output_io").html('Open');
+		}else{
+			$("#output_io").html('Close');
+		}
+	});
+});
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- mm_web -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  	<meta charset="utf-8">
+	<title>ROS_BRIDGE</title>
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  	<!-- Styles -->
+	<link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/starter-template.css">
+   
+   	<!-- jQuery UI-->
+	<link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css">
+	<!------------------------------------------------------------------------------>
+
+</head>
+
+
+
+
+<body class="">
+<!-- Button trigger modal -->
+
+<nav>
+	<ul class="list-unstyled main-menu">
+		<!--Include your navigation here-->
+		<li class="text-left"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#" id="nav-close">x</a></li>
+		<li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Menu One <span class="icon"></span></a></li>
+		<li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Menu Two <span class="icon"></span></a></li>
+		<li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Menu Three <span class="icon"></span></a></li>
+		<li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Dropdown<span class="caret"></span></a>
+			<ul class="list-unstyled" data-index="0" style="display: none;">
+				<li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu One <span class="icon"></span></a></li>
+				<li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu Two <span class="icon"></span></a></li>
+				<li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu Three <span class="icon"></span></a></li>
+				<li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu Four <span class="icon"></span></a></li>
+				<li class="sub-nav"><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Sub Menu Five <span class="icon"></span></a></li>
+			</ul>
+		</li>
+		<li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Menu Four <span class="icon"></span></a></li>
+		<li><a href="http://blog.themearmada.com/demos/off-canvas-menu/#">Menu Five <span class="icon"></span></a></li>
+	</ul>
+</nav>
+	<div id="fixedTop">
+	<li class="left">
+		<a id="nav-expander" class="nav-expander fixed">
+			<i class="fa fa-bars fa-lg white"></i>
+		</a>
+	</li>
+	<li class="center">Mobile Manipulator</li>
+	<li  class="right"></li>
+	</ul>
+</div>
+	
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			</div>
+			<div class="modal-body">
+				...fdfgdfd
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+	<div class="container">
+	<!-- Example row of columns -->
+	<div class="starter-template">
+		<h1>Welcom to TKU Mobile Manipulator</h1>
+		<p class="lead">Free to control the Robot</p>
+		<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Launch demo modal</button>
+	</div>
+	<!--ROS_Input-->
+	<div id="ros_Input" class="ui-widget-content">
+		<table width="100%" height="100%" border="1px" cellpadding="0" cellspacing="0">
+		<thead>
+		<th colspan="7">ROS_Bridge</th>
+		</thead>
+		<tbody>
+		<tr>
+			<td width="15%">lin_x</td>
+			<td width="15%">lin_y</td>
+			<td width="15%">lin_z</td>
+			<td width="15%">ang_x</td>
+			<td width="15%">ang_y</td>
+			<td width="15%">ang_z</td>
+			<td width="10%">Send</td>
+		</tr>
+		<tr><!--<input class="form-control input-sm" id="input_az" type="text">-->
+			<td width="15%"><input type="text" class="form-control" id="input_lx"data-fv-field="number"></td>
+			<td width="15%"><input class="form-control input-sm" id="input_ly" type="text"></td>
+			<td width="15%"><input class="form-control input-sm" id="input_lz" type="text"></td>
+			<td width="15%"><input class="form-control input-sm" id="input_ax" type="text"></td>
+			<td width="15%"><input class="form-control input-sm" id="input_ay" type="text"></td>
+			<td width="15%"><input class="form-control input-sm" id="input_az" type="text"></td>
+			<td width="10%"><a id="control_send" class="control"><i class="fa fa-paper-plane  fa-2x"></i></a></td>
+		</tr>
+		</tbody>
+		</table>
+	</div>
+	<!-- /container -->
+	<!--Infomation panel-->
+	<div id="infoPanel" class="ui-widget-content">
+		<div id="panelTop">
+			Information
+		</div>
+		<div id="infoContent" class="panelContent">
+		</div>
+	</div>
+	<!--control panel-->
+	<div id="controlPanel" class="ui-widget-content">
+		<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td width="33%">&nbsp;</td>
+			<!--UP Button--->
+			<td width="34%">
+			<a id="control_up" class="control"><i class="fa fa-caret-square-o-up  fa-3x"></i></a>
+			<td width="33%">&nbsp;</td>
+		</tr>
+		<tr>
+			<!--Left Button--->
+			<td width="33%">
+			<a id="control_left" class="control"><i class="fa fa-caret-square-o-left fa-3x"></i>
+			</td>
+			<td width="34%">&nbsp;</td>
+			<!--Right Button--->
+			<td width="33%">
+			<a id="control_right" class="control"><i class="fa fa-caret-square-o-right fa-3x"></i>
+			</td>
+		</tr>
+		<tr>
+			<td width="33%">&nbsp;</td>
+			<!--Down Button--->
+			<td width="34%">
+			<a id="control_down" class="control"><i class="fa fa-caret-square-o-down fa-3x"></i></a>
+			</td>
+			<td width="33%">&nbsp;</td>
+		</tr>
+		</table>
+	</div>
+	<!-- Javascript
+	================================================== -->
+	<script type="text/javascript" src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+	<script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.navgoco.js"></script>
+	<script src="js/main.js"></script>
+
+	<script src="jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+	<script src="jquery-ui-1.11.4/jquery-ui.js"></script>
+
+	<script type="text/javascript" type="text/javascript">
+	// Connecting to ROS
+	  // -----------------
+
+	  var ros = new ROSLIB.Ros({
+	    url : 'ws://localhost:9090'
+	  });
+
+	  ros.on('connection', function() {
+	    console.log('Connected to websocket server.');
+	  });
+
+	  ros.on('error', function(error) {
+	    console.log('Error connecting to websocket server: ', error);
+	  });
+
+	  ros.on('close', function() {
+	    console.log('Connection to websocket server closed.');
+	  });
+
+	  // Publishing a Topic
+	  // ------------------
+
+	  var cmdVel = new ROSLIB.Topic({
+	    ros : ros,
+	    name : '/cmd_vel',
+	    messageType : 'geometry_msgs/Twist'
+	  });
+
+	function saveBtn(){
+		console.log("save Btn click");
+	}
+	
+	$(document).ready(function(){
+       
+		//Navigation Menu Slider
+		$('#nav-expander').on('click',function(e){
+	      		e.preventDefault();
+	      		$('body').toggleClass('nav-expanded');
+	      	});
+	      	$('#nav-close').on('click',function(e){
+	      		e.preventDefault();
+	      		$('body').removeClass('nav-expanded');
+	      	});
+		
+      		$("#controlPanel").draggable();
+		$("#infoPanel").draggable();
+		
+		$('#control_up').on('click',function(e){
+			var oriText = $("#infoContent").html();
+			$("#infoContent").html(oriText + "<BR>" +$(this).attr("id") +" click");
+		});
+		
+		$('#control_right').on('click',function(e){
+			var oriText = $("#infoContent").html();
+			$("#infoContent").html(oriText + "<BR>" +$(this).attr("id") +" click");
+      		});
+		
+		$('#control_down').on('click',function(e){
+			console.log("control_down click click");
+			var oriText = $("#infoContent").html();
+			$("#infoContent").html(oriText + "<BR>" +$(this).attr("id") +" click");
+      		});
+		
+		$('#control_left').on('click',function(e){
+			var oriText = $("#infoContent").html();
+			$("#infoContent").html(oriText + "<BR>" +$(this).attr("id") +" click");
+      		});
+		//ROS_Bridge
+		$('#control_send').on('click',function(e){
+		var oriText = $("#infoContent").html();
+		$("#infoContent").html(oriText + "<BR>" +$(this).attr("id") +" click");
+		var float64 = new Float64Array(6);
+		float64[0] = $('#input_lx').val();
+		float64[1] = $('#input_ly').val();
+		float64[2] = $('#input_lz').val();
+		float64[3] = $('#input_ax').val();
+		float64[4] = $('#input_ay').val();
+		float64[5] = $('#input_az').val();
+		//for(i=0;i<6;i++) console.log(float64[i]);
+
+		var send_input = new ROSLIB.Message({
+			linear : {
+			x : float64[0],
+			y : float64[1],
+			z : float64[2]
+			},
+			angular : {
+			x : float64[3],
+			y : float64[4],
+			z : float64[5]
+			}
+			});
+			cmdVel.publish(send_input);
+      		});
+      });
+      </script>
+</body>
+</html>
