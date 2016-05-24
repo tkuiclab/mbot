@@ -86,7 +86,7 @@ roslaunch rosbridge_server rosbridge_websocket.launch
 
 rosrun mbot_control info.py
 
-rosrun mbot_control ur5_control.py
+rosrun mbot_control control.py
 
 rosrun mbot_control base
 
