@@ -91,6 +91,9 @@ rosrun mbot_control base
 
 rosrun mbot_control control.py
 
+rosrun mbot_strategy strategy.py
+
+
 直接開啟/home/mbot_ws/src/web/teach_mode.html
 
 # ur5 with base(解說)

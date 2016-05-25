@@ -9,21 +9,19 @@ import json
 import rospy
 import rospkg
 
-
+#mbot control action name
 MBot_Control_Action_Name = "mbot_control"
 #const of config package name
 Config_Pkg_Name = "mbot_config"
 APC_JSON_File_Name = "apc.json"
 
 class Bin:
-    Bin_A = 'Bin_A'
-    Bin_B = 'Bin_B'
-    Bin_C = 'Bin_C'
-    Bin_D = 'Bin_D'
-    Bin_E = 'Bin_E'
-    Bin_F = 'Bin_F'
-    Bin_Up = 'Bin_Up'
-    Bin_Down = 'Bin_Down'
+    Bin_A = 'bin_A'
+    Bin_B = 'bin_B'
+    Bin_C = 'bin_C'
+    Bin_D = 'bin_D'
+    Bin_E = 'bin_E'
+    Bin_F = 'bin_F'
 
 class MBot_Joint:
     Init_Pose      = [3.1415698528289795,-1.5708050727844238,                 0,-1.5708013772964478,-1.5708670616149902,0]
@@ -63,9 +61,7 @@ class MBot_Strategy(object):
             Bin.Bin_C: [0,2,0,0,0,0],
             Bin.Bin_D: [0,3,0,0,0,0],
             Bin.Bin_E: [0,4,0,0,0,0],
-            Bin.Bin_F: [0,5,0,0,0,0],
-            Bin.Bin_Up: [0,0,0,0,0,0],
-            Bin.Bin_Down: [0,1,0,0,0,0]
+            Bin.Bin_F: [0,5,0,0,0,0]
         }
 
     #parse json to self.work_order & self.bin_contents
@@ -216,7 +212,7 @@ class MBot_Strategy(object):
         #cmd_2 Shift_Z(DOWN)
         cmd_2 = mbot_control.msg.TeachCommand()
         cmd_2.cmd = 'Shift_Z'
-        cmd_2.pose.linear.z = -0.15
+        cmd_2.pose.linear.z = -0.10
         m_cmd_list.append(cmd_2)
 
         #cmd_3 Vaccum Release
