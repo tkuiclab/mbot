@@ -7,10 +7,13 @@ import geometry_msgs.msg
 from geometry_msgs.msg import Twist
 import json
 import rospy
+import rospkg
 
-APC_JSON_File_Name = "apc.json"
+
 MBot_Control_Action_Name = "mbot_control"
-
+#const of config package name
+Config_Pkg_Name = "mbot_config"
+APC_JSON_File_Name = "apc.json"
 
 class Bin:
     Bin_A = 'Bin_A'
@@ -67,17 +70,23 @@ class MBot_Strategy(object):
 
     #parse json to self.work_order & self.bin_contents
     def parseJSON(self):
-        f = open(APC_JSON_File_Name, 'r')
+        #get json path
+        rospack = rospkg.RosPack()
+        json_path = rospack.get_path(Config_Pkg_Name) + "/" +  APC_JSON_File_Name
+
+        #open file
+        f = open(json_path, 'r')
         f_data = f.read()
         f.close()
         j = json.loads(f_data)
+        #stroe data to work_order & bin_contents
         self.work_order = j['work_order']
         self.bin_contents = j['bin_contents']
 
+        #show info
         rospy.loginfo('Parse ' + APC_JSON_File_Name + ' finish');
         #for target in j['work_order']:
-        #    print 'target_bin = ' + target['bin'] + ', pick_item = '+target['item']
-
+        #    print 'target_bin = ' + target['bin'] + ', pick_item = '+target['item'
 
 
     def go_init(self):
