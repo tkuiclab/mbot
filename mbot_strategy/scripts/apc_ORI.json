@@ -30,12 +30,28 @@
   "work_order":
   [
     {
+      "bin": "bin_A",
+      "item": "oreo"
+    },
+    {
+      "bin": "bin_E",
+      "item": "ruler"
+    },
+    {
       "bin": "bin_C",
       "item": "chocolate_pie"
     },
     {
-      "bin": "bin_A",
-      "item": "oreo"
+      "bin": "bin_D",
+      "item": "book"
+    },
+    {
+      "bin": "bin_E",
+      "item": "benice"
+    },
+    {
+      "bin": "bin_B",
+      "item": "color_pen"
     }
   ]
 }

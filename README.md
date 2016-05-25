@@ -97,7 +97,7 @@ roslaunch rosbridge_server rosbridge_websocket.launch   (目的：可以使用�
 
 rosrun mbot_control info.py			(目的：網頁跟本系統溝通的橋樑)
 
-rosrun mbot_control ur5_control.py		(目的：mbot機器人控制)
+rosrun mbot_control control.py		(目的：mbot機器人控制)
 	
 rosrun mbot_control base			(目的：控制下面平台)
 
@@ -128,5 +128,9 @@ cssl: cannot open file
 (Base Node) Open RS232(/dev/ttyACM1) fail
 解決：權限問題
 
+#open camera
+cd /usrcd/src/flycapture/bin
+sudo FlyCap2
 
+sudo FlyCap2
 
